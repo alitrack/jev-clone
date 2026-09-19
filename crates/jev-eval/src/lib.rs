@@ -25,7 +25,7 @@
 //! ```no_run
 //! use jev_eval::{build_report, load_item_set, load_predictions};
 //! # fn main() -> Result<(), jev_eval::EvalError> {
-//! let set = load_item_set("eval/items/zh-evidence-v0.jsonl".as_ref())?;
+//! let set = load_item_set("eval/items/zh-evidence-v1.jsonl".as_ref())?;
 //! let preds = load_predictions("eval/predictions/example-handwritten.jsonl".as_ref(), &set)?;
 //! let report = build_report(&set, &preds, "eval/predictions/example-handwritten.jsonl".as_ref(), "", 10, 1e-12)?;
 //! # let _ = report; Ok(()) }

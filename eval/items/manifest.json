@@ -8,7 +8,15 @@
       "language": "zh",
       "status": "starter",
       "target_n_items": 150,
-      "note": "人工构造的中文起步集。四类分布 11/11/11/12（evidence_judgment / rule_application / candidate_selection / missing_evidence）。已知偏差：choice 题的 gold 在 A/B 槽位偏向 A（约 2:1），noul 题 true:false 为 5:3 —— 准确率只能与本集自身前后对比，不能当绝对能力值。冻结方式：本文件的 sha256 一旦记录，改动题集必须改 manifest 并说明原因（`run --manifest` 会在哈希不符时拒绝计算）。"
+      "note": "人工构造的中文起步集，四类分布 11/11/11/12（evidence_judgment / rule_application / candidate_selection / missing_evidence）。⚠️ 本字段曾声称「choice 题的 gold 在 A/B 槽位偏向 A（约 2:1）」，2026-09-19 用 scripts/validate-items.py 实测证伪：实际为 A 13 / B 17 / C 5，不存在 A 偏斜；本集真正的退化策略是「恒取书写顺序第一个选项」，在那 45 条上得 66%，noul 为 true 5 / false 3，score 2 条 gold 同为第 1 档。以上为更正后的事实，原说法不再成立。冻结方式：本文件的 sha256 一旦记录，改动题集必须改 manifest 并说明原因（`run --manifest` 会在哈希不符时拒绝计算）。已被 zh-evidence-v1.jsonl 取代（后者含本集全部 45 条），本集保留是为了让 M1 已发布的报告仍可复核。"
+    },
+    {
+      "path": "eval/items/zh-evidence-v1.jsonl",
+      "sha256": "2f0415d903ad588cd392d1f48ec940a17f0e3b2b300885a42dd5e99a3af10b4b",
+      "n_items": 150,
+      "language": "zh",
+      "status": "frozen",
+      "note": "150 条中文证据判读题集，达到 docs/design.md 的 M2 规模要求。四类分布 38/38/38/36，题型 choice 98 / noul 32 / score 20（v0 为 35/8/2，score 通道此前几乎未测）。id 0001–0045 逐字承自 v0（仅 source 字段统一），0046–0150 为新增。偏差度量与造题纪律见文件头部注释，可用 scripts/validate-items.py 复现：槽位 A 43% / B 44% / C 13%，written-first 52%，noul 17:15，score 档位 5/10/5 —— 两类退化策略（恒答同一槽位、恒取第一个选项）上限均约 50%。已知局限：全为自撰题，分数只作同一端点上的相对对照，不是模型能力结论；四类难度未做等值标定。集文件一经冻结不得就地修改；改动须同步更新本 sha256 并在提交信息说明理由。"
     }
   ]
 }

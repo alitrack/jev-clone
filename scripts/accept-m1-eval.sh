@@ -6,7 +6,10 @@ cd /mnt/d/wsl2/jev-clone
 
 PORT="${JEV_PORT:-18080}"
 BASE="http://127.0.0.1:$PORT"
-ITEMS="eval/items/zh-evidence-v0.jsonl"
+# The frozen set under test. Default is v1 (150 items, reached 2026-09-19); v0
+# stays on disk with its own manifest hash because the M1 reports were computed
+# against it. Override to re-run against either: JEV_ITEMS=eval/items/zh-evidence-v0.jsonl
+ITEMS="${JEV_ITEMS:-eval/items/zh-evidence-v1.jsonl}"
 DATE="$(date -u +%Y%m%dT%H%M%SZ)"
 RUN_DIR="eval/runs"
 ANSWERS="$RUN_DIR/$DATE-answers.json"

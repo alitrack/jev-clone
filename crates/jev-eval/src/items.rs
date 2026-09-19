@@ -10,7 +10,7 @@
 //! Row shape (one JSON object per line; blank lines and `#` comments are skipped):
 //!
 //! ```json
-//! {"id":"zh-ev-0001","category":"evidence_judgment","source":"authored-zh-evidence-v0",
+//! {"id":"zh-ev-0001","category":"evidence_judgment","source":"authored-zh-v1",
 //!  "state":"…","question":{"type":"choice","instructions":"…","criteria":{"支持":null,"不支持":null}},
 //!  "gold":"支持","positive":"支持","provenance":"…"}
 //! ```

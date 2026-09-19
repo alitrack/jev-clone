@@ -4,9 +4,13 @@ A local, **contract-compatible System One decision server**: give it a `state` a
 runtime-defined typed questions (`choice` / `score` / `noul`), get back a probability
 distribution per question — **without generating a single token**.
 
-> **Status: design phase.** No implementation code yet. See [`docs/design.md`](docs/design.md)
-> (Chinese) and [`docs/blueprints.md`](docs/blueprints.md) for the source-level study of the
-> reference implementations this design is based on.
+> **Status: M0 and M1 landed, accepted against a real endpoint** (164 unit tests / clippy clean /
+> contract assertions 24/24 / **150-item Chinese set** driven end to end + `verify` recomputing
+> 572 checks with 0 mismatches, with a rewritten report rejected). **M1's "≥3× prefix reuse" gate
+> measured 0.96× on the shared endpoint and is not met** — the reason and the restatement are in
+> [`specs/M1.md`](specs/M1.md) §4.1; do not quote it as a result.
+> Design: [`docs/design.md`](docs/design.md) (Chinese); source-level study of the three reference
+> implementations: [`docs/blueprints.md`](docs/blueprints.md).
 
 > **Independent project.** Not affiliated with, endorsed by, or derived from TypeSafe or Jev.
 > "Jev", "TypeSafe", and "System One" are the property of their respective owners. No official
@@ -91,8 +95,8 @@ probabilities with published ECE/Brier/reliability curves, (2) Chinese-first eva
 |---|---|---|
 | **M0** | Contract layer + slot verification + HTTP server (no GPU needed) | Field-level match on the public contract's example requests; slot-verification failure paths covered by tests |
 | **M1** | Batched readout (`prompt` array) + calibrated evaluation crate | Prefix reuse **measured** on the shared endpoint: 0.96×, i.e. the gate is **not** met there (the server's own radix cache already gives the baseline the same reuse) — see `specs/M1.md` §4.1, which restates the gate for a backend whose cache we control |
-| **M2** | Frozen evaluation matrix (Chinese-first) + reproducibility check | One command recomputes every published number from raw results (**crate + 45-item starter set landed; the set is below the 150-item target** — `eval/README.md`) |
-| **M3** | Route A head → Route C LoRA + temperature calibration | ECE ≤ 0.05 on the Chinese set without losing accuracy |
+| **M2** | Frozen evaluation matrix (Chinese-first) + reproducibility check | One command recomputes every published number from raw results (**crate + frozen 150-item Chinese set `zh-evidence-v1` landed 2026-09-19** — `eval/README.md`). The set is entirely self-authored, so its numbers are a relative comparison on one endpoint, not a capability claim |
+| **M3** | Route A head → Route C LoRA + temperature calibration | ECE ≤ 0.05 on the Chinese set without losing accuracy. ⚠️ **This gate is already met before any calibration work** (uncalibrated ECE 0.04395 on the 150-item set), so it does not discriminate as written — the gate needs restating before it can be used as evidence (see `eval/README.md` §7) |
 | **M4** | Optional: expose as an "auto answerer" for canvas/workflow contracts | Low confidence escalates to a human |
 
 ## Honesty

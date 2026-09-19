@@ -1,0 +1,911 @@
+{
+  "schema": "jev-eval-report/1",
+  "items_file": "eval/items/zh-evidence-v1.jsonl",
+  "items_sha256": "2f0415d903ad588cd392d1f48ec940a17f0e3b2b300885a42dd5e99a3af10b4b",
+  "prompt_set_sha256": "91c3d2e1efa5668ac194efb54f7c88c126a0b7747b3c5e25b7e6a3faec14329b",
+  "predictions_file": "eval/runs/20260919T152343Z-predictions.jsonl",
+  "predictions_sha256": "1791f2b24fdf6dad17d492bfbe9129f7beaa88b58c2388ef28b5d4bfc466f058",
+  "confidence_bins": 10,
+  "nll_probability_floor": 1e-12,
+  "verify_tolerance": 1e-12,
+  "stratification_note": "Stratified by source and by category. Every metric is reported per stratum; there is deliberately no merged total (AGENTS.md 铁律 7 / specs/M1.md §6). accuracy / balanced_accuracy / nll / brier_* / ece are separate fields and are not collapsed into one score.",
+  "strata": {
+    "by_source": {
+      "authored-zh-v1": {
+        "n_items": 150,
+        "categories": [
+          "candidate_selection",
+          "evidence_judgment",
+          "missing_evidence",
+          "rule_application"
+        ],
+        "overall": {
+          "n_items": 150,
+          "n_missing": 0,
+          "n_predicted": 150,
+          "n_scored": 150,
+          "accuracy": 0.84,
+          "balanced_accuracy": 0.8802291825821238,
+          "classes_in_gold": [
+            "0",
+            "1",
+            "2",
+            "L3",
+            "P95 延迟",
+            "false",
+            "true",
+            "不支持",
+            "不能得出",
+            "不被支持",
+            "丙",
+            "丙供应商",
+            "丙品牌",
+            "丙场地",
+            "丙某",
+            "丙翻译社",
+            "乙",
+            "乙公司",
+            "乙所",
+            "乙承运商",
+            "乙方",
+            "乙渠道",
+            "乙讲师",
+            "争议解决方式",
+            "仍锁定",
+            "候选一号楼",
+            "候选人 A",
+            "候选人甲",
+            "分项评分理由",
+            "变更单评审结论",
+            "可以直接单一来源",
+            "可以认定",
+            "员工乙",
+            "在保修范围",
+            "审批人风险评审记录",
+            "已过期",
+            "常规通道",
+            "报价有效期",
+            "拆分为多张并备案",
+            "支持",
+            "方案一",
+            "方案乙",
+            "方案二",
+            "方案甲",
+            "是",
+            "更换件旧件检测报告",
+            "有权",
+            "甲",
+            "甲云",
+            "甲公司",
+            "甲厂",
+            "甲教室",
+            "甲方",
+            "足以支持",
+            "违规"
+          ],
+          "per_class_recall": {
+            "0": 0.8,
+            "1": 0.7,
+            "2": 0.6,
+            "L3": 1.0,
+            "P95 延迟": 1.0,
+            "false": 0.8666666666666667,
+            "true": 0.9411764705882353,
+            "不支持": 0.6,
+            "不能得出": 1.0,
+            "不被支持": 0.0,
+            "丙": 1.0,
+            "丙供应商": 1.0,
+            "丙品牌": 1.0,
+            "丙场地": 1.0,
+            "丙某": 1.0,
+            "丙翻译社": 1.0,
+            "乙": 1.0,
+            "乙公司": 1.0,
+            "乙所": 1.0,
+            "乙承运商": 1.0,
+            "乙方": 1.0,
+            "乙渠道": 1.0,
+            "乙讲师": 1.0,
+            "争议解决方式": 1.0,
+            "仍锁定": 1.0,
+            "候选一号楼": 1.0,
+            "候选人 A": 1.0,
+            "候选人甲": 1.0,
+            "分项评分理由": 1.0,
+            "变更单评审结论": 0.0,
+            "可以直接单一来源": 1.0,
+            "可以认定": 1.0,
+            "员工乙": 1.0,
+            "在保修范围": 1.0,
+            "审批人风险评审记录": 0.0,
+            "已过期": 0.0,
+            "常规通道": 0.0,
+            "报价有效期": 1.0,
+            "拆分为多张并备案": 1.0,
+            "支持": 0.9047619047619048,
+            "方案一": 1.0,
+            "方案乙": 1.0,
+            "方案二": 1.0,
+            "方案甲": 1.0,
+            "是": 1.0,
+            "更换件旧件检测报告": 1.0,
+            "有权": 1.0,
+            "甲": 1.0,
+            "甲云": 1.0,
+            "甲公司": 1.0,
+            "甲厂": 1.0,
+            "甲教室": 1.0,
+            "甲方": 1.0,
+            "足以支持": 1.0,
+            "违规": 1.0
+          },
+          "nll": 0.40275722706713213,
+          "brier_multiclass": 0.23610028285661339,
+          "n_binary": 130,
+          "brier_binary": 0.10133976207145386,
+          "ece": 0.043950433333333296,
+          "reliability": [
+            {
+              "lower": 0.3,
+              "upper": 0.4,
+              "n": 1,
+              "mean_confidence": 0.340204,
+              "accuracy": 0.0
+            },
+            {
+              "lower": 0.4,
+              "upper": 0.5,
+              "n": 3,
+              "mean_confidence": 0.44514533333333334,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6,
+              "n": 15,
+              "mean_confidence": 0.5658792666666667,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lower": 0.6,
+              "upper": 0.7,
+              "n": 19,
+              "mean_confidence": 0.6508170526315791,
+              "accuracy": 0.5263157894736842
+            },
+            {
+              "lower": 0.7,
+              "upper": 0.8,
+              "n": 14,
+              "mean_confidence": 0.7576700000000001,
+              "accuracy": 0.8571428571428571
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "n": 23,
+              "mean_confidence": 0.8591079999999999,
+              "accuracy": 0.8695652173913043
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "n": 75,
+              "mean_confidence": 0.9610310133333332,
+              "accuracy": 0.96
+            }
+          ]
+        },
+        "by_category": {
+          "candidate_selection": {
+            "n_items": 38,
+            "n_missing": 0,
+            "n_predicted": 38,
+            "n_scored": 38,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0,
+            "classes_in_gold": [
+              "false",
+              "true",
+              "丙",
+              "丙供应商",
+              "丙品牌",
+              "丙场地",
+              "丙某",
+              "丙翻译社",
+              "乙",
+              "乙公司",
+              "乙所",
+              "乙承运商",
+              "乙方",
+              "乙渠道",
+              "乙讲师",
+              "候选一号楼",
+              "候选人甲",
+              "方案一",
+              "方案二",
+              "方案甲",
+              "甲",
+              "甲云",
+              "甲公司",
+              "甲厂",
+              "甲教室",
+              "甲方"
+            ],
+            "per_class_recall": {
+              "false": 1.0,
+              "true": 1.0,
+              "丙": 1.0,
+              "丙供应商": 1.0,
+              "丙品牌": 1.0,
+              "丙场地": 1.0,
+              "丙某": 1.0,
+              "丙翻译社": 1.0,
+              "乙": 1.0,
+              "乙公司": 1.0,
+              "乙所": 1.0,
+              "乙承运商": 1.0,
+              "乙方": 1.0,
+              "乙渠道": 1.0,
+              "乙讲师": 1.0,
+              "候选一号楼": 1.0,
+              "候选人甲": 1.0,
+              "方案一": 1.0,
+              "方案二": 1.0,
+              "方案甲": 1.0,
+              "甲": 1.0,
+              "甲云": 1.0,
+              "甲公司": 1.0,
+              "甲厂": 1.0,
+              "甲教室": 1.0,
+              "甲方": 1.0
+            },
+            "nll": 0.0763534267081716,
+            "brier_multiclass": 0.01716097440457895,
+            "n_binary": 38,
+            "brier_binary": 0.009975530201210529,
+            "ece": 0.07031089473684199,
+            "reliability": [
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 1,
+                "mean_confidence": 0.610438,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 1,
+                "mean_confidence": 0.764177,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 7,
+                "mean_confidence": 0.8776874285714287,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 29,
+                "mean_confidence": 0.9589572068965518,
+                "accuracy": 1.0
+              }
+            ]
+          },
+          "evidence_judgment": {
+            "n_items": 38,
+            "n_missing": 0,
+            "n_predicted": 38,
+            "n_scored": 38,
+            "accuracy": 0.8157894736842105,
+            "balanced_accuracy": 0.86,
+            "classes_in_gold": [
+              "不支持",
+              "不能得出",
+              "不被支持",
+              "候选人 A",
+              "可以认定",
+              "支持",
+              "方案乙",
+              "是",
+              "有权",
+              "足以支持"
+            ],
+            "per_class_recall": {
+              "不支持": 0.6,
+              "不能得出": 1.0,
+              "不被支持": 0.0,
+              "候选人 A": 1.0,
+              "可以认定": 1.0,
+              "支持": 1.0,
+              "方案乙": 1.0,
+              "是": 1.0,
+              "有权": 1.0,
+              "足以支持": 1.0
+            },
+            "nll": 0.4110542715851911,
+            "brier_multiclass": 0.2565705916602632,
+            "n_binary": 38,
+            "brier_binary": 0.1282852958301316,
+            "ece": 0.11442655263157897,
+            "reliability": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 1,
+                "mean_confidence": 0.577812,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 3,
+                "mean_confidence": 0.6465086666666666,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 1,
+                "mean_confidence": 0.777816,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 8,
+                "mean_confidence": 0.8433562500000001,
+                "accuracy": 0.875
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 25,
+                "mean_confidence": 0.9582211600000001,
+                "accuracy": 0.92
+              }
+            ]
+          },
+          "missing_evidence": {
+            "n_items": 36,
+            "n_missing": 0,
+            "n_predicted": 36,
+            "n_scored": 36,
+            "accuracy": 0.8611111111111112,
+            "balanced_accuracy": 0.7965367965367967,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "P95 延迟",
+              "false",
+              "true",
+              "争议解决方式",
+              "分项评分理由",
+              "变更单评审结论",
+              "审批人风险评审记录",
+              "报价有效期",
+              "更换件旧件检测报告"
+            ],
+            "per_class_recall": {
+              "0": 1.0,
+              "1": 1.0,
+              "P95 延迟": 1.0,
+              "false": 0.8333333333333334,
+              "true": 0.9285714285714286,
+              "争议解决方式": 1.0,
+              "分项评分理由": 1.0,
+              "变更单评审结论": 0.0,
+              "审批人风险评审记录": 0.0,
+              "报价有效期": 1.0,
+              "更换件旧件检测报告": 1.0
+            },
+            "nll": 0.4167840550880716,
+            "brier_multiclass": 0.2319689217951112,
+            "n_binary": 33,
+            "brier_binary": 0.13349310895745456,
+            "ece": 0.12713058333333338,
+            "reliability": [
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 1,
+                "mean_confidence": 0.4703,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 5,
+                "mean_confidence": 0.5805272,
+                "accuracy": 0.8
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 4,
+                "mean_confidence": 0.638279,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 9,
+                "mean_confidence": 0.757484111111111,
+                "accuracy": 0.8888888888888888
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 6,
+                "mean_confidence": 0.8644563333333334,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 11,
+                "mean_confidence": 0.9581803636363635,
+                "accuracy": 1.0
+              }
+            ]
+          },
+          "rule_application": {
+            "n_items": 38,
+            "n_missing": 0,
+            "n_predicted": 38,
+            "n_scored": 38,
+            "accuracy": 0.6842105263157895,
+            "balanced_accuracy": 0.731547619047619,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "2",
+              "L3",
+              "不支持",
+              "仍锁定",
+              "可以直接单一来源",
+              "员工乙",
+              "在保修范围",
+              "已过期",
+              "常规通道",
+              "拆分为多张并备案",
+              "支持",
+              "违规"
+            ],
+            "per_class_recall": {
+              "0": 0.75,
+              "1": 0.625,
+              "2": 0.6,
+              "L3": 1.0,
+              "不支持": 0.6,
+              "仍锁定": 1.0,
+              "可以直接单一来源": 1.0,
+              "员工乙": 1.0,
+              "在保修范围": 1.0,
+              "已过期": 0.0,
+              "常规通道": 0.0,
+              "拆分为多张并备案": 1.0,
+              "支持": 0.6666666666666666,
+              "违规": 1.0
+            },
+            "nll": 0.7075754089934598,
+            "brier_multiclass": 0.4384832035106315,
+            "n_binary": 21,
+            "brier_binary": 0.16738024211914285,
+            "ece": 0.1302989736842105,
+            "reliability": [
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "n": 1,
+                "mean_confidence": 0.340204,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 2,
+                "mean_confidence": 0.432568,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 9,
+                "mean_confidence": 0.5564156666666666,
+                "accuracy": 0.5555555555555556
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 11,
+                "mean_confidence": 0.6602221818181818,
+                "accuracy": 0.6363636363636364
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 3,
+                "mean_confidence": 0.7493433333333334,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 2,
+                "mean_confidence": 0.8410420000000001,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 10,
+                "mean_confidence": 0.9772054000000001,
+                "accuracy": 0.9
+              }
+            ]
+          }
+        }
+      }
+    },
+    "by_category": {
+      "candidate_selection": {
+        "n_items": 38,
+        "n_missing": 0,
+        "n_predicted": 38,
+        "n_scored": 38,
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "classes_in_gold": [
+          "false",
+          "true",
+          "丙",
+          "丙供应商",
+          "丙品牌",
+          "丙场地",
+          "丙某",
+          "丙翻译社",
+          "乙",
+          "乙公司",
+          "乙所",
+          "乙承运商",
+          "乙方",
+          "乙渠道",
+          "乙讲师",
+          "候选一号楼",
+          "候选人甲",
+          "方案一",
+          "方案二",
+          "方案甲",
+          "甲",
+          "甲云",
+          "甲公司",
+          "甲厂",
+          "甲教室",
+          "甲方"
+        ],
+        "per_class_recall": {
+          "false": 1.0,
+          "true": 1.0,
+          "丙": 1.0,
+          "丙供应商": 1.0,
+          "丙品牌": 1.0,
+          "丙场地": 1.0,
+          "丙某": 1.0,
+          "丙翻译社": 1.0,
+          "乙": 1.0,
+          "乙公司": 1.0,
+          "乙所": 1.0,
+          "乙承运商": 1.0,
+          "乙方": 1.0,
+          "乙渠道": 1.0,
+          "乙讲师": 1.0,
+          "候选一号楼": 1.0,
+          "候选人甲": 1.0,
+          "方案一": 1.0,
+          "方案二": 1.0,
+          "方案甲": 1.0,
+          "甲": 1.0,
+          "甲云": 1.0,
+          "甲公司": 1.0,
+          "甲厂": 1.0,
+          "甲教室": 1.0,
+          "甲方": 1.0
+        },
+        "nll": 0.0763534267081716,
+        "brier_multiclass": 0.01716097440457895,
+        "n_binary": 38,
+        "brier_binary": 0.009975530201210529,
+        "ece": 0.07031089473684199,
+        "reliability": [
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 1,
+            "mean_confidence": 0.610438,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 1,
+            "mean_confidence": 0.764177,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 7,
+            "mean_confidence": 0.8776874285714287,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 29,
+            "mean_confidence": 0.9589572068965518,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "evidence_judgment": {
+        "n_items": 38,
+        "n_missing": 0,
+        "n_predicted": 38,
+        "n_scored": 38,
+        "accuracy": 0.8157894736842105,
+        "balanced_accuracy": 0.86,
+        "classes_in_gold": [
+          "不支持",
+          "不能得出",
+          "不被支持",
+          "候选人 A",
+          "可以认定",
+          "支持",
+          "方案乙",
+          "是",
+          "有权",
+          "足以支持"
+        ],
+        "per_class_recall": {
+          "不支持": 0.6,
+          "不能得出": 1.0,
+          "不被支持": 0.0,
+          "候选人 A": 1.0,
+          "可以认定": 1.0,
+          "支持": 1.0,
+          "方案乙": 1.0,
+          "是": 1.0,
+          "有权": 1.0,
+          "足以支持": 1.0
+        },
+        "nll": 0.4110542715851911,
+        "brier_multiclass": 0.2565705916602632,
+        "n_binary": 38,
+        "brier_binary": 0.1282852958301316,
+        "ece": 0.11442655263157897,
+        "reliability": [
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 1,
+            "mean_confidence": 0.577812,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 3,
+            "mean_confidence": 0.6465086666666666,
+            "accuracy": 0.0
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 1,
+            "mean_confidence": 0.777816,
+            "accuracy": 0.0
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 8,
+            "mean_confidence": 0.8433562500000001,
+            "accuracy": 0.875
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 25,
+            "mean_confidence": 0.9582211600000001,
+            "accuracy": 0.92
+          }
+        ]
+      },
+      "missing_evidence": {
+        "n_items": 36,
+        "n_missing": 0,
+        "n_predicted": 36,
+        "n_scored": 36,
+        "accuracy": 0.8611111111111112,
+        "balanced_accuracy": 0.7965367965367967,
+        "classes_in_gold": [
+          "0",
+          "1",
+          "P95 延迟",
+          "false",
+          "true",
+          "争议解决方式",
+          "分项评分理由",
+          "变更单评审结论",
+          "审批人风险评审记录",
+          "报价有效期",
+          "更换件旧件检测报告"
+        ],
+        "per_class_recall": {
+          "0": 1.0,
+          "1": 1.0,
+          "P95 延迟": 1.0,
+          "false": 0.8333333333333334,
+          "true": 0.9285714285714286,
+          "争议解决方式": 1.0,
+          "分项评分理由": 1.0,
+          "变更单评审结论": 0.0,
+          "审批人风险评审记录": 0.0,
+          "报价有效期": 1.0,
+          "更换件旧件检测报告": 1.0
+        },
+        "nll": 0.4167840550880716,
+        "brier_multiclass": 0.2319689217951112,
+        "n_binary": 33,
+        "brier_binary": 0.13349310895745456,
+        "ece": 0.12713058333333338,
+        "reliability": [
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 1,
+            "mean_confidence": 0.4703,
+            "accuracy": 0.0
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 5,
+            "mean_confidence": 0.5805272,
+            "accuracy": 0.8
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 4,
+            "mean_confidence": 0.638279,
+            "accuracy": 0.5
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 9,
+            "mean_confidence": 0.757484111111111,
+            "accuracy": 0.8888888888888888
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 6,
+            "mean_confidence": 0.8644563333333334,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 11,
+            "mean_confidence": 0.9581803636363635,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "rule_application": {
+        "n_items": 38,
+        "n_missing": 0,
+        "n_predicted": 38,
+        "n_scored": 38,
+        "accuracy": 0.6842105263157895,
+        "balanced_accuracy": 0.731547619047619,
+        "classes_in_gold": [
+          "0",
+          "1",
+          "2",
+          "L3",
+          "不支持",
+          "仍锁定",
+          "可以直接单一来源",
+          "员工乙",
+          "在保修范围",
+          "已过期",
+          "常规通道",
+          "拆分为多张并备案",
+          "支持",
+          "违规"
+        ],
+        "per_class_recall": {
+          "0": 0.75,
+          "1": 0.625,
+          "2": 0.6,
+          "L3": 1.0,
+          "不支持": 0.6,
+          "仍锁定": 1.0,
+          "可以直接单一来源": 1.0,
+          "员工乙": 1.0,
+          "在保修范围": 1.0,
+          "已过期": 0.0,
+          "常规通道": 0.0,
+          "拆分为多张并备案": 1.0,
+          "支持": 0.6666666666666666,
+          "违规": 1.0
+        },
+        "nll": 0.7075754089934598,
+        "brier_multiclass": 0.4384832035106315,
+        "n_binary": 21,
+        "brier_binary": 0.16738024211914285,
+        "ece": 0.1302989736842105,
+        "reliability": [
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "n": 1,
+            "mean_confidence": 0.340204,
+            "accuracy": 0.0
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 2,
+            "mean_confidence": 0.432568,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 9,
+            "mean_confidence": 0.5564156666666666,
+            "accuracy": 0.5555555555555556
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 11,
+            "mean_confidence": 0.6602221818181818,
+            "accuracy": 0.6363636363636364
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 3,
+            "mean_confidence": 0.7493433333333334,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 2,
+            "mean_confidence": 0.8410420000000001,
+            "accuracy": 0.0
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 10,
+            "mean_confidence": 0.9772054000000001,
+            "accuracy": 0.9
+          }
+        ]
+      }
+    }
+  }
+}
