@@ -12,8 +12,13 @@
 //!   [`Diff`] with the JSON path, the claimed value and the recomputed one, and the
 //!   CLI exits non-zero when the list is non-empty.
 //!
-//! `verify_tolerance` is deliberately **not** compared: it is metadata describing
-//! how the comparison was made, not a number the report claims about the data.
+//! `verify_tolerance` is **not** read as a setting: the audit threshold belongs to
+//! the caller (`--tol`, default 1e-12). Reading it out of the report let the report
+//! choose how it was audited — a tamperer could declare `verify_tolerance: 1e9` and
+//! have a rewritten number print as `0 mismatches`, which an adversarial review
+//! demonstrated against the first version of this file. The report's declared value
+//! is still compared, but as a *claim*: declaring a tolerance looser than the one
+//! actually applied is itself reported as a mismatch.
 
 use crate::error::EvalError;
 use crate::items::ItemSet;
