@@ -54,12 +54,12 @@ fn choice_26_options_ok_but_27_is_refused_explicitly() {
     assert_eq!(r.slots[25], ("Z".to_string(), "opt-25".to_string()));
 
     // 27 > 26 letters: refused explicitly, never silently truncated.
-    // M0 has no dedicated "too many letter slots" CoreError variant, so the
-    // refusal rides PromptTooLong with the slot count; see the render module doc.
+    // M1 gave this its own variant instead of borrowing `PromptTooLong` (which
+    // would have claimed a token-budget overflow that never happened).
     let err = render_question(&state(), &choice_with(27, None), "q").unwrap_err();
     assert_eq!(
         err,
-        CoreError::PromptTooLong { id: "q".into(), tokens: 27, limit: 26 }
+        CoreError::TooManyLetterSlots { id: "q".into(), got: 27, max: 26 }
     );
 }
 
@@ -87,7 +87,7 @@ fn score_with_27_levels_is_refused_explicitly() {
     let err = render_question(&state(), &score_with(27), "q").unwrap_err();
     assert_eq!(
         err,
-        CoreError::PromptTooLong { id: "q".into(), tokens: 27, limit: 26 }
+        CoreError::TooManyLetterSlots { id: "q".into(), got: 27, max: 26 }
     );
 }
 

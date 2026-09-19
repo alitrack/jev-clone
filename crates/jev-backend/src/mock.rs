@@ -1,6 +1,12 @@
 //! Deterministic in-process backend for tests (no network, no GPU).
 //!
 //! Feeds a queue of scripted readouts, one per question, in order.
+//!
+//! Batched reads use the trait's default implementation (a sequential loop over
+//! [`token_logprobs`](DecisionBackend::token_logprobs)): asking for N prompts
+//! consumes the next N scripted readouts in call order, which is exactly the
+//! per-prompt semantics the batched readout promises. An explicit override would
+//! only duplicate that logic; `tests/batch_readout.rs` pins the behaviour.
 
 use crate::Readout;
 use crate::{BackendError, DecisionBackend};

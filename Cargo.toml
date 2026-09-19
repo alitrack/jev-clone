@@ -4,6 +4,7 @@ members = [
     "crates/jev-core",
     "crates/jev-backend",
     "crates/jev-server",
+    "crates/jev-eval",
 ]
 
 [workspace.package]

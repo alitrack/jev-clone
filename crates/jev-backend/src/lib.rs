@@ -97,6 +97,30 @@ pub trait DecisionBackend: Send + Sync {
     /// tokens. Implementations must not add chat templates or thinking scaffolds.
     async fn token_logprobs(&self, prompt: &str, top_k: usize) -> Result<Readout, BackendError>;
 
+    /// Read the answer-slot distribution for N prompts in one shot.
+    ///
+    /// The returned vector has exactly one [`Readout`] per input prompt, in the
+    /// same order as `prompts` (never a partial result: either every prompt got a
+    /// readout or the call failed). The `state` prefix the prompts share is what
+    /// makes this cheap — a backend that can prefill it once (SGLang's radix
+    /// cache, a local prefill-only backend) amortises the prefix across all N.
+    ///
+    /// The default implementation is a sequential loop over
+    /// [`token_logprobs`](Self::token_logprobs): correct, backend-agnostic, and
+    /// exactly as slow as N single requests. Backends that can batch (the
+    /// OpenAI-compatible one sends `prompt` as an array) override it.
+    async fn token_logprobs_batch(
+        &self,
+        prompts: &[String],
+        top_k: usize,
+    ) -> Result<Vec<Readout>, BackendError> {
+        let mut readouts = Vec::with_capacity(prompts.len());
+        for prompt in prompts {
+            readouts.push(self.token_logprobs(prompt, top_k).await?);
+        }
+        Ok(readouts)
+    }
+
     /// Identifier surfaced in the response's `model` field (kept stable for eval).
     fn model_name(&self) -> String;
 }

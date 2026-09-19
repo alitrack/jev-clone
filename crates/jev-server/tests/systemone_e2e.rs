@@ -231,15 +231,25 @@ async fn uniform_distribution_rounds_to_six_decimals_and_picks_the_first_slot() 
     assert_eq!(status, StatusCode::OK, "body: {body}");
 
     let ans = &body["answers"]["q1"];
-    // 1/3 on the wire is 0.333333, not 0.3333333333333333.
-    assert_eq!(ans["probabilities"]["a"].as_f64(), Some(0.333333));
+    // 1/3 on the wire is 0.333333, not 0.3333333333333333 — and because three
+    // independent roundings only reach 0.999999, the residual goes back onto the
+    // first slot (the one `choice` names), so Σp is exactly 1. One slot
+    // therefore carries an extra decimal by design; see
+    // `api::repair_probability_sum`.
+    assert_eq!(ans["probabilities"]["a"].as_f64(), Some(0.333334));
     assert_eq!(ans["probabilities"]["b"].as_f64(), Some(0.333333));
     assert_eq!(ans["probabilities"]["c"].as_f64(), Some(0.333333));
+    let sum: f64 = ["a", "b", "c"]
+        .iter()
+        .map(|k| ans["probabilities"][k].as_f64().unwrap())
+        .sum();
+    assert!((sum - 1.0).abs() < 1e-15, "Σp must be 1 on the wire, got {sum}");
     assert!(
         !text.contains("3333333333"),
         "dirty float leaked onto the wire: {text}"
     );
-    // Ties resolve to the first declared slot (numpy.argmax convention).
+    // Ties resolve to the first declared slot (numpy.argmax convention), and the
+    // repaired distribution still has that same slot as its argmax.
     assert_eq!(ans["choice"], json!("a"));
 }
 
@@ -521,7 +531,7 @@ async fn top_k_covers_every_slot_and_the_question_id_never_reaches_the_model() {
     let (rec, handle) = backend("mock-model", vec![readout(&logprobs, 30)]);
     let app = app(handle, TokenizeStub::new()).await;
 
-    // 8 options -> top_k = max(8 + 5, 10) = 13.
+    // 8 options -> top_k = max(8 + 5, 100) = 100.
     let criteria: BTreeMap<String, Value> = (0..8).map(|i| (format!("opt{i}"), Value::Null)).collect();
 
     let (status, body, _) = post(
@@ -543,7 +553,7 @@ async fn top_k_covers_every_slot_and_the_question_id_never_reaches_the_model() {
     let calls = rec.calls();
     assert_eq!(calls.len(), 1, "one readout per question");
     let (prompt, top_k) = &calls[0];
-    assert_eq!(*top_k, 13, "top_k must cover every slot plus margin (max(n+5, 10))");
+    assert_eq!(*top_k, 100, "top_k must cover every slot plus margin (max(n+5, 100))");
     assert!(prompt.contains("Answer:\n"), "prompt must end at the answer slot");
     assert!(prompt.contains("Which option fits best?"), "instructions missing");
     assert!(
@@ -593,9 +603,9 @@ async fn questions_in_one_request_are_independent() {
         "one question's text must not leak into another's prompt: {second}"
     );
     assert_ne!(first, second, "each question gets its own prompt");
-    // 2 slots -> the documented floor of 10 applies.
-    assert_eq!(calls[0].1, 10);
-    assert_eq!(calls[1].1, 10);
+    // 2 slots -> the documented floor of 100 applies.
+    assert_eq!(calls[0].1, 100);
+    assert_eq!(calls[1].1, 100);
 }
 
 #[tokio::test]

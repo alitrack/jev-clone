@@ -33,7 +33,7 @@
 //! **M0 letter-slot limit.** M0 uses one uppercase letter per slot, so at most 26
 //! options can be named. `choice` legally allows up to 255, so a `choice` with
 //! more than 26 options is **refused explicitly** (no silent truncation, no
-//! silently wrong readout) via [`CoreError::PromptTooLong`] — the dedicated
+//! silently wrong readout) via [`CoreError::TooManyLetterSlots`] — the dedicated
 //! "too many options" error of `CoreError` is reserved for the public contract
 //! limit (255). Multi-letter slots (e.g. `AA`, `AB`, …) are the planned M1
 //! extension and must be added as a new, separately-eval'd rendering variant.
@@ -50,6 +50,11 @@ pub const MAX_LETTER_SLOTS: usize = 26;
 /// `slots[i]` is the caller-facing value that a probability maps to:
 /// for `choice` it is the criteria key, for `score` the level index as a string,
 /// for `noul` it is `"true"` then `"false"`.
+///
+/// `labels[i]` is the *human-readable* side of the same option: the criteria key
+/// for `choice`, the level **description** for `score` (which is what `legend`
+/// reports), and `"yes"`/`"no"` for `noul`.
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct RenderedQuestion {
     pub prompt: String,
@@ -128,9 +133,9 @@ fn render_choice(
         });
     }
     if n > MAX_LETTER_SLOTS {
-        // Explicit M0 refusal: one letter names at most 26 slots, and we never
+        // Explicit refusal: one letter names at most 26 slots, and we never
         // silently drop or merge options. See the module doc.
-        return Err(CoreError::PromptTooLong { id: id.to_string(), tokens: n, limit: MAX_LETTER_SLOTS });
+        return Err(CoreError::TooManyLetterSlots { id: id.to_string(), got: n, max: MAX_LETTER_SLOTS });
     }
 
     // `criteria` is a BTreeMap, so iteration is in dictionary order of the keys:
@@ -162,7 +167,7 @@ fn render_score(
         return Err(CoreError::TooFewScoreLevels { id: id.to_string(), got: n });
     }
     if n > MAX_LETTER_SLOTS {
-        return Err(CoreError::PromptTooLong { id: id.to_string(), tokens: n, limit: MAX_LETTER_SLOTS });
+        return Err(CoreError::TooManyLetterSlots { id: id.to_string(), got: n, max: MAX_LETTER_SLOTS });
     }
 
     let mut body = String::from("Choose exactly one level.\nLevels:");
@@ -170,11 +175,15 @@ fn render_score(
     let mut labels = Vec::with_capacity(n);
     for (i, level) in s.criteria.iter().enumerate() {
         let letter = letter_at(i);
-        let line = format!("- {letter}: {i}: {}", render_entry(level));
+        let description = render_entry(level);
         body.push('\n');
-        body.push_str(&line);
+        body.push_str(&format!("- {letter}: {i}: {description}"));
         slots.push((letter.to_string(), i.to_string()));
-        labels.push(i.to_string());
+        // `labels` is the human-readable side for logs/legend: for `score` that is
+        // the level *description*, while the caller-facing value (the index string
+        // `"0"`) lives in `slots`. Storing the index string here (the first cut)
+        // forced every consumer to re-read the caller's raw `criteria`.
+        labels.push(description);
     }
     Ok((body, slots, labels))
 }

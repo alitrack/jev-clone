@@ -1,0 +1,14 @@
+{
+  "schema": "jev-eval/manifest@1",
+  "sets": [
+    {
+      "path": "eval/items/zh-evidence-v0.jsonl",
+      "sha256": "c0d5678ff2290288d8d500094e42abff3bb17ddc8013cbb1ee6d20503ea8040f",
+      "n_items": 45,
+      "language": "zh",
+      "status": "starter",
+      "target_n_items": 150,
+      "note": "人工构造的中文起步集。四类分布 11/11/11/12（evidence_judgment / rule_application / candidate_selection / missing_evidence）。已知偏差：choice 题的 gold 在 A/B 槽位偏向 A（约 2:1），noul 题 true:false 为 5:3 —— 准确率只能与本集自身前后对比，不能当绝对能力值。冻结方式：本文件的 sha256 一旦记录，改动题集必须改 manifest 并说明原因（`run --manifest` 会在哈希不符时拒绝计算）。"
+    }
+  ]
+}

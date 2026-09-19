@@ -9,5 +9,10 @@
 //! Everything here is deliberately backend-agnostic: [`api::AppState`] holds a
 //! `dyn DecisionBackend` and an `HttpTokenizer` behind `Arc`s, and nothing in the
 //! request path assumes a particular server.
+//!
+//! [`bench`] is the measurement rig behind the `jev-bench` binary: it lives in
+//! the library so its testable parts (arg parsing, workload generation,
+//! percentiles, report assembly) are covered by `cargo test`.
 
 pub mod api;
+pub mod bench;

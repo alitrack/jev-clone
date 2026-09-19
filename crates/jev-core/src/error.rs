@@ -21,6 +21,15 @@ pub enum CoreError {
     #[error("question `{id}`: noul criteria may only contain `true` and/or `false`")]
     BadNoulCriteriaKeys { id: String },
 
+    /// More options than one-letter answer slots can name.
+    ///
+    /// Deliberately distinct from both neighbours: `TooManyChoiceOptions` is the
+    /// public contract's own 255 limit, and `PromptTooLong` means a real token
+    /// budget overflow. Here the prompt is perfectly fine — we simply cannot ask
+    /// the model for one token per option once the alphabet runs out.
+    #[error("question `{id}`: {got} options exceed the {max} single-letter answer slots M1 can name")]
+    TooManyLetterSlots { id: String, got: usize, max: usize },
+
     /// The prompt plus one answer slot exceeded the caller's token budget.
     #[error("question `{id}`: prompt is {tokens} tokens, over the {limit} token budget (no truncation)")]
     PromptTooLong { id: String, tokens: usize, limit: usize },

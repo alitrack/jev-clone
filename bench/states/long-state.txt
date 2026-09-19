@@ -1,0 +1,18 @@
+Northwind Logistics — Scale plan, annual, 40 seats, renews in eleven weeks.
+
+Billing: invoice 88213 was paid on the third; a gateway timeout made finance re-run
+the same payment on the fifth, so the ledger shows two settled payments for one
+period. Invoice 88220 is unpaid. A goodwill credit of 300 units is already applied
+against the duplicate.
+
+Ticket: the customer wrote on the eighth saying they had been charged twice, and
+asked for a refund or a credit. The first agent replied the same day: duplicate
+refunds cap at 5,000 units and need finance approval. No approval was recorded. On
+the ninth the customer said the refund had not arrived and was considering moving
+the contract at renewal.
+
+Notes: 32 of 40 seats active last week, two billing tickets last quarter, renewal at
+risk, duplicate matched to a credit note, no second payment instrument on file.
+
+Answer only from this state; do not invent limits, approvals, or intent not written
+here.

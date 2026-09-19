@@ -1,0 +1,28 @@
+[package]
+name = "jev-eval"
+version.workspace = true
+edition.workspace = true
+description = "Frozen item sets + frozen metrics + reproducible (re-computable) reports"
+
+[[bin]]
+name = "jev-eval"
+path = "src/main.rs"
+
+[dependencies]
+# Contract types (`Question`) so an item's `question` field *is* the M0/M1
+# contract shape by construction — not a re-typed lookalike that can drift.
+jev-core = { path = "../jev-core" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+# Both are present in this machine's offline cargo cache (verified with
+# `cargo build --offline` before use, per AGENTS.md 铁律 9 — crates first,
+# hand-rolling only as fallback). Nothing here is fetched from the network.
+#
+# `clap` is pinned to an exact version on purpose: the sparse index cache knows
+# about 4.6.7 but that `.crate` was never downloaded here, and with a broken TLS
+# client `cargo` cannot fetch it. Pinning to a version that *is* in the cache is
+# the only way to resolve `--offline`.
+clap = { version = "=4.6.6", features = ["derive"] }
+sha2 = "0.10"
