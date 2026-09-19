@@ -16,3 +16,11 @@ reqwest = { version = "0.12", default-features = false, features = ["json", "rus
 
 [dev-dependencies]
 tokio = { workspace = true }
+# Stub HTTP servers for the backend tests live in `tests/common/`. `wiremock` is
+# deliberately not used: it is not in this machine's offline cargo cache, and the
+# two endpoints under test are a handful of lines of axum.
+axum = "0.8"
+# Same version as the normal dependency above (already in Cargo.lock): the tests
+# POST hand-written bodies to the stubs, including deliberately wrong ones, to
+# prove the stubs reject what the live endpoint rejects.
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }

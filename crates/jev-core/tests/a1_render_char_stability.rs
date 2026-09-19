@@ -104,9 +104,10 @@ fn noul_prompt_with_criteria_is_char_stable() {
          Question:\n\
          Did support reply the same day?\n\
          \n\
-         Answer yes or no.\n\
-         - yes: replied the same day\n\
-         - no: slower than that\n\
+         Choose exactly one option.\n\
+         Options:\n\
+         - A: yes — replied the same day\n\
+         - B: no — slower than that\n\
          \n\
          Answer:\n",
         "noul prompt must be exactly the M0 shape (eval hashes it)"
@@ -132,7 +133,10 @@ fn noul_prompt_without_criteria_is_char_stable() {
          Question:\n\
          Was the order refunded?\n\
          \n\
-         Answer yes or no.\n\
+         Choose exactly one option.\n\
+         Options:\n\
+         - A: yes\n\
+         - B: no\n\
          \n\
          Answer:\n"
     );

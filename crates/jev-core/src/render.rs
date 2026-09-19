@@ -182,17 +182,34 @@ fn render_score(
 fn render_noul(
     n: &crate::contract::NoulQuestion,
 ) -> Result<QuestionBody, CoreError> {
-    let mut body = String::from("Answer yes or no.");
-    if let Some(criteria) = &n.criteria {
-        if let Some(t) = &criteria.r#true {
-            body.push_str("\n- yes: ");
-            body.push_str(&render_entry(t));
-        }
-        if let Some(f) = &criteria.r#false {
-            body.push_str("\n- no: ");
-            body.push_str(&render_entry(f));
-        }
+    // The letters MUST appear in the prompt. The readout is the distribution at
+    // the single token following `Answer:`, so the model has to be *asked* for a
+    // letter. M0's first cut rendered only `- yes:` / `- no:` — `A`/`B` were
+    // mentioned nowhere, the live model answered "Yes", and the readout failed
+    // with `slot "A" missing from the backend's top-10 logprobs`. Only a run
+    // against the real endpoint could catch that: every stub in the test suite is
+    // queried with a prompt the test itself wrote. Same header as `choice`, so all
+    // three primitives present the model with one shape.
+    let mut body = String::from("Choose exactly one option.\nOptions:");
+    let yes = n.criteria.as_ref().and_then(|c| c.r#true.as_ref());
+    let no = n.criteria.as_ref().and_then(|c| c.r#false.as_ref());
+
+    let mut line = String::from("- A: yes");
+    if let Some(t) = yes {
+        line.push_str(" — ");
+        line.push_str(&render_entry(t));
     }
+    body.push('\n');
+    body.push_str(&line);
+
+    let mut line = String::from("- B: no");
+    if let Some(f) = no {
+        line.push_str(" — ");
+        line.push_str(&render_entry(f));
+    }
+    body.push('\n');
+    body.push_str(&line);
+
     let slots = vec![
         ("A".to_string(), "true".to_string()),
         ("B".to_string(), "false".to_string()),
@@ -292,9 +309,10 @@ mod tests {
              Question:\n\
              Did support reply the same day?\n\
              \n\
-             Answer yes or no.\n\
-             - yes: replied the same day\n\
-             - no: slower than that\n\
+             Choose exactly one option.\n\
+             Options:\n\
+             - A: yes — replied the same day\n\
+             - B: no — slower than that\n\
              \n\
              Answer:\n"
         );

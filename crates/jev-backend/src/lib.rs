@@ -36,7 +36,7 @@ pub mod tokenizer;
 
 pub use mock::MockBackend;
 pub use openai::{OpenAiCompatBackend, OpenAiCompatConfig};
-pub use tokenizer::HttpTokenizer;
+pub use tokenizer::{HttpTokenizer, Prefetch};
 
 #[derive(Debug, Error)]
 pub enum BackendError {
@@ -68,9 +68,27 @@ impl Readout {
     /// surface forms of the same slot: the probability of "the model answers A" is
     /// the total mass it puts on any spelling of A.
     pub fn slot_logprob(&self, slot_token: &str) -> Option<f64> {
-        let _ = slot_token;
-        todo!("worker B: implement per the doc comment")
+        // Nested helper: log(e^a + e^b), the stable way (shift by the max).
+        fn lse(a: f64, b: f64) -> f64 {
+            let m = a.max(b);
+            m + ((a - m).exp() + (b - m).exp()).ln()
+        }
+        // Every key whose strip() equals the slot denotes the same slot ("A" and
+        // " A" are two surface forms of one token boundary), so their logprobs
+        // are ADDED in log space (log-sum-exp) — never compared.
+        let target = slot_token.trim();
+        let mut acc: Option<f64> = None;
+        for (text, lp) in &self.top {
+            if text.trim() == target {
+                acc = Some(match acc {
+                    Some(a) => lse(a, *lp),
+                    None => *lp,
+                });
+            }
+        }
+        acc
     }
+
 }
 
 #[async_trait]

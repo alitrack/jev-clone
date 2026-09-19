@@ -17,3 +17,11 @@ tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 anyhow = { workspace = true }
 axum = "0.8"
+
+[dev-dependencies]
+# `tower::ServiceExt::oneshot` drives the router in-process (no port, no GPU, no
+# network): the no-GPU end-to-end tests in `tests/` use it.
+tower = { version = "0.5", features = ["util"] }
+# The end-to-end tests need one backend of their own that *records* what the API
+# layer asked for (prompt + top_k), which requires implementing `DecisionBackend`.
+async-trait = "0.1"
