@@ -5,9 +5,15 @@
 //! * `JEV_MODEL`      — model id the server knows, e.g. `qwen3.8-27b`
 //! * `JEV_API_KEY`    — optional (default `EMPTY`)
 //! * `JEV_LISTEN`     — optional (default `127.0.0.1:8080`)
-//! * `JEV_TOKENIZER`  — reserved, **not read in M0**: slot verification always goes
-//!   through the endpoint's `/tokenize`; a local `tokenizer.json` path is M1 work
-//!   (specs/M0.md §4 B3, "fallback path if time allows")
+//! * `JEV_TOKENIZER`  — **not implemented; the variable is not read at all.**
+//!   Slot verification always goes through the endpoint's `/tokenize`. The
+//!   intended fallback (load a local `tokenizer.json` with the `tokenizers` crate
+//!   when the endpoint has no `/tokenize`) is blocked on this machine: the crate
+//!   is absent from the offline cargo cache and cargo cannot fetch it (every
+//!   crates.io mirror fails its TLS handshake here — `docs/dev-env.md` §1). A
+//!   vestigial variable that silently does nothing would be worse than none, so
+//!   the name is documented-but-dead until a local build of the tokenizer stack
+//!   lands (specs/M1.md §5③).
 //!
 //! Startup is fail-fast on purpose: before the port is bound, the endpoint's
 //! `/tokenize` is asked to confirm the *probed* slot assumption

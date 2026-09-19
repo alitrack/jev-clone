@@ -292,27 +292,55 @@ pub fn verify(
 
     // 0. Identity and hashes first: everything below assumes the evidence has not
     //    moved underneath us.
+    //
+    //    Argument order is `(claimed, recomputed)` — the report's value first, the
+    //    value we recomputed from the raw evidence second. An adversarial review
+    //    caught these seven calls passing them the other way round, which labelled
+    //    every identity diff backwards (`claimed` showing our hash). The check is
+    //    symmetric so the verdict was unaffected; the message a human reads during
+    //    an incident was not.
     cmp.text("schema", &report.schema, crate::REPORT_SCHEMA);
     let items_file = set.path.display().to_string();
-    cmp.file("items_file", &items_file, &report.items_file);
-    cmp.file("predictions_file", predictions_file, &report.predictions_file);
-    cmp.text("items_sha256", &set.sha256, &report.items_sha256);
+    cmp.file("items_file", &report.items_file, &items_file);
+    cmp.file("predictions_file", &report.predictions_file, predictions_file);
+    cmp.text("items_sha256", &report.items_sha256, &set.sha256);
     cmp.text(
         "prompt_set_sha256",
-        &set.prompt_set_sha256,
         &report.prompt_set_sha256,
+        &set.prompt_set_sha256,
     );
     if !predictions_sha256.is_empty() {
         cmp.text(
             "predictions_sha256",
-            predictions_sha256,
             &report.predictions_sha256,
+            predictions_sha256,
         );
     }
     cmp.float(
         "nll_probability_floor",
-        crate::metrics::NLL_PROBABILITY_FLOOR,
         report.nll_probability_floor,
+        crate::metrics::NLL_PROBABILITY_FLOOR,
+    );
+
+    // The tolerance is the *caller's*, never the report's (see `cmd_verify`). A
+    // report that declares a looser one than we are applying is flagged: that is
+    // the shape a neutered audit takes, and it must not pass quietly.
+    cmp.checks += 1;
+    if report.verify_tolerance > tolerance {
+        cmp.diffs.push(Diff::new(
+            "verify_tolerance",
+            format!("{}", report.verify_tolerance),
+            format!("{tolerance}"),
+        ));
+    }
+
+    // The artifact states why it has no merged total; a tamperer who rewrites that
+    // sentence (say, into a fabricated grand total) must be caught here, because a
+    // "verified" report is otherwise taken as evidence of exactly that property.
+    cmp.text(
+        "stratification_note",
+        &report.stratification_note,
+        crate::report::STRATIFICATION_NOTE,
     );
 
     if report.confidence_bins == 0 {
@@ -368,5 +396,72 @@ mod tests {
         cmp.float("y", 1.0, 1.0 + 1e-6);
         assert_eq!(cmp.diffs.len(), 1);
         assert_eq!(cmp.checks, 2);
+    }
+
+    #[test]
+    fn a_fabricated_field_makes_the_report_unloadable() {
+        // `deny_unknown_fields` is the only thing standing between a tamperer and
+        // a report carrying a made-up number *next to* the real ones: the
+        // comparator only visits fields it knows about, so an ignored extra field
+        // would ride along inside a report that prints "0 mismatches". serde
+        // reports the unknown key as soon as it reads it, so an incomplete body is
+        // enough to prove the struct refuses it.
+        let err = serde_json::from_str::<Report>(r#"{"total_accuracy":0.99}"#).unwrap_err();
+        assert!(
+            err.to_string().contains("unknown field"),
+            "a fabricated top-level field must be refused by name: {err}"
+        );
+
+        let err =
+            serde_json::from_str::<StratumMetrics>(r#"{"total_accuracy":0.99}"#).unwrap_err();
+        assert!(
+            err.to_string().contains("unknown field"),
+            "a fabricated per-stratum metric must be refused too: {err}"
+        );
+    }
+
+    #[test]
+    fn a_rewritten_stratification_note_is_a_mismatch() {
+        // The note is the artifact's own statement that it has no merged total. If
+        // it can be rewritten for free, a "verified" report stops being evidence of
+        // the one property specs/M1.md §6 cares about.
+        let mut cmp = Comparator::new(1e-12);
+        cmp.text(
+            "stratification_note",
+            "MERGED TOTAL: accuracy 0.99",
+            crate::report::STRATIFICATION_NOTE,
+        );
+        assert_eq!(cmp.diffs.len(), 1);
+        let outcome = VerifyOutcome {
+            checks: cmp.checks,
+            diffs: cmp.diffs,
+        };
+        let text = outcome.report();
+        assert!(text.contains("stratification_note"), "{text}");
+        assert!(text.contains("MERGED TOTAL"), "{text}");
+    }
+
+    #[test]
+    fn a_report_that_declares_a_looser_tolerance_than_the_audit_flags_it() {
+        // The caller's tolerance is the audit threshold; the report's declared one
+        // is a claim. A claim that is looser than the audit is the signature of a
+        // neutered verification (`verify_tolerance: 1e9` made a tampered report
+        // pass before this check existed).
+        fn flag(report_tol: f64, audit_tol: f64) -> usize {
+            let mut cmp = Comparator::new(audit_tol);
+            cmp.checks += 1;
+            if report_tol > audit_tol {
+                cmp.diffs.push(Diff::new(
+                    "verify_tolerance",
+                    format!("{report_tol}"),
+                    format!("{audit_tol}"),
+                ));
+            }
+            cmp.diffs.len()
+        }
+
+        assert_eq!(flag(1e-12, 1e-12), 0, "an honest report stays clean");
+        assert_eq!(flag(1e9, 1e-12), 1, "a loosened declared tolerance must not pass");
+        assert_eq!(flag(0.01, 1e-12), 1, "even a modest loosening is a mismatch");
     }
 }

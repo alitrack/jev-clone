@@ -12,8 +12,16 @@
 //! single token `32`, with no whitespace variant), and readout matching additionally
 //! tolerates a leading-space variant (`"A"` vs `" A"`).
 //!
-//! Fallback path (implement if time allows): load a local `tokenizer.json` with the
-//! `tokenizers` crate when `JEV_TOKENIZER` is set.
+//! Fallback path: **not implemented, and deliberately not stubbed.**
+//!
+//! The plan was to load a local `tokenizer.json` with the `tokenizers` crate when
+//! `JEV_TOKENIZER` points at one (for endpoints that expose no `/tokenize`). That
+//! crate is absent from this machine's offline cargo cache and cargo cannot reach
+//! crates.io (every mirror fails its TLS handshake — `docs/dev-env.md` §1), so
+//! there is no way to build it here without network access. `JEV_TOKENIZER` is
+//! therefore documented in `jev-server`'s env list and read by nothing: an
+//! environment variable that appears to enable a fallback while doing nothing
+//! would be a lie in the one place a reader looks for truth (specs/M1.md §5③).
 
 use async_trait::async_trait;
 use jev_core::SlotVerifier;

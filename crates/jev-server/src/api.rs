@@ -83,17 +83,33 @@ fn repair_probability_sum(order: &[String], probs: &mut BTreeMap<String, f64>) {
     if residual == 0.0 {
         return;
     }
-    let target = order
-        .iter()
-        .filter_map(|k| probs.get(k).map(|v| (k, *v)))
-        .fold(None, |best: Option<(&String, f64)>, (k, v)| match best {
-            Some((_, best_v)) if best_v >= v => best,
-            _ => Some((k, v)),
-        })
-        .map(|(k, _)| k.clone());
+    let target = argmax_in_order(order, probs).map(|(key, _)| key);
     if let Some(slot) = target.and_then(|k| probs.get_mut(&k)) {
         *slot += residual;
     }
+}
+
+/// The first maximum in the item's declared slot order — the numpy.argmax
+/// convention, so an all-equal distribution resolves to the first declared option.
+///
+/// Everything derived from a distribution goes through this one rule: the
+/// reported `choice`, and the slot the rounding residual is added to. Sharing it
+/// is what makes "the answer we report" and "the argmax of the numbers we publish"
+/// the same slot by construction rather than by coincidence.
+fn argmax_in_order(order: &[String], probs: &BTreeMap<String, f64>) -> Option<(String, f64)> {
+    order
+        .iter()
+        .filter_map(|key| probs.get(key).map(|p| (key.clone(), *p)))
+        .fold(None, |best: Option<(String, f64)>, candidate| match best {
+            Some((_, best_p)) if best_p >= candidate.1 => best,
+            _ => Some(candidate),
+        })
+}
+
+/// The published distribution as a vector in declared slot order: exactly the
+/// numbers a client reads off `probabilities`, laid out for the metric helpers.
+fn published_in_order(order: &[String], probs: &BTreeMap<String, f64>) -> Vec<f64> {
+    order.iter().filter_map(|key| probs.get(key).copied()).collect()
 }
 
 async fn systemone(
@@ -236,36 +252,31 @@ async fn systemone(
 
         let answer = match p.question {
             jev_core::Question::Choice(_c) => {
-                // Plain argmax over the slot probabilities. A strict `>` keeps the
-                // *first* maximum on ties (the numpy.argmax convention), so an
-                // all-equal distribution resolves to the first declared option
-                // instead of the last.
-                let argmax = probabilities
-                    .iter()
-                    .enumerate()
-                    .fold((0usize, f64::NEG_INFINITY), |best, (i, &p)| {
-                        if p > best.1 {
-                            (i, p)
-                        } else {
-                            best
-                        }
-                    })
-                    .0;
-                let mut probs = BTreeMap::new();
                 let order: Vec<String> = p
                     .rendered
                     .slots
                     .iter()
                     .map(|(_, value)| value.clone())
                     .collect();
+                let mut probs = BTreeMap::new();
                 for ((_, value), prob) in p.rendered.slots.iter().zip(&probabilities) {
                     probs.insert(value.clone(), round6(*prob));
                 }
                 repair_probability_sum(&order, &mut probs);
+                // The answer is read off the map we publish, never off the
+                // unrounded vector. Rounding can collapse a strict ordering into a
+                // tie (0.49999996 / 0.50000004 both become 0.5), and an answer
+                // derived from pre-rounding values could then name a slot the
+                // published map no longer puts first — our own field disagreeing
+                // with our own distribution. `jev-eval`'s import step flags exactly
+                // that disagreement, so it is not a theoretical concern.
+                let published = published_in_order(&order, &probs);
+                let (choice, _) = argmax_in_order(&order, &probs)
+                    .expect("a choice question is validated to have at least two slots");
                 Answer::Choice(ChoiceAnswer {
-                    choice: p.rendered.slots[argmax].1.clone(),
+                    choice,
                     probabilities: probs,
-                    confidence: round6(confidence_from_probabilities(&probabilities, Default::default())),
+                    confidence: round6(confidence_from_probabilities(&published, Default::default())),
                 })
             }
             jev_core::Question::Score(_) => {
@@ -294,22 +305,37 @@ async fn systemone(
                     legend.insert(value.clone(), description);
                 }
                 repair_probability_sum(&order, &mut probs);
+                // `score` and `confidence` come from the published map too, so a
+                // client recomputing either from `probabilities` gets our number
+                // back instead of a value that differs in the last digits.
+                let published = published_in_order(&order, &probs);
                 Answer::Score(ScoreAnswer {
-                    score: round6(score_expectation(&probabilities)),
+                    score: round6(score_expectation(&published)),
                     legend,
                     probabilities: probs,
-                    confidence: round6(confidence_from_probabilities(&probabilities, Default::default())),
+                    confidence: round6(confidence_from_probabilities(&published, Default::default())),
                 })
             }
             jev_core::Question::Noul(_) => {
                 // render (A1) fixes the noul slot order: A -> "true" (yes),
-                // B -> "false". Take the mass on the "true" slot explicitly.
-                let noul = probabilities
+                // B -> "false". Take the mass on the "true" slot explicitly, from
+                // the published map (same reasoning as the two branches above).
+                let order: Vec<String> = p
+                    .rendered
+                    .slots
                     .iter()
-                    .enumerate()
-                    .find(|(i, _)| p.rendered.slots[*i].1 == "true")
-                    .map(|(i, _)| probabilities[i])
-                    .unwrap_or(probabilities.first().copied().unwrap_or(0.0));
+                    .map(|(_, value)| value.clone())
+                    .collect();
+                let mut probs = BTreeMap::new();
+                for ((_, value), prob) in p.rendered.slots.iter().zip(&probabilities) {
+                    probs.insert(value.clone(), round6(*prob));
+                }
+                repair_probability_sum(&order, &mut probs);
+                let noul = probs
+                    .get("true")
+                    .copied()
+                    .or_else(|| probs.values().next().copied())
+                    .unwrap_or(0.0);
                 Answer::Noul(NoulAnswer { noul: round6(noul) })
             }
         };
@@ -398,5 +424,44 @@ mod tests {
         repair_probability_sum(&order(&["A", "B", "C"]), &mut p);
         assert!(p.values().all(|v| *v >= 0.0), "{p:?}");
         assert!((sum(&p) - 1.0).abs() < 1e-15, "Σ = {}", sum(&p));
+    }
+
+    #[test]
+    fn rounding_that_collapses_the_ordering_keeps_the_answer_consistent_with_the_map() {
+        // 0.49999996 / 0.50000004 is a strict ordering; rounding to 6 dp collapses
+        // it into a tie. The *published* numbers are what a client and `jev-eval`
+        // see, so the answer must be the first slot of the published tie (the
+        // documented first-max rule) rather than the pre-rounding winner that the
+        // published map no longer puts first. Otherwise our `choice` field would
+        // contradict the argmax of the `probabilities` field shipped beside it —
+        // and `jev-eval`'s import step flags exactly that contradiction.
+        let order = order(&["a", "b"]);
+        let mut probs = probs(&[("a", round6(0.499_999_96)), ("b", round6(0.500_000_04))]);
+        assert_eq!(probs["a"], 0.5, "the fixture must actually collapse");
+        assert_eq!(probs["b"], 0.5, "the fixture must actually collapse");
+
+        repair_probability_sum(&order, &mut probs);
+        let (choice, confidence) = argmax_in_order(&order, &probs).expect("two slots");
+        assert_eq!(choice, "a", "the answer follows the published tie");
+        assert_eq!(confidence, 0.5);
+        assert_eq!(published_in_order(&order, &probs), vec![0.5, 0.5]);
+    }
+
+    #[test]
+    fn the_residual_and_the_reported_answer_share_one_argmax_rule() {
+        // The property that ties the two helpers together: whichever slot
+        // `argmax_in_order` names is the slot `repair_probability_sum` adjusts, so
+        // the repaired vector's argmax is still the slot we report.
+        let order = order(&["0", "1", "2"]);
+        let tie = probs(&[("0", 0.333333), ("1", 0.333333), ("2", 0.333334)]);
+        let (before, _) = argmax_in_order(&order, &tie).expect("three slots");
+        assert_eq!(before, "2");
+
+        let mut drifting = probs(&[("0", 0.333333), ("1", 0.333333), ("2", 0.333333)]);
+        repair_probability_sum(&order, &mut drifting);
+        let (after, _) = argmax_in_order(&order, &drifting).expect("three slots");
+        assert_eq!(after, "0", "a tie resolves to the first declared slot");
+        assert!((sum(&drifting) - 1.0).abs() < 1e-15, "Σ = {}", sum(&drifting));
+        assert_eq!(drifting["0"], 0.333334, "the residual went to the reported slot");
     }
 }

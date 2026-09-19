@@ -86,7 +86,7 @@ pub struct BenchArgs {
     pub out_dir: String,
     pub timeout_secs: u64,
     /// `Some(n)` forces `top_k = n` instead of the server rule
-    /// (`max(n_slots + 5, 20)`). Used to measure how the declared-slot coverage
+    /// (`max(n_slots + 5, 100)`). Used to measure how the declared-slot coverage
     /// of a readout responds to a deeper top-k; a forced value is recorded in the
     /// report's notes so the two can never be confused.
     pub top_k: Option<usize>,
@@ -705,6 +705,18 @@ pub fn render_table(r: &BenchReport) -> String {
             t.decisions_per_second
         ));
     }
+    // A percentile over a handful of samples is not a percentile: at n = 5 the
+    // interpolated p95 sits between the two largest values, i.e. it is effectively
+    // the max. The `samples` column shows n, but the two arms differ in n by
+    // construction (per-question vs per-round), so say it in words too.
+    let min_samples = r.fresh.samples.min(r.shared_prefix.samples);
+    if min_samples < 20 {
+        out.push_str(&format!(
+            "\nnote: p95 is over as few as {min_samples} sample(s) — for an arm with a small \
+             sample count, p95 is effectively the maximum, not a stable tail estimate. Compare \
+             `total_s` and `ms/decision` before quoting it.\n"
+        ));
+    }
     out.push_str(&format!(
         "\nspeedup (wall clock, same {} decisions): {:.2}x\n",
         r.questions * r.repeat,
@@ -884,13 +896,31 @@ mod tests {
 
     #[test]
     fn top_k_matches_the_server_rule() {
+        // The renderer caps a question at 26 letter slots, so `n_slots + 5 <= 31`
+        // and the floor always wins: every reachable input yields exactly 100. The
+        // `+ 5` margin is therefore inert — it is kept because it is the correct
+        // rule *if* the slot ceiling ever moves, but no reachable call depends on
+        // it, so there is nothing here to test above the floor.
         assert_eq!(top_k_for(2), 100);
         assert_eq!(top_k_for(15), 100);
         assert_eq!(top_k_for(16), 100);
-        assert_eq!(top_k_for(26), 100);
-        // Above the floor the +5 margin takes over again.
-        assert_eq!(top_k_for(96), 101);
-        assert_eq!(top_k_for(255), 260);
+        assert_eq!(top_k_for(26), 100, "the widest question the renderer accepts");
+        assert_eq!(top_k_for(26 + 5), 100, "even the largest reachable n_slots + 5");
+    }
+
+    /// The margin above the floor is dead code for every reachable input — pin that
+    /// claim so a future slot-ceiling change surfaces here instead of silently
+    /// making `top_k` depend on the question's width.
+    #[test]
+    fn the_plus_five_margin_never_binds_at_the_current_slot_ceiling() {
+        const MAX_LETTER_SLOTS: usize = 26; // render.rs: slots run A..Z
+        for n_slots in 2..=MAX_LETTER_SLOTS {
+            assert_eq!(
+                top_k_for(n_slots),
+                100,
+                "n_slots = {n_slots} must not depend on the margin"
+            );
+        }
     }
 
     #[test]

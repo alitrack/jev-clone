@@ -174,7 +174,13 @@ fn cmd_verify(args: VerifyArgs) -> anyhow::Result<()> {
         source,
     })?;
     let report = from_json(&text, &args.report)?;
-    let tolerance = args.tol.unwrap_or(report.verify_tolerance);
+    // The audit threshold is OURS, not the artifact's. Reading it out of the
+    // report let a tampered report declare `verify_tolerance: 1e9` and verify
+    // clean (adversarially reviewed and reproduced) — i.e. the thing being audited
+    // chose how it was audited, defeating the crate's one job. `--tol` remains the
+    // caller's escape hatch; the report's own declared value is checked as a
+    // *claim* inside `verify`, so loosening it shows up as a mismatch.
+    let tolerance = args.tol.unwrap_or(DEFAULT_TOLERANCE);
 
     let outcome = verify(
         &set,

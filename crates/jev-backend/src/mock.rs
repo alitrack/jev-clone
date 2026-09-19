@@ -6,7 +6,8 @@
 //! [`token_logprobs`](DecisionBackend::token_logprobs)): asking for N prompts
 //! consumes the next N scripted readouts in call order, which is exactly the
 //! per-prompt semantics the batched readout promises. An explicit override would
-//! only duplicate that logic; `tests/batch_readout.rs` pins the behaviour.
+//! only duplicate that logic; `tests/openai_backend.rs` pins the behaviour of the
+//! real batched parser (ordering by `index`, all-or-nothing failures).
 
 use crate::Readout;
 use crate::{BackendError, DecisionBackend};

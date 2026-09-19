@@ -252,3 +252,233 @@ fn expect_http(err: BackendError) -> String {
         other => panic!("expected BackendError::Http, got {other:?}"),
     }
 }
+
+// ---------------------------------------------------------------------------
+// Batched readout (`token_logprobs_batch`) — specs/M1.md §1
+// ---------------------------------------------------------------------------
+//
+// This is the path the whole prefix-reuse story rides on, and it is the one place
+// where a mistake is invisible to the caller: if the readouts come back mapped to
+// the wrong questions, every answer in the batch is quietly attached to somebody
+// else's prompt. The wire order of `choices` is not promised to match the request
+// order either, so these tests pin the mapping down on purpose-built responses.
+
+fn prompts() -> Vec<String> {
+    vec![
+        "State:\nsame prefix\n\nQuestion:\nfirst?\n\nAnswer:\n".to_string(),
+        "State:\nsame prefix\n\nQuestion:\nsecond?\n\nAnswer:\n".to_string(),
+        "State:\nsame prefix\n\nQuestion:\nthird?\n\nAnswer:\n".to_string(),
+    ]
+}
+
+/// One choice carrying a single, uniquely identifiable logprob.
+fn choice(index: usize, token: &str, logprob: f64) -> serde_json::Value {
+    json!({
+        "text": token,
+        "index": index,
+        "logprobs": { "top_logprobs": [ { token: logprob } ] },
+    })
+}
+
+fn batch_body(choices: Vec<serde_json::Value>, prompt_tokens: u64) -> String {
+    json!({
+        "choices": choices,
+        "usage": { "prompt_tokens": prompt_tokens, "completion_tokens": 3, "total_tokens": 3 },
+    })
+    .to_string()
+}
+
+#[tokio::test]
+async fn the_batched_request_sends_a_prompt_array() {
+    let stub = CompletionsStub::new(
+        200,
+        batch_body(vec![choice(0, "A", -0.1), choice(1, "B", -0.2)], 900),
+    );
+    let base = spawn_completions_stub(stub.clone()).await;
+
+    backend(&base)
+        .token_logprobs_batch(&prompts()[..2], 100)
+        .await
+        .expect("well-formed batch parses");
+
+    let body = stub.only_request();
+    let sent = body["prompt"].as_array().expect("`prompt` must be an array for a batch");
+    assert_eq!(sent.len(), 2, "one array element per prompt: {body}");
+    assert_eq!(sent[0].as_str(), Some(prompts()[0].as_str()));
+    assert_eq!(sent[1].as_str(), Some(prompts()[1].as_str()));
+    assert_eq!(body["max_tokens"], json!(1), "one token is generated, only to read the distribution");
+    assert_eq!(body["logprobs"], json!(100), "top_k must reach the wire");
+}
+
+#[tokio::test]
+async fn batched_choices_are_ordered_by_index_not_by_wire_order() {
+    // The stub answers in REVERSE wire order but labels each choice with the
+    // prompt it belongs to. If the backend trusted the array position, readout 0
+    // would carry the third prompt's distribution.
+    let stub = CompletionsStub::new(
+        200,
+        batch_body(
+            vec![
+                choice(2, "C", -0.3),
+                choice(1, "B", -0.2),
+                choice(0, "A", -0.1),
+            ],
+            900,
+        ),
+    );
+    let base = spawn_completions_stub(stub).await;
+
+    let readouts = backend(&base)
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .expect("a permutation of 0..N in any wire order is accepted");
+    assert_eq!(readouts.len(), 3);
+    assert_eq!(readouts[0].top.get("A").copied(), Some(-0.1), "prompt 0 keeps its own readout");
+    assert_eq!(readouts[1].top.get("B").copied(), Some(-0.2), "prompt 1 keeps its own readout");
+    assert_eq!(readouts[2].top.get("C").copied(), Some(-0.3), "prompt 2 keeps its own readout");
+}
+
+#[tokio::test]
+async fn a_duplicate_batch_index_fails_the_whole_call() {
+    // Indices 0,1,1 mean two readouts claim the same prompt and one prompt has
+    // none: unanswerable, so the call must fail rather than pick a winner.
+    let stub = CompletionsStub::new(
+        200,
+        batch_body(
+            vec![choice(0, "A", -0.1), choice(1, "B", -0.2), choice(1, "C", -0.3)],
+            900,
+        ),
+    );
+    let base = spawn_completions_stub(stub).await;
+
+    let err = backend(&base)
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .unwrap_err();
+    let msg = match err {
+        BackendError::Decode(msg) => msg,
+        other => panic!("expected BackendError::Decode, got {other:?}"),
+    };
+    assert!(msg.contains("permutation"), "the reason must be named: {msg}");
+}
+
+#[tokio::test]
+async fn a_choice_count_mismatch_fails_the_whole_call() {
+    // 2 choices for 3 prompts: whatever we did with the third would be a guess.
+    let stub = CompletionsStub::new(
+        200,
+        batch_body(vec![choice(0, "A", -0.1), choice(1, "B", -0.2)], 900),
+    );
+    let base = spawn_completions_stub(stub).await;
+
+    let err = backend(&base)
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .unwrap_err();
+    match err {
+        BackendError::Decode(msg) => {
+            assert!(msg.contains("2 choices for 3 prompts"), "got: {msg}");
+            assert!(msg.contains("all-or-nothing"), "got: {msg}");
+        }
+        other => panic!("expected BackendError::Decode, got {other:?}"),
+    }
+}
+
+#[tokio::test]
+async fn batch_choices_without_index_fall_back_to_array_position() {
+    // Some OpenAI-compatible servers omit `index` on single-element batches; the
+    // documented fallback is the array position.
+    let body = json!({
+        "choices": [
+            { "text": "A", "logprobs": { "top_logprobs": [ { "A": -0.1 } ] } },
+            { "text": "B", "logprobs": { "top_logprobs": [ { "B": -0.2 } ] } },
+        ],
+        "usage": { "prompt_tokens": 900, "completion_tokens": 2, "total_tokens": 2 },
+    })
+    .to_string();
+    let base = spawn_completions_stub(CompletionsStub::new(200, body)).await;
+
+    let readouts = backend(&base)
+        .token_logprobs_batch(&prompts()[..2], 100)
+        .await
+        .expect("missing `index` falls back to position");
+    assert_eq!(readouts[0].top.get("A").copied(), Some(-0.1));
+    assert_eq!(readouts[1].top.get("B").copied(), Some(-0.2));
+}
+
+#[tokio::test]
+async fn one_batched_usage_block_lands_on_the_first_readout_only() {
+    // The endpoint reports one usage block for the whole batch. It is attached to
+    // the first readout so that summing the vector reproduces the endpoint's own
+    // number exactly; a fake per-prompt split would invent data.
+    let stub = CompletionsStub::new(
+        200,
+        batch_body(
+            vec![choice(0, "A", -0.1), choice(1, "B", -0.2), choice(2, "C", -0.3)],
+            900,
+        ),
+    );
+    let base = spawn_completions_stub(stub).await;
+
+    let readouts = backend(&base).token_logprobs_batch(&prompts(), 100).await.unwrap();
+    assert_eq!(readouts[0].prompt_tokens, 900);
+    assert_eq!(readouts[1].prompt_tokens, 0);
+    assert_eq!(readouts[2].prompt_tokens, 0);
+    assert_eq!(
+        readouts.iter().map(|r| r.prompt_tokens).sum::<u64>(),
+        900,
+        "the vector must reproduce the endpoint's own accounting"
+    );
+    assert!(readouts.iter().all(|r| r.completion_tokens == 1));
+}
+
+#[tokio::test]
+async fn a_batched_choice_without_usable_logprobs_fails_the_whole_call() {
+    let body = batch_body(
+        vec![
+            choice(0, "A", -0.1),
+            json!({ "text": "B", "index": 1, "logprobs": { "top_logprobs": null } }),
+        ],
+        900,
+    );
+    let base = spawn_completions_stub(CompletionsStub::new(200, body)).await;
+
+    let err = backend(&base)
+        .token_logprobs_batch(&prompts()[..2], 100)
+        .await
+        .unwrap_err();
+    assert!(matches!(err, BackendError::NoLogprobs), "got {err:?}");
+}
+
+#[tokio::test]
+async fn batched_http_500_is_an_http_error() {
+    let base = spawn_completions_stub(CompletionsStub::new(500, "upstream is down")).await;
+    let err = backend(&base)
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .unwrap_err();
+    assert!(expect_http(err).contains("500"));
+}
+
+#[tokio::test]
+async fn batched_invalid_json_is_a_decode_error() {
+    let base = spawn_completions_stub(CompletionsStub::new(200, "not json at all")).await;
+    let err = backend(&base)
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .unwrap_err();
+    assert!(matches!(err, BackendError::Decode(_)), "got {err:?}");
+}
+
+#[tokio::test]
+async fn an_empty_batch_makes_no_request_at_all() {
+    let stub = CompletionsStub::new(200, ok_body());
+    let base = spawn_completions_stub(stub.clone()).await;
+
+    let readouts = backend(&base).token_logprobs_batch(&[], 100).await.unwrap();
+    assert!(readouts.is_empty());
+    assert!(
+        stub.requests().is_empty(),
+        "an empty prompt list is answered locally: the live endpoint rejects an empty `prompt`"
+    );
+}

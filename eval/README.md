@@ -19,7 +19,7 @@
 | `state` | ✓ | 模型看得到的材料（中文，自足） |
 | `question` | ✓ | `jev-core` 契约里的 `Question`（`choice` / `score` / `noul`），JSON 原样 |
 | `gold` | ✓ | 标准答案：`choice` 为选项标签；`score` 为档位索引（整数）；`noul` 为 `true`/`false` |
-| `positive` | 可选 | 二值化时哪个槽位是正类（只影响 `brier_binary`）。缺省：`choice` 为第一个槽位，`noul` 为 `"true"` |
+| `positive` | 可选 | 二值化时哪个槽位是正类（只影响 `brier_binary`）。**没有缺省值**：不写就不参与 `brier_binary`（`n_binary` 会小于 `n_scored`），`noul` 由契约固定为 `"true"`。口径以 `metrics.rs` 为准（见本文件开头） |
 | `provenance` | 可选 | 这道题为什么这么判——写给复核的人看，**必须能由 `state` 推出** |
 
 四类（`category`，Q2 的能力拆分）：
@@ -101,3 +101,13 @@ jev-eval verify --items eval/items/zh-evidence-v0.jsonl \
 - 中文题集目前只覆盖证据类任务，未覆盖多跳/长材料。
 - 校准指标的**参考基线**（例如「模型恒答最可能槽位」的退化策略得分）尚未跑；
   在跑出基线前，任何单次 ECE/Brier 数字都不足以说明模型好或坏。
+
+## 6. `eval/runs/` 里的产物
+
+每次端到端跑（`scripts/accept-m1-eval.sh`）落一套 `<UTC 时间戳>-{answers,predictions,report}.json[l,md]`，
+**只追加不覆盖**，因为报告里的每个数字都要能追到产生它的那次原始结果。
+
+| 运行 | 说明 |
+|---|---|
+| `20260919T141756Z` | **没有 report，这是正确的结果**：该次预测里有一条 `score` 概率和 = `1.000001`，`run` 按契约的 `1e-6` 容差拒绝计分。根因在服务端——它把每个概率**独立**四舍五入到 6 位小数，n 个槽位就有 ±n×5e-7 的漂移。已修（舍入后把残差补给答案 argmax 所指的那一格），并保留了这份"被拒"的原始记录 |
+| `20260919T141944Z`、`20260919T142125Z` | 修复后的两次完整跑，均有 report；`verify` 逐项重算 0 不匹配 |

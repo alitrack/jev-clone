@@ -30,6 +30,7 @@ use std::path::Path;
 /// Structured so a reader cannot accidentally average two strata together:
 /// metrics live *under* a source and *under* a category, never at the top.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Strata {
     /// source -> metrics for that source, broken down further by category.
     pub by_source: BTreeMap<String, SourceStratum>,
@@ -39,6 +40,7 @@ pub struct Strata {
 
 /// One source: its own numbers, plus the same numbers per category inside it.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct SourceStratum {
     pub n_items: usize,
     /// Categories present under this source.
@@ -50,7 +52,13 @@ pub struct SourceStratum {
 }
 
 /// The published report. Field order here is the field order on disk.
+///
+/// `deny_unknown_fields` is deliberate: an artifact is evidence, and a field that
+/// the loader silently ignores is a field a tamperer can add for free (a fabricated
+/// `"total_accuracy": 0.99` at the top level would otherwise survive a `verify`
+/// that reports success — the exact thing specs/M1.md §6 forbids).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Report {
     pub schema: String,
     /// The item file, as it was named on the command line (provenance only; the
@@ -71,6 +79,15 @@ pub struct Report {
     pub stratification_note: String,
     pub strata: Strata,
 }
+
+/// Restates *why* the report has no merged total. Kept as a constant because
+/// `verify` compares the artifact's copy against it: a report whose note has been
+/// rewritten (e.g. into a fabricated grand total) must not verify clean, and a
+/// "verified" report is otherwise read as proof that it is stratified.
+pub const STRATIFICATION_NOTE: &str = "Stratified by source and by category. Every metric is reported \
+per stratum; there is deliberately no merged total (AGENTS.md 铁律 7 / specs/M1.md §6). \
+accuracy / balanced_accuracy / nll / brier_* / ece are separate fields and are not \
+collapsed into one score.";
 
 /// Reduce items + predictions to per-item [`Sample`]s.
 ///
@@ -209,11 +226,7 @@ pub fn build_report(
         confidence_bins: bins,
         nll_probability_floor: crate::metrics::NLL_PROBABILITY_FLOOR,
         verify_tolerance: tolerance,
-        stratification_note: "Stratified by source and by category. Every metric is reported \
-per stratum; there is deliberately no merged total (AGENTS.md 铁律 7 / specs/M1.md §6). \
-accuracy / balanced_accuracy / nll / brier_* / ece are separate fields and are not \
-collapsed into one score."
-            .to_string(),
+        stratification_note: STRATIFICATION_NOTE.to_string(),
         strata,
     })
 }

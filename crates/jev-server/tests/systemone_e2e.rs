@@ -198,11 +198,22 @@ async fn choice_answer_is_the_argmax_label_for_every_declared_option() {
 
     let conf = ans["confidence"].as_f64().expect("choice carries confidence");
     assert!((0.0..=1.0).contains(&conf), "confidence out of range: {conf}");
-    assert!(
-        (conf - round6(confidence_from_probabilities(&expected, ConfidenceMode::NormalizedEntropy)))
-            .abs()
-            < 1e-12,
-        "confidence {conf} is not the documented normalized-entropy value"
+    // `confidence` must be recomputable from the *published* probabilities. That is
+    // the point of deriving it from the rounded+repaired map instead of the
+    // higher-precision vector behind it: a client that has nothing but the response
+    // body must be able to reproduce our number exactly, and so must `jev-eval`
+    // when it scores calibration. (Before M1 this was computed from the unrounded
+    // values, so the published distribution did not quite reproduce the published
+    // confidence — off by up to ~1e-6, which is exactly the kind of silent
+    // disagreement this project is not allowed to ship.)
+    let published = vec![probs["maybe"], probs["no"], probs["yes"]];
+    assert_eq!(
+        conf,
+        round6(confidence_from_probabilities(
+            &published,
+            ConfidenceMode::NormalizedEntropy
+        )),
+        "confidence must be a function of the published probabilities"
     );
 }
 
@@ -621,4 +632,124 @@ async fn healthz_reports_ok() {
     let bytes = axum::body::to_bytes(resp.into_body(), usize::MAX).await.unwrap();
     let body: Value = serde_json::from_slice(&bytes).unwrap();
     assert_eq!(body["status"], json!("ok"));
+}
+
+// ---------------------------------------------------------------------------
+// 422 vs 502 — the split decided in specs/M1.md §5②
+// ---------------------------------------------------------------------------
+//
+// The two must never be confused by a caller: 422 means "your request or the
+// readout it produced does not hold up, fix the input", 502 means "the endpoint
+// we depend on failed, retrying may help". Before M1 neither direction of this
+// boundary had a test on the server side — the backend's own error types were
+// covered, the HTTP mapping was not.
+
+/// A backend that always fails, standing in for a broken upstream.
+///
+/// The scenario is written as its own enum rather than by copying a
+/// `BackendError` around, so adding a variant to the real error type can never
+/// silently change what these tests inject.
+enum Failure {
+    Http(&'static str),
+    Decode(&'static str),
+    NoLogprobs,
+}
+
+impl Failure {
+    fn error(&self) -> BackendError {
+        match self {
+            Failure::Http(m) => BackendError::Http((*m).to_string()),
+            Failure::Decode(m) => BackendError::Decode((*m).to_string()),
+            Failure::NoLogprobs => BackendError::NoLogprobs,
+        }
+    }
+}
+
+struct FailingBackend {
+    failure: Failure,
+}
+
+#[async_trait]
+impl DecisionBackend for FailingBackend {
+    async fn token_logprobs(&self, _prompt: &str, _top_k: usize) -> Result<Readout, BackendError> {
+        Err(self.failure.error())
+    }
+
+    fn model_name(&self) -> String {
+        "broken-model".to_string()
+    }
+}
+
+fn failing(failure: Failure) -> Arc<dyn DecisionBackend> {
+    Arc::new(FailingBackend { failure })
+}
+
+fn one_choice_question() -> Value {
+    json!({
+        "state": "x",
+        "questions": {
+            "q1": {
+                "type": "choice",
+                "instructions": "Pick one.",
+                "criteria": { "yes": null, "no": null }
+            }
+        }
+    })
+}
+
+#[tokio::test]
+async fn an_upstream_http_failure_is_502_not_422() {
+    let app = app(
+        failing(Failure::Http(
+            "completions endpoint returned 500 Internal Server Error: upstream is down",
+        )),
+        TokenizeStub::new(),
+    )
+    .await;
+
+    let (status, body, _) = post(app, &one_choice_question()).await;
+    assert_eq!(
+        status,
+        StatusCode::BAD_GATEWAY,
+        "a backend failure is the caller's to retry, not the caller's fault: {body}"
+    );
+    let msg = body["error"]["message"].as_str().unwrap_or_default();
+    assert!(msg.contains("500"), "the upstream status must survive into the message: {msg}");
+}
+
+#[tokio::test]
+async fn an_unparseable_upstream_body_is_502() {
+    let app = app(
+        failing(Failure::Decode("invalid JSON: expected value at line 1")),
+        TokenizeStub::new(),
+    )
+    .await;
+
+    let (status, body, _) = post(app, &one_choice_question()).await;
+    assert_eq!(status, StatusCode::BAD_GATEWAY, "body: {body}");
+    let msg = body["error"]["message"].as_str().unwrap_or_default();
+    assert!(msg.contains("invalid JSON"), "{msg}");
+}
+
+#[tokio::test]
+async fn an_upstream_without_logprobs_is_502_while_our_own_missing_slot_is_422() {
+    // Same request, two different failures, two different codes — this is the
+    // boundary itself, tested from both sides.
+    let no_logprobs = app(failing(Failure::NoLogprobs), TokenizeStub::new()).await;
+    let (status, _, _) = post(no_logprobs, &one_choice_question()).await;
+    assert_eq!(
+        status,
+        StatusCode::BAD_GATEWAY,
+        "the endpoint answered without a distribution: that is an upstream failure"
+    );
+
+    // A slot absent from an otherwise fine distribution is *our* readout failing
+    // the contract, so it stays 422 (the model never named one of the options).
+    let missing_slot = app(
+        mock("mock-model", vec![readout(&[("A", -0.5)], 4)]),
+        TokenizeStub::new(),
+    )
+    .await;
+    let (status, _, _) = post(missing_slot, &one_choice_question()).await;
+    assert_eq!(status, StatusCode::UNPROCESSABLE_ENTITY);
 }

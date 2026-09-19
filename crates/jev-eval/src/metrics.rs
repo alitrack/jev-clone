@@ -101,7 +101,11 @@ pub struct ReliabilityBin {
 
 /// Every number computed for one stratum. Nothing here is summed with any other
 /// stratum's version of it.
+///
+/// `deny_unknown_fields`: a fabricated extra metric (say `"total_accuracy"`) must
+/// fail to load rather than ride along inside a report that `verify` then passes.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct StratumMetrics {
     pub n_items: usize,
     /// Rows with neither a probability vector nor a label.

@@ -54,6 +54,20 @@ with this shape of reply (field-for-field compatible with the public TypeSafe HT
 Every answer is **constrained to the options you supplied** — your code never parses prose.
 Many questions in one request share one prefill and run in parallel.
 
+## Errors
+
+Two failure classes, and never mixed up:
+
+| Status | Meaning | Examples |
+|---|---|---|
+| **422** | The request, or the readout it produced, does not hold up. Fix the input; retrying changes nothing. | no questions; fewer than 2 options; more than 26 options; fewer than 2 levels; prompt over the token budget; a declared slot missing from the readout (`SlotMissingFromTopK`) |
+| **502** | The model endpoint we depend on failed. Retrying may help. | HTTP error from the endpoint; a body we cannot parse; a response that carries no `logprobs` |
+
+A missing slot is deliberately a 422 and **never** a zero: an option whose probability the model
+did not report is an option whose probability is *unknown*, and silently treating it as 0 — or
+renormalising the rest — would invent a number in a system whose whole point is calibrated
+probabilities.
+
 ## What this is not
 
 - Not a chat model. It never writes prose. Anything that needs text generation is out of scope
@@ -76,8 +90,8 @@ probabilities with published ECE/Brier/reliability curves, (2) Chinese-first eva
 | Stage | Deliverable | Gate |
 |---|---|---|
 | **M0** | Contract layer + slot verification + HTTP server (no GPU needed) | Field-level match on the public contract's example requests; slot-verification failure paths covered by tests |
-| **M1** | llama.cpp backend + shared-state prefix reuse | Same-state N questions ≥ 3× decisions/s vs per-question re-encode (4090 / Apple silicon benchmark tables) |
-| **M2** | Frozen evaluation matrix (Chinese-first) + reproducibility check | One command recomputes every published number from raw results |
+| **M1** | Batched readout (`prompt` array) + calibrated evaluation crate | Prefix reuse **measured** on the shared endpoint: 0.96×, i.e. the gate is **not** met there (the server's own radix cache already gives the baseline the same reuse) — see `specs/M1.md` §4.1, which restates the gate for a backend whose cache we control |
+| **M2** | Frozen evaluation matrix (Chinese-first) + reproducibility check | One command recomputes every published number from raw results (**crate + 45-item starter set landed; the set is below the 150-item target** — `eval/README.md`) |
 | **M3** | Route A head → Route C LoRA + temperature calibration | ECE ≤ 0.05 on the Chinese set without losing accuracy |
 | **M4** | Optional: expose as an "auto answerer" for canvas/workflow contracts | Low confidence escalates to a human |
 
