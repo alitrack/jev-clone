@@ -1,0 +1,28 @@
+# Project-local cargo config (WSL, 2026-09-19).
+#
+# ⛔ Cargo's own HTTP client cannot complete a TLS handshake to *any* crates.io
+# source from this host — rsproxy.cn, mirrors.tuna, mirrors.ustc and index.crates.io
+# all fail identically with
+#     [35] SSL connect error (TLS connect error: error:0A000126:SSL routines::
+#     unexpected eof while reading)
+# while `curl` and `git` against the same URLs succeed instantly (verified
+# repeatedly, incl. with cargo's UA, HTTP/1.1, and TLS 1.2 pinned). Pinning
+# http.ssl-version and disabling HTTP/2 multiplexing does not help.
+#
+# Workaround for now: build from the local registry cache, which already holds
+# ~5000 `.crate` files and the sparse index cache from earlier projects:
+#
+#     cargo build --offline
+#
+# Any dependency missing from the cache is fetched with curl (which works) into
+# ~/.cargo/registry/cache/<registry>/:
+#
+#     curl -sSLo "$CACHE/<name>-<ver>.crate" \
+#       "https://static.crates.io/crates/<name>/<name>-<ver>.crate"
+#
+# The source replacement itself is left to ~/.cargo/config.toml (rsproxy-sparse),
+# because that registry's index cache is the one already populated here.
+[http]
+multiplexing = false
+timeout = 120
+low-speed-limit = 1
