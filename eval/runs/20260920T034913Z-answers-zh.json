@@ -1,0 +1,1357 @@
+{
+ "model": "qwen3.8-27b",
+ "answers": {
+  "zh-ev-0001": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.080271,
+    "支持": 0.919729
+   },
+   "confidence": 0.596867
+  },
+  "zh-ev-0002": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.946618,
+    "支持": 0.053382
+   },
+   "confidence": 0.699407
+  },
+  "zh-ev-0003": {
+   "type": "choice",
+   "choice": "有权",
+   "probabilities": {
+    "无权": 0.056617,
+    "有权": 0.943383
+   },
+   "confidence": 0.686133
+  },
+  "zh-ev-0004": {
+   "type": "choice",
+   "choice": "可以认定",
+   "probabilities": {
+    "不可认定": 0.422188,
+    "可以认定": 0.577812
+   },
+   "confidence": 0.017541
+  },
+  "zh-ev-0005": {
+   "type": "choice",
+   "choice": "足以支持",
+   "probabilities": {
+    "不足以支持": 0.155631,
+    "足以支持": 0.844369
+   },
+   "confidence": 0.376246
+  },
+  "zh-ev-0006": {
+   "type": "choice",
+   "choice": "被支持",
+   "probabilities": {
+    "不被支持": 0.222184,
+    "被支持": 0.777816
+   },
+   "confidence": 0.235865
+  },
+  "zh-ev-0007": {
+   "type": "choice",
+   "choice": "方案乙",
+   "probabilities": {
+    "方案乙": 0.817574,
+    "方案甲": 0.182426
+   },
+   "confidence": 0.314644
+  },
+  "zh-ev-0008": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.021572,
+    "支持": 0.978428
+   },
+   "confidence": 0.849822
+  },
+  "zh-ev-0009": {
+   "type": "choice",
+   "choice": "不能得出",
+   "probabilities": {
+    "不能得出": 0.85211,
+    "能得出": 0.14789
+   },
+   "confidence": 0.395465
+  },
+  "zh-ev-0010": {
+   "type": "choice",
+   "choice": "候选人 A",
+   "probabilities": {
+    "候选人 A": 0.984094,
+    "候选人 B": 0.015906
+   },
+   "confidence": 0.882209
+  },
+  "zh-ev-0011": {
+   "type": "choice",
+   "choice": "是",
+   "probabilities": {
+    "否": 0.003821,
+    "是": 0.996179
+   },
+   "confidence": 0.963808
+  },
+  "zh-ev-0012": {
+   "type": "choice",
+   "choice": "违规",
+   "probabilities": {
+    "合规": 0.016898,
+    "违规": 0.983102
+   },
+   "confidence": 0.87635
+  },
+  "zh-ev-0013": {
+   "type": "choice",
+   "choice": "员工乙",
+   "probabilities": {
+    "员工乙": 0.798187,
+    "员工甲": 0.201813
+   },
+   "confidence": 0.274461
+  },
+  "zh-ev-0014": {
+   "type": "choice",
+   "choice": "快速通道",
+   "probabilities": {
+    "常规通道": 0.125983,
+    "快速通道": 0.874017
+   },
+   "confidence": 0.453682
+  },
+  "zh-ev-0015": {
+   "type": "choice",
+   "choice": "在保修范围",
+   "probabilities": {
+    "不在保修范围": 0.019099,
+    "在保修范围": 0.980901
+   },
+   "confidence": 0.863649
+  },
+  "zh-ev-0016": {
+   "type": "choice",
+   "choice": "L3",
+   "probabilities": {
+    "L2": 0.005905,
+    "L3": 0.994095
+   },
+   "confidence": 0.947786
+  },
+  "zh-ev-0017": {
+   "type": "choice",
+   "choice": "在期内",
+   "probabilities": {
+    "在期内": 0.679153,
+    "已过期": 0.320847
+   },
+   "confidence": 0.0947
+  },
+  "zh-ev-0018": {
+   "type": "choice",
+   "choice": "仍锁定",
+   "probabilities": {
+    "仍锁定": 0.731249,
+    "已解锁": 0.268751
+   },
+   "confidence": 0.160333
+  },
+  "zh-ev-0019": {
+   "type": "choice",
+   "choice": "拆分为多张并备案",
+   "probabilities": {
+    "单张开具": 0.002468,
+    "拆分为多张并备案": 0.997532
+   },
+   "confidence": 0.975065
+  },
+  "zh-ev-0020": {
+   "type": "choice",
+   "choice": "可以直接单一来源",
+   "probabilities": {
+    "可以直接单一来源": 0.970763,
+    "需先比价": 0.029237
+   },
+   "confidence": 0.809449
+  },
+  "zh-ev-0021": {
+   "type": "choice",
+   "choice": "违规",
+   "probabilities": {
+    "合规": 0.022951,
+    "违规": 0.977049
+   },
+   "confidence": 0.842297
+  },
+  "zh-ev-0022": {
+   "type": "score",
+   "score": 0.585635,
+   "legend": {
+    "0": "不足 1000 分",
+    "1": "1000 分至 2000 分（含）",
+    "2": "超过 2000 分"
+   },
+   "probabilities": {
+    "0": 0.45142,
+    "1": 0.5115249999999999,
+    "2": 0.037055
+   },
+   "confidence": 0.249913
+  },
+  "zh-ev-0023": {
+   "type": "choice",
+   "choice": "方案甲",
+   "probabilities": {
+    "方案丙": 0.021327,
+    "方案乙": 0.010074,
+    "方案甲": 0.968599
+   },
+   "confidence": 0.855015
+  },
+  "zh-ev-0024": {
+   "type": "choice",
+   "choice": "乙",
+   "probabilities": {
+    "丙": 0.012086,
+    "乙": 0.904022,
+    "甲": 0.083892
+   },
+   "confidence": 0.679151
+  },
+  "zh-ev-0025": {
+   "type": "choice",
+   "choice": "乙",
+   "probabilities": {
+    "丙": 0.053306,
+    "乙": 0.8338450000000001,
+    "甲": 0.112849
+   },
+   "confidence": 0.49573
+  },
+  "zh-ev-0026": {
+   "type": "choice",
+   "choice": "甲",
+   "probabilities": {
+    "丙": 0.010887,
+    "乙": 0.007483,
+    "甲": 0.98163
+   },
+   "confidence": 0.905297
+  },
+  "zh-ev-0027": {
+   "type": "choice",
+   "choice": "甲",
+   "probabilities": {
+    "丙": 0.022778,
+    "乙": 0.00541,
+    "甲": 0.971812
+   },
+   "confidence": 0.870591
+  },
+  "zh-ev-0028": {
+   "type": "choice",
+   "choice": "乙",
+   "probabilities": {
+    "丙": 0.016883,
+    "乙": 0.764177,
+    "甲": 0.21894
+   },
+   "confidence": 0.447487
+  },
+  "zh-ev-0029": {
+   "type": "choice",
+   "choice": "乙",
+   "probabilities": {
+    "丙": 0.014116,
+    "乙": 0.9334370000000001,
+    "甲": 0.052447
+   },
+   "confidence": 0.745999
+  },
+  "zh-ev-0030": {
+   "type": "choice",
+   "choice": "甲",
+   "probabilities": {
+    "丙": 0.030344,
+    "乙": 0.023632,
+    "甲": 0.9460240000000001
+   },
+   "confidence": 0.775121
+  },
+  "zh-ev-0031": {
+   "type": "choice",
+   "choice": "乙",
+   "probabilities": {
+    "丙": 0.028477,
+    "乙": 0.943046,
+    "甲": 0.028477
+   },
+   "confidence": 0.765176
+  },
+  "zh-ev-0032": {
+   "type": "choice",
+   "choice": "丙",
+   "probabilities": {
+    "丙": 0.610438,
+    "乙": 0.082614,
+    "甲": 0.306948
+   },
+   "confidence": 0.208244
+  },
+  "zh-ev-0033": {
+   "type": "noul",
+   "noul": 0.936333
+  },
+  "zh-ev-0034": {
+   "type": "noul",
+   "noul": 0.001596
+  },
+  "zh-ev-0035": {
+   "type": "noul",
+   "noul": 0.962724
+  },
+  "zh-ev-0036": {
+   "type": "choice",
+   "choice": "争议解决方式",
+   "probabilities": {
+    "争议解决方式": 0.99683,
+    "违约责任": 0.00317
+   },
+   "confidence": 0.969119
+  },
+  "zh-ev-0037": {
+   "type": "noul",
+   "noul": 0.407201
+  },
+  "zh-ev-0038": {
+   "type": "noul",
+   "noul": 0.00247
+  },
+  "zh-ev-0039": {
+   "type": "choice",
+   "choice": "报价有效期",
+   "probabilities": {
+    "报价有效期": 0.77727,
+    "报价金额": 0.22273
+   },
+   "confidence": 0.234879
+  },
+  "zh-ev-0040": {
+   "type": "score",
+   "score": 0.995113,
+   "legend": {
+    "0": "基本完备",
+    "1": "缺关键对比",
+    "2": "几乎不可评"
+   },
+   "probabilities": {
+    "0": 0.028583,
+    "1": 0.947721,
+    "2": 0.023696
+   },
+   "confidence": 0.780468
+  },
+  "zh-ev-0041": {
+   "type": "noul",
+   "noul": 0.852083
+  },
+  "zh-ev-0042": {
+   "type": "choice",
+   "choice": "P95 延迟",
+   "probabilities": {
+    "P95 延迟": 0.943433,
+    "功能清单": 0.056567
+   },
+   "confidence": 0.686336
+  },
+  "zh-ev-0043": {
+   "type": "noul",
+   "noul": 0.835406
+  },
+  "zh-ev-0044": {
+   "type": "noul",
+   "noul": 0.06737
+  },
+  "zh-ev-0045": {
+   "type": "choice",
+   "choice": "甲",
+   "probabilities": {
+    "丙": 0.008533,
+    "乙": 0.00277,
+    "甲": 0.988697
+   },
+   "confidence": 0.937921
+  },
+  "zh-ev-0046": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.035129,
+    "支持": 0.964871
+   },
+   "confidence": 0.780505
+  },
+  "zh-ev-0047": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.334589,
+    "支持": 0.665411
+   },
+   "confidence": 0.080454
+  },
+  "zh-ev-0048": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.919643,
+    "支持": 0.080357
+   },
+   "confidence": 0.596564
+  },
+  "zh-ev-0049": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.056597,
+    "支持": 0.943403
+   },
+   "confidence": 0.686215
+  },
+  "zh-ev-0050": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.053348,
+    "支持": 0.946652
+   },
+   "confidence": 0.699548
+  },
+  "zh-ev-0051": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.939959,
+    "支持": 0.060041
+   },
+   "confidence": 0.672392
+  },
+  "zh-ev-0052": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.071513,
+    "支持": 0.928487
+   },
+   "confidence": 0.628455
+  },
+  "zh-ev-0053": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.979681,
+    "支持": 0.020319
+   },
+   "confidence": 0.856772
+  },
+  "zh-ev-0054": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.010979,
+    "支持": 0.989021
+   },
+   "confidence": 0.912784
+  },
+  "zh-ev-0055": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.943348,
+    "支持": 0.056652
+   },
+   "confidence": 0.685991
+  },
+  "zh-ev-0056": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.060025,
+    "支持": 0.939975
+   },
+   "confidence": 0.672456
+  },
+  "zh-ev-0057": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.024423,
+    "支持": 0.975577
+   },
+   "confidence": 0.834399
+  },
+  "zh-ev-0058": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.334589,
+    "支持": 0.665411
+   },
+   "confidence": 0.080454
+  },
+  "zh-ev-0059": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.012427,
+    "支持": 0.987573
+   },
+   "confidence": 0.903516
+  },
+  "zh-ev-0060": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.960409,
+    "支持": 0.039591
+   },
+   "confidence": 0.759586
+  },
+  "zh-ev-0061": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.031086,
+    "支持": 0.968914
+   },
+   "confidence": 0.800191
+  },
+  "zh-ev-0062": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.044642,
+    "支持": 0.955358
+   },
+   "confidence": 0.736815
+  },
+  "zh-ev-0063": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.140336,
+    "支持": 0.859664
+   },
+   "confidence": 0.414882
+  },
+  "zh-ev-0064": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.106528,
+    "支持": 0.893472
+   },
+   "confidence": 0.510646
+  },
+  "zh-ev-0065": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.071591,
+    "支持": 0.928409
+   },
+   "confidence": 0.628167
+  },
+  "zh-ev-0066": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.826712,
+    "支持": 0.173288
+   },
+   "confidence": 0.334829
+  },
+  "zh-ev-0067": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.012418,
+    "支持": 0.987582
+   },
+   "confidence": 0.903573
+  },
+  "zh-ev-0068": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.808366,
+    "支持": 0.191634
+   },
+   "confidence": 0.295123
+  },
+  "zh-ev-0069": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.140155,
+    "支持": 0.859845
+   },
+   "confidence": 0.415355
+  },
+  "zh-ev-0070": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.348344,
+    "支持": 0.651656
+   },
+   "confidence": 0.06742
+  },
+  "zh-ev-0071": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.008049,
+    "支持": 0.991951
+   },
+   "confidence": 0.932438
+  },
+  "zh-ev-0072": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.946652,
+    "支持": 0.053348
+   },
+   "confidence": 0.699548
+  },
+  "zh-ev-0073": {
+   "type": "score",
+   "score": 0.706679,
+   "legend": {
+    "0": "不足 15 万元",
+    "1": "15 万元至 25 万元（含）",
+    "2": "超过 25 万元"
+   },
+   "probabilities": {
+    "0": 0.422034,
+    "1": 0.449253,
+    "2": 0.128713
+   },
+   "confidence": 0.101195
+  },
+  "zh-ev-0074": {
+   "type": "score",
+   "score": 1.0,
+   "legend": {
+    "0": "不足 5%",
+    "1": "5% 至 10%（含）",
+    "2": "超过 10%"
+   },
+   "probabilities": {
+    "0": 0.340204,
+    "1": 0.319592,
+    "2": 0.340204
+   },
+   "confidence": 0.000389
+  },
+  "zh-ev-0075": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.191933,
+    "支持": 0.808067
+   },
+   "confidence": 0.294502
+  },
+  "zh-ev-0076": {
+   "type": "score",
+   "score": 0.952658,
+   "legend": {
+    "0": "不足 3000 分",
+    "1": "3000 分至 4000 分（含）",
+    "2": "超过 4000 分"
+   },
+   "probabilities": {
+    "0": 0.214023,
+    "1": 0.6192960000000001,
+    "2": 0.166681
+   },
+   "confidence": 0.157719
+  },
+  "zh-ev-0077": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.037273,
+    "支持": 0.962727
+   },
+   "confidence": 0.770354
+  },
+  "zh-ev-0078": {
+   "type": "score",
+   "score": 0.898067,
+   "legend": {
+    "0": "不足 20 小时",
+    "1": "20 小时至 28 小时（含）",
+    "2": "超过 28 小时"
+   },
+   "probabilities": {
+    "0": 0.259063,
+    "1": 0.583807,
+    "2": 0.15713
+   },
+   "confidence": 0.130807
+  },
+  "zh-ev-0079": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.407333,
+    "支持": 0.592667
+   },
+   "confidence": 0.024921
+  },
+  "zh-ev-0080": {
+   "type": "score",
+   "score": 1.045524,
+   "legend": {
+    "0": "不足 900 元",
+    "1": "900 元至 1200 元（含）",
+    "2": "超过 1200 元"
+   },
+   "probabilities": {
+    "0": 0.160279,
+    "1": 0.633918,
+    "2": 0.205803
+   },
+   "confidence": 0.173732
+  },
+  "zh-ev-0081": {
+   "type": "score",
+   "score": 1.689628,
+   "legend": {
+    "0": "不足 3.0 元",
+    "1": "3.0 元至 3.6 元（含）",
+    "2": "3.6 元至 4.2 元（含）",
+    "3": "超过 4.2 元"
+   },
+   "probabilities": {
+    "0": 0.119153,
+    "1": 0.268515,
+    "2": 0.415883,
+    "3": 0.196449
+   },
+   "confidence": 0.068666
+  },
+  "zh-ev-0082": {
+   "type": "score",
+   "score": 0.321196,
+   "legend": {
+    "0": "不足 600 元",
+    "1": "600 元至 1000 元（含）",
+    "2": "超过 1000 元"
+   },
+   "probabilities": {
+    "0": 0.722174,
+    "1": 0.234456,
+    "2": 0.04337
+   },
+   "confidence": 0.352611
+  },
+  "zh-ev-0083": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.016888,
+    "支持": 0.983112
+   },
+   "confidence": 0.876409
+  },
+  "zh-ev-0084": {
+   "type": "score",
+   "score": 0.912049,
+   "legend": {
+    "0": "不足 20 元",
+    "1": "20 元至 40 元（含）",
+    "2": "超过 40 元"
+   },
+   "probabilities": {
+    "0": 0.281252,
+    "1": 0.525447,
+    "2": 0.193301
+   },
+   "confidence": 0.078302
+  },
+  "zh-ev-0085": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.692642,
+    "支持": 0.307358
+   },
+   "confidence": 0.1099
+  },
+  "zh-ev-0086": {
+   "type": "score",
+   "score": 0.479303,
+   "legend": {
+    "0": "不足 350 元",
+    "1": "350 元至 420 元（含）",
+    "2": "超过 420 元"
+   },
+   "probabilities": {
+    "0": 0.622281,
+    "1": 0.276135,
+    "2": 0.101584
+   },
+   "confidence": 0.1964
+  },
+  "zh-ev-0087": {
+   "type": "score",
+   "score": 0.861207,
+   "legend": {
+    "0": "不足 240 元",
+    "1": "240 元至 300 元（含）",
+    "2": "超过 300 元"
+   },
+   "probabilities": {
+    "0": 0.249515,
+    "1": 0.639763,
+    "2": 0.110722
+   },
+   "confidence": 0.202803
+  },
+  "zh-ev-0088": {
+   "type": "score",
+   "score": 1.493419,
+   "legend": {
+    "0": "不足 8000 元",
+    "1": "8000 元至 1.2 万元（含）",
+    "2": "超过 1.2 万元"
+   },
+   "probabilities": {
+    "0": 0.103519,
+    "1": 0.299543,
+    "2": 0.596938
+   },
+   "confidence": 0.177267
+  },
+  "zh-ev-0089": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.651355,
+    "支持": 0.348645
+   },
+   "confidence": 0.067148
+  },
+  "zh-ev-0090": {
+   "type": "score",
+   "score": 0.541805,
+   "legend": {
+    "0": "不足 30 件",
+    "1": "30 件至 60 件（含）",
+    "2": "超过 60 件"
+   },
+   "probabilities": {
+    "0": 0.5897969999999999,
+    "1": 0.278601,
+    "2": 0.131602
+   },
+   "confidence": 0.149537
+  },
+  "zh-ev-0091": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.679179,
+    "支持": 0.320821
+   },
+   "confidence": 0.094728
+  },
+  "zh-ev-0092": {
+   "type": "score",
+   "score": 1.942621,
+   "legend": {
+    "0": "0 件",
+    "1": "1 件",
+    "2": "2 件及以上"
+   },
+   "probabilities": {
+    "0": 0.018724,
+    "1": 0.019931,
+    "2": 0.961345
+   },
+   "confidence": 0.826672
+  },
+  "zh-ev-0093": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.718594,
+    "支持": 0.281406
+   },
+   "confidence": 0.14264
+  },
+  "zh-ev-0094": {
+   "type": "score",
+   "score": 1.577172,
+   "legend": {
+    "0": "不足 1.5 万元",
+    "1": "1.5 万元至 2.2 万元（含）",
+    "2": "超过 2.2 万元"
+   },
+   "probabilities": {
+    "0": 0.112602,
+    "1": 0.197624,
+    "2": 0.689774
+   },
+   "confidence": 0.251317
+  },
+  "zh-ev-0095": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.039574,
+    "支持": 0.960426
+   },
+   "confidence": 0.759664
+  },
+  "zh-ev-0096": {
+   "type": "score",
+   "score": 0.705297,
+   "legend": {
+    "0": "不足 2 天",
+    "1": "2 天至 4 天（含）",
+    "2": "超过 4 天"
+   },
+   "probabilities": {
+    "0": 0.5298020000000001,
+    "1": 0.235099,
+    "2": 0.235099
+   },
+   "confidence": 0.074026
+  },
+  "zh-ev-0097": {
+   "type": "choice",
+   "choice": "不支持",
+   "probabilities": {
+    "不支持": 0.546738,
+    "支持": 0.453262
+   },
+   "confidence": 0.006312
+  },
+  "zh-ev-0098": {
+   "type": "score",
+   "score": 1.404892,
+   "legend": {
+    "0": "不足 50 元",
+    "1": "50 元至 100 元（含）",
+    "2": "超过 100 元"
+   },
+   "probabilities": {
+    "0": 0.126128,
+    "1": 0.342852,
+    "2": 0.53102
+   },
+   "confidence": 0.12229
+  },
+  "zh-ev-0099": {
+   "type": "choice",
+   "choice": "支持",
+   "probabilities": {
+    "不支持": 0.334589,
+    "支持": 0.665411
+   },
+   "confidence": 0.080454
+  },
+  "zh-ev-0100": {
+   "type": "choice",
+   "choice": "甲公司",
+   "probabilities": {
+    "丙公司": 0.052953,
+    "乙公司": 0.006732,
+    "甲公司": 0.940315
+   },
+   "confidence": 0.775055
+  },
+  "zh-ev-0101": {
+   "type": "choice",
+   "choice": "乙承运商",
+   "probabilities": {
+    "丙承运商": 0.03941,
+    "乙承运商": 0.9564360000000001,
+    "甲承运商": 0.004154
+   },
+   "confidence": 0.824486
+  },
+  "zh-ev-0102": {
+   "type": "choice",
+   "choice": "方案一",
+   "probabilities": {
+    "方案一": 0.975196,
+    "方案三": 0.021506,
+    "方案二": 0.003298
+   },
+   "confidence": 0.885391
+  },
+  "zh-ev-0103": {
+   "type": "choice",
+   "choice": "候选一号楼",
+   "probabilities": {
+    "候选一号楼": 0.8732380000000001,
+    "候选三号楼": 0.067337,
+    "候选二号楼": 0.059425
+   },
+   "confidence": 0.574188
+  },
+  "zh-ev-0104": {
+   "type": "choice",
+   "choice": "乙讲师",
+   "probabilities": {
+    "丙讲师": 0.022796,
+    "乙讲师": 0.9693259999999999,
+    "甲讲师": 0.007878
+   },
+   "confidence": 0.85932
+  },
+  "zh-ev-0105": {
+   "type": "choice",
+   "choice": "丙某",
+   "probabilities": {
+    "丙某": 0.9780979999999999,
+    "乙某": 0.00795,
+    "甲某": 0.013952
+   },
+   "confidence": 0.891044
+  },
+  "zh-ev-0106": {
+   "type": "choice",
+   "choice": "甲厂",
+   "probabilities": {
+    "丙厂": 0.099601,
+    "乙厂": 0.012663,
+    "甲厂": 0.887736
+   },
+   "confidence": 0.6443
+  },
+  "zh-ev-0107": {
+   "type": "choice",
+   "choice": "乙所",
+   "probabilities": {
+    "丙所": 0.025578,
+    "乙所": 0.96234,
+    "甲所": 0.012082
+   },
+   "confidence": 0.832456
+  },
+  "zh-ev-0108": {
+   "type": "choice",
+   "choice": "丙翻译社",
+   "probabilities": {
+    "丙翻译社": 0.9838570000000001,
+    "乙翻译社": 0.004543,
+    "甲翻译社": 0.0116
+   },
+   "confidence": 0.916061
+  },
+  "zh-ev-0109": {
+   "type": "choice",
+   "choice": "甲方",
+   "probabilities": {
+    "丙方": 0.038952,
+    "乙方": 0.015254,
+    "甲方": 0.945794
+   },
+   "confidence": 0.778874
+  },
+  "zh-ev-0110": {
+   "type": "choice",
+   "choice": "乙公司",
+   "probabilities": {
+    "丙公司": 0.046705,
+    "乙公司": 0.940725,
+    "甲公司": 0.01257
+   },
+   "confidence": 0.767348
+  },
+  "zh-ev-0111": {
+   "type": "choice",
+   "choice": "丙场地",
+   "probabilities": {
+    "丙场地": 0.898867,
+    "乙场地": 0.017525,
+    "甲场地": 0.083608
+   },
+   "confidence": 0.659394
+  },
+  "zh-ev-0112": {
+   "type": "choice",
+   "choice": "甲云",
+   "probabilities": {
+    "丙云": 0.027294,
+    "乙云": 0.008324,
+    "甲云": 0.964382
+   },
+   "confidence": 0.842415
+  },
+  "zh-ev-0113": {
+   "type": "choice",
+   "choice": "乙方",
+   "probabilities": {
+    "丙方": 0.013605,
+    "乙方": 0.953759,
+    "甲方": 0.032636
+   },
+   "confidence": 0.804015
+  },
+  "zh-ev-0114": {
+   "type": "choice",
+   "choice": "丙供应商",
+   "probabilities": {
+    "丙供应商": 0.9331829999999999,
+    "乙供应商": 0.01417,
+    "甲供应商": 0.052647
+   },
+   "confidence": 0.745269
+  },
+  "zh-ev-0115": {
+   "type": "choice",
+   "choice": "候选人甲",
+   "probabilities": {
+    "候选人丙": 0.013189,
+    "候选人乙": 0.001083,
+    "候选人甲": 0.985728
+   },
+   "confidence": 0.928408
+  },
+  "zh-ev-0116": {
+   "type": "choice",
+   "choice": "乙渠道",
+   "probabilities": {
+    "丙渠道": 0.010266,
+    "乙渠道": 0.985179,
+    "甲渠道": 0.004555
+   },
+   "confidence": 0.921468
+  },
+  "zh-ev-0117": {
+   "type": "choice",
+   "choice": "方案二",
+   "probabilities": {
+    "方案一": 0.023495,
+    "方案三": 0.092925,
+    "方案二": 0.88358
+   },
+   "confidence": 0.619266
+  },
+  "zh-ev-0118": {
+   "type": "choice",
+   "choice": "甲教室",
+   "probabilities": {
+    "丙教室": 0.055546,
+    "乙教室": 0.01694,
+    "甲教室": 0.927514
+   },
+   "confidence": 0.727444
+  },
+  "zh-ev-0119": {
+   "type": "choice",
+   "choice": "乙承运商",
+   "probabilities": {
+    "丙承运商": 0.025826,
+    "乙承运商": 0.970679,
+    "甲承运商": 0.003495
+   },
+   "confidence": 0.869758
+  },
+  "zh-ev-0120": {
+   "type": "choice",
+   "choice": "丙品牌",
+   "probabilities": {
+    "丙品牌": 0.957182,
+    "乙品牌": 0.012049,
+    "甲品牌": 0.030769
+   },
+   "confidence": 0.815909
+  },
+  "zh-ev-0121": {
+   "type": "noul",
+   "noul": 0.899121
+  },
+  "zh-ev-0122": {
+   "type": "noul",
+   "noul": 0.050205
+  },
+  "zh-ev-0123": {
+   "type": "noul",
+   "noul": 0.987568
+  },
+  "zh-ev-0124": {
+   "type": "noul",
+   "noul": 0.084867
+  },
+  "zh-ev-0125": {
+   "type": "noul",
+   "noul": 0.990303
+  },
+  "zh-ev-0126": {
+   "type": "noul",
+   "noul": 0.132575
+  },
+  "zh-ev-0127": {
+   "type": "noul",
+   "noul": 0.754891
+  },
+  "zh-ev-0128": {
+   "type": "noul",
+   "noul": 0.348645
+  },
+  "zh-ev-0129": {
+   "type": "noul",
+   "noul": 0.777242
+  },
+  "zh-ev-0130": {
+   "type": "noul",
+   "noul": 0.245101
+  },
+  "zh-ev-0131": {
+   "type": "noul",
+   "noul": 0.65128
+  },
+  "zh-ev-0132": {
+   "type": "noul",
+   "noul": 0.731319
+  },
+  "zh-ev-0133": {
+   "type": "noul",
+   "noul": 0.562148
+  },
+  "zh-ev-0134": {
+   "type": "noul",
+   "noul": 0.067473
+  },
+  "zh-ev-0135": {
+   "type": "noul",
+   "noul": 0.893386
+  },
+  "zh-ev-0136": {
+   "type": "noul",
+   "noul": 0.075781
+  },
+  "zh-ev-0137": {
+   "type": "noul",
+   "noul": 0.730969
+  },
+  "zh-ev-0138": {
+   "type": "noul",
+   "noul": 0.406993
+  },
+  "zh-ev-0139": {
+   "type": "noul",
+   "noul": 0.83569
+  },
+  "zh-ev-0140": {
+   "type": "noul",
+   "noul": 0.74356
+  },
+  "zh-ev-0141": {
+   "type": "noul",
+   "noul": 0.561979
+  },
+  "zh-ev-0142": {
+   "type": "noul",
+   "noul": 0.125786
+  },
+  "zh-ev-0143": {
+   "type": "noul",
+   "noul": 0.754872
+  },
+  "zh-ev-0144": {
+   "type": "noul",
+   "noul": 0.407297
+  },
+  "zh-ev-0145": {
+   "type": "choice",
+   "choice": "更换件旧件检测报告",
+   "probabilities": {
+    "客户签收单": 0.017696,
+    "报修时间记录": 0.014671,
+    "更换件旧件检测报告": 0.967633
+   },
+   "confidence": 0.849656
+  },
+  "zh-ev-0146": {
+   "type": "choice",
+   "choice": "里程碑计划原版",
+   "probabilities": {
+    "变更单评审结论": 0.109248,
+    "周报提交时间": 0.262073,
+    "里程碑计划原版": 0.628679
+   },
+   "confidence": 0.194773
+  },
+  "zh-ev-0147": {
+   "type": "choice",
+   "choice": "分项评分理由",
+   "probabilities": {
+    "分项评分理由": 0.8959590000000001,
+    "开标记录": 0.03928,
+    "招标文件评分办法": 0.064761
+   },
+   "confidence": 0.633323
+  },
+  "zh-ev-0148": {
+   "type": "choice",
+   "choice": "征信报告",
+   "probabilities": {
+    "审批人风险评审记录": 0.059708,
+    "征信报告": 0.4703,
+    "收入证明": 0.469992
+   },
+   "confidence": 0.200879
+  },
+  "zh-ev-0149": {
+   "type": "score",
+   "score": 0.443735,
+   "legend": {
+    "0": "不足 60%",
+    "1": "60% 至 90%（含）",
+    "2": "超过 90%"
+   },
+   "probabilities": {
+    "0": 0.621802,
+    "1": 0.312661,
+    "2": 0.065537
+   },
+   "confidence": 0.237632
+  },
+  "zh-ev-0150": {
+   "type": "score",
+   "score": 0.914531,
+   "legend": {
+    "0": "不足 60%",
+    "1": "60% 至 90%（含）",
+    "2": "超过 90%"
+   },
+   "probabilities": {
+    "0": 0.146567,
+    "1": 0.792335,
+    "2": 0.061098
+   },
+   "confidence": 0.420481
+  }
+ },
+ "usage": {
+  "input_tokens": 15750,
+  "output_tokens": 150
+ }
+}
