@@ -2,6 +2,15 @@
   "schema": "jev-eval/manifest@1",
   "sets": [
     {
+      "path": "eval/items/en-evidence-v1.jsonl",
+      "sha256": "c8a59e511d4520351c3b04b8868504b30b8bb9deeaa196de7b6b17f733ee1c6a",
+      "n_items": 150,
+      "language": "en",
+      "status": "frozen",
+      "target_n_items": 150,
+      "note": "M3-1：`zh-evidence-v1.jsonl` 的英文对照集，id `en-ev-0001..0150` 与中文集一一对应（配对靠数字后缀）。用途只有一个——把「模型在中文上更差」与「这批题的中文措辞/字母槽更难」分开。产出方式与铁律（含标识符原样保留那条，以及为此回改的 6 条）写在文件头部注释里。**结构闸门**：`scripts/check-en-parity.py eval/items/zh-evidence-v1.jsonl eval/items/en-evidence-v1.jsonl` → 150/150 配对、四类 38/38/38/36、题型 98/32/20、槽位 gold 落点逐条一致（A 42/B 43/C 13）、无答案漂移。⚠️ 两点必须一起念：(1) **翻译者偏置**——英文是被评模型自己译的，若英文得分更高，不得据此断言「中文能力弱」，须换第二翻译源复核后才可下结论；(2) 有 1 条（0146）的 criteria 书写序被译者重排，对模型无影响（渲染按码点序分配 A/B/C，槽位一致性已逐条验证），仅使「恒取书写首位」退化基线差 1 条（en 52 / zh 51）。"
+    },
+    {
       "path": "eval/items/zh-evidence-v0.jsonl",
       "sha256": "c0d5678ff2290288d8d500094e42abff3bb17ddc8013cbb1ee6d20503ea8040f",
       "n_items": 45,
