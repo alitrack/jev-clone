@@ -42,13 +42,22 @@ def read_items(path: pathlib.Path) -> list[dict]:
 
 
 def slots_of(item: dict) -> list[str]:
-    """Slot order = code-point sort of the criteria keys — mirrors the renderer."""
+    """Slot order = the order the renderer assigns letters in.
+
+    `choice` — code-point sort of the criteria keys (the contract's criteria is a
+    BTreeMap, so this is what the renderer sees).
+    `score` — the criteria list is already ordered.
+    `noul` — fixed by the contract to `["true", "false"]`: the canonical positive
+    class takes the first letter. NOT code-point order — `"false" < "true"`, so
+    sorting here would hand slot A to `false`. Authority:
+    `crates/jev-eval/src/items.rs:75-80` (`slots_of`) and its test at `:439`.
+    """
     q = item["question"]
     if q["type"] == "choice":
         return sorted(q["criteria"])
     if q["type"] == "score":
         return [str(i) for i in range(len(q["criteria"]))]
-    return ["false", "true"]
+    return ["true", "false"]
 
 
 def gold_key(item: dict) -> str:
@@ -61,6 +70,14 @@ def gold_key(item: dict) -> str:
 
 
 def written_first_slot(item: dict) -> str:
+    """The slot a "always take the first option" strategy would pick.
+
+    `choice` — the key written first in the item file. That is NOT the letter slot
+    (letters follow code-point order), which is exactly what makes this baseline
+    worth measuring separately.
+    `score` / `noul` — there is no written option list in the question, so this falls
+    back to the renderer's first slot (for `noul` that is `true`).
+    """
     q = item["question"]
     if q["type"] == "choice":
         return next(iter(q["criteria"]))  # JSON key order == order written in the file
@@ -115,6 +132,12 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--items", required=True)
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--tag", default="", help="文件名前缀标签（题集名），避免不同题集的基线互相覆盖")
+    ap.add_argument(
+        "--stamp",
+        default="",
+        help="运行时间戳前缀。带上它，同一题集重跑就不会覆盖上一次的预测文件"
+        "（否则旧报告的 predictions_sha256 会对不上，报告再也无法重算）",
+    )
     args = ap.parse_args(argv[1:])
 
     items = read_items(pathlib.Path(args.items))
@@ -122,10 +145,11 @@ def main(argv: list[str]) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     strategies = build(items)
     tag = f"{args.tag}-" if args.tag else ""
+    stamp = f"{args.stamp}-" if args.stamp else ""
 
     print(f"题集 {args.items}（{len(items)} 条）\n")
     for name, rows in strategies.items():
-        path = out_dir / f"deg-{tag}{name}-predictions.jsonl"
+        path = out_dir / f"{stamp}deg-{tag}{name}-predictions.jsonl"
         path.write_text("".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n"
                                 for r in rows), encoding="utf-8")
         # item-side accuracy, so the number can be checked against validate-items.py's

@@ -12,14 +12,17 @@ DATE="$(date -u +%Y%m%dT%H%M%SZ)"
 SHA="$(sha256sum "$ITEMS" | cut -d' ' -f1)"
 # Tag the prediction files with the set, not just the strategy: running this for the English
 # companion set used to overwrite the Chinese baselines' prediction files (same names).
+# And stamp the run id in: re-running the SAME set used to overwrite its own evidence, which
+# silently broke the older reports' `predictions_sha256` (a report must stay re-verifiable —
+# same lesson as run-worker.sh's per-attempt raw archive).
 SET="$(basename "$ITEMS" .jsonl)"
 
 echo "== 生成三条退化策略的预测（无模型、无网络；题集 $SET）=="
-python3 scripts/degenerate-baselines.py --items "$ITEMS" --out-dir "$RUN_DIR" --tag "$SET"
+python3 scripts/degenerate-baselines.py --items "$ITEMS" --out-dir "$RUN_DIR" --tag "$SET" --stamp "$DATE"
 echo
 
 for NAME in slot-a written-first slot-prior; do
-  P="$RUN_DIR/deg-$SET-$NAME-predictions.jsonl"
+  P="$RUN_DIR/$DATE-deg-$SET-$NAME-predictions.jsonl"
   R="$RUN_DIR/$DATE-deg-$SET-$NAME-report.json"
   M="$RUN_DIR/$DATE-deg-$SET-$NAME-report.md"
   echo "== [$NAME] run + verify =="
