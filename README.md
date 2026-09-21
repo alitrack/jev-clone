@@ -147,5 +147,6 @@ against 2.5–5.5× on the tuned direct probe. None of these three numbers is a 
 
 ## License
 
-TBD (private repository). Third-party reference implementations were read for design study only;
+Apache-2.0. The repository is currently private; the license is in place for a potential
+future release. Third-party reference implementations were read for design study only;
 notably `daseinlabs/open-jev` ships no license and its code was **not** copied.
