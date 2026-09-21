@@ -1,0 +1,941 @@
+{
+  "schema": "jev-eval-report/1",
+  "items_file": "eval/items/en-evidence-v1.jsonl",
+  "items_sha256": "c8a59e511d4520351c3b04b8868504b30b8bb9deeaa196de7b6b17f733ee1c6a",
+  "prompt_set_sha256": "8aa53b61f09f6fb0bcd5450d76a531c373090511696a14788a77abff36097b5c",
+  "predictions_file": "eval/runs/20260921T024340Z-en-predictions.jsonl",
+  "predictions_sha256": "29c8108a8f5af23486f5b39b9a5e24288f3add75e2aaa56bdc24fa5ad23538a6",
+  "confidence_bins": 10,
+  "nll_probability_floor": 1e-12,
+  "verify_tolerance": 1e-12,
+  "stratification_note": "Stratified by source and by category. Every metric is reported per stratum; there is deliberately no merged total (AGENTS.md 铁律 7 / specs/M1.md §6). accuracy / balanced_accuracy / nll / brier_* / ece are separate fields and are not collapsed into one score.",
+  "strata": {
+    "by_source": {
+      "authored-en-v1": {
+        "n_items": 150,
+        "categories": [
+          "candidate_selection",
+          "evidence_judgment",
+          "missing_evidence",
+          "rule_application"
+        ],
+        "overall": {
+          "n_items": 150,
+          "n_missing": 0,
+          "n_predicted": 150,
+          "n_scored": 150,
+          "accuracy": 0.7333333333333333,
+          "balanced_accuracy": 0.8580043338089953,
+          "classes_in_gold": [
+            "0",
+            "1",
+            "2",
+            "Agency 丙",
+            "B",
+            "Brand 丙",
+            "Candidate A",
+            "Candidate building 1",
+            "Candidate 丙",
+            "Candidate 乙",
+            "Candidate 甲",
+            "Carrier 乙",
+            "Channel 乙",
+            "Classroom 甲",
+            "Cloud 甲",
+            "Company 乙",
+            "Company 甲",
+            "Employee 乙",
+            "Factory 甲",
+            "Firm 乙",
+            "Instructor 乙",
+            "L3",
+            "Option 一",
+            "Option 乙",
+            "Option 二",
+            "Option 甲",
+            "P95 latency",
+            "Party 乙",
+            "Party 甲",
+            "Person 丙",
+            "Supplier 丙",
+            "Venue 丙",
+            "approver's risk review record",
+            "can single-source directly",
+            "change order review conclusion",
+            "conventional track",
+            "dispute resolution method",
+            "expiration date",
+            "expired",
+            "false",
+            "has the right",
+            "itemized scoring reasons",
+            "no",
+            "non-compliant",
+            "not supported",
+            "split into multiple invoices and register",
+            "still locked",
+            "sufficient to support",
+            "supported",
+            "test report of the old replaced part",
+            "true",
+            "within warranty",
+            "yes"
+          ],
+          "per_class_recall": {
+            "0": 0.6,
+            "1": 0.2,
+            "2": 0.8,
+            "Agency 丙": 1.0,
+            "B": 1.0,
+            "Brand 丙": 1.0,
+            "Candidate A": 1.0,
+            "Candidate building 1": 1.0,
+            "Candidate 丙": 1.0,
+            "Candidate 乙": 1.0,
+            "Candidate 甲": 0.6,
+            "Carrier 乙": 1.0,
+            "Channel 乙": 1.0,
+            "Classroom 甲": 1.0,
+            "Cloud 甲": 1.0,
+            "Company 乙": 1.0,
+            "Company 甲": 1.0,
+            "Employee 乙": 0.0,
+            "Factory 甲": 1.0,
+            "Firm 乙": 1.0,
+            "Instructor 乙": 1.0,
+            "L3": 1.0,
+            "Option 一": 1.0,
+            "Option 乙": 1.0,
+            "Option 二": 1.0,
+            "Option 甲": 1.0,
+            "P95 latency": 1.0,
+            "Party 乙": 1.0,
+            "Party 甲": 1.0,
+            "Person 丙": 1.0,
+            "Supplier 丙": 1.0,
+            "Venue 丙": 1.0,
+            "approver's risk review record": 0.0,
+            "can single-source directly": 1.0,
+            "change order review conclusion": 1.0,
+            "conventional track": 1.0,
+            "dispute resolution method": 1.0,
+            "expiration date": 1.0,
+            "expired": 0.0,
+            "false": 0.5333333333333333,
+            "has the right": 1.0,
+            "itemized scoring reasons": 1.0,
+            "no": 1.0,
+            "non-compliant": 1.0,
+            "not supported": 0.6666666666666666,
+            "split into multiple invoices and register": 1.0,
+            "still locked": 1.0,
+            "sufficient to support": 0.0,
+            "supported": 0.8095238095238095,
+            "test report of the old replaced part": 1.0,
+            "true": 0.7647058823529411,
+            "within warranty": 1.0,
+            "yes": 0.5
+          },
+          "nll": 0.5738677579193889,
+          "brier_multiclass": 0.36221901328886663,
+          "n_binary": 130,
+          "brier_binary": 0.15583241779537693,
+          "ece": 0.050860346666666764,
+          "reliability": [
+            {
+              "lower": 0.3,
+              "upper": 0.4,
+              "n": 2,
+              "mean_confidence": 0.3686725,
+              "accuracy": 1.0
+            },
+            {
+              "lower": 0.4,
+              "upper": 0.5,
+              "n": 10,
+              "mean_confidence": 0.4494853,
+              "accuracy": 0.5
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6,
+              "n": 28,
+              "mean_confidence": 0.5489868571428571,
+              "accuracy": 0.5
+            },
+            {
+              "lower": 0.6,
+              "upper": 0.7,
+              "n": 18,
+              "mean_confidence": 0.6415754444444444,
+              "accuracy": 0.5555555555555556
+            },
+            {
+              "lower": 0.7,
+              "upper": 0.8,
+              "n": 34,
+              "mean_confidence": 0.7465319999999998,
+              "accuracy": 0.7941176470588235
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "n": 30,
+              "mean_confidence": 0.8402737333333332,
+              "accuracy": 0.8666666666666667
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "n": 28,
+              "mean_confidence": 0.9475557142857145,
+              "accuracy": 0.9285714285714286
+            }
+          ]
+        },
+        "by_category": {
+          "candidate_selection": {
+            "n_items": 38,
+            "n_missing": 0,
+            "n_predicted": 38,
+            "n_scored": 38,
+            "accuracy": 0.9210526315789473,
+            "balanced_accuracy": 0.9717948717948719,
+            "classes_in_gold": [
+              "Agency 丙",
+              "B",
+              "Brand 丙",
+              "Candidate building 1",
+              "Candidate 丙",
+              "Candidate 乙",
+              "Candidate 甲",
+              "Carrier 乙",
+              "Channel 乙",
+              "Classroom 甲",
+              "Cloud 甲",
+              "Company 乙",
+              "Company 甲",
+              "Factory 甲",
+              "Firm 乙",
+              "Instructor 乙",
+              "Option 一",
+              "Option 二",
+              "Option 甲",
+              "Party 乙",
+              "Party 甲",
+              "Person 丙",
+              "Supplier 丙",
+              "Venue 丙",
+              "false",
+              "true"
+            ],
+            "per_class_recall": {
+              "Agency 丙": 1.0,
+              "B": 1.0,
+              "Brand 丙": 1.0,
+              "Candidate building 1": 1.0,
+              "Candidate 丙": 1.0,
+              "Candidate 乙": 1.0,
+              "Candidate 甲": 0.6,
+              "Carrier 乙": 1.0,
+              "Channel 乙": 1.0,
+              "Classroom 甲": 1.0,
+              "Cloud 甲": 1.0,
+              "Company 乙": 1.0,
+              "Company 甲": 1.0,
+              "Factory 甲": 1.0,
+              "Firm 乙": 1.0,
+              "Instructor 乙": 1.0,
+              "Option 一": 1.0,
+              "Option 二": 1.0,
+              "Option 甲": 1.0,
+              "Party 乙": 1.0,
+              "Party 甲": 1.0,
+              "Person 丙": 1.0,
+              "Supplier 丙": 1.0,
+              "Venue 丙": 1.0,
+              "false": 1.0,
+              "true": 0.6666666666666666
+            },
+            "nll": 0.3251982861512038,
+            "brier_multiclass": 0.16933831069742106,
+            "n_binary": 38,
+            "brier_binary": 0.09193686684460527,
+            "ece": 0.15401036842105262,
+            "reliability": [
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 1,
+                "mean_confidence": 0.481535,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 3,
+                "mean_confidence": 0.5642976666666667,
+                "accuracy": 0.6666666666666666
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 7,
+                "mean_confidence": 0.6476681428571428,
+                "accuracy": 0.7142857142857143
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 11,
+                "mean_confidence": 0.751107090909091,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 8,
+                "mean_confidence": 0.84262725,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 8,
+                "mean_confidence": 0.929538125,
+                "accuracy": 1.0
+              }
+            ]
+          },
+          "evidence_judgment": {
+            "n_items": 38,
+            "n_missing": 0,
+            "n_predicted": 38,
+            "n_scored": 38,
+            "accuracy": 0.7105263157894737,
+            "balanced_accuracy": 0.7401041666666667,
+            "classes_in_gold": [
+              "Candidate A",
+              "Option 乙",
+              "has the right",
+              "no",
+              "not supported",
+              "sufficient to support",
+              "supported",
+              "yes"
+            ],
+            "per_class_recall": {
+              "Candidate A": 1.0,
+              "Option 乙": 1.0,
+              "has the right": 1.0,
+              "no": 1.0,
+              "not supported": 0.6875,
+              "sufficient to support": 0.0,
+              "supported": 0.7333333333333333,
+              "yes": 0.5
+            },
+            "nll": 0.5556324528506545,
+            "brier_multiclass": 0.37221750776721046,
+            "n_binary": 38,
+            "brier_binary": 0.18610875388360523,
+            "ece": 0.12827428947368422,
+            "reliability": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 5,
+                "mean_confidence": 0.5380822000000001,
+                "accuracy": 0.2
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 2,
+                "mean_confidence": 0.6410225,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 12,
+                "mean_confidence": 0.7345534166666666,
+                "accuracy": 0.75
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 7,
+                "mean_confidence": 0.834736142857143,
+                "accuracy": 0.7142857142857143
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 12,
+                "mean_confidence": 0.95312875,
+                "accuracy": 0.8333333333333334
+              }
+            ]
+          },
+          "missing_evidence": {
+            "n_items": 36,
+            "n_missing": 0,
+            "n_predicted": 36,
+            "n_scored": 36,
+            "accuracy": 0.6944444444444444,
+            "balanced_accuracy": 0.8365800865800868,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "P95 latency",
+              "approver's risk review record",
+              "change order review conclusion",
+              "dispute resolution method",
+              "expiration date",
+              "false",
+              "itemized scoring reasons",
+              "test report of the old replaced part",
+              "true"
+            ],
+            "per_class_recall": {
+              "0": 1.0,
+              "1": 1.0,
+              "P95 latency": 1.0,
+              "approver's risk review record": 0.0,
+              "change order review conclusion": 1.0,
+              "dispute resolution method": 1.0,
+              "expiration date": 1.0,
+              "false": 0.4166666666666667,
+              "itemized scoring reasons": 1.0,
+              "test report of the old replaced part": 1.0,
+              "true": 0.7857142857142857
+            },
+            "nll": 0.5518751217991793,
+            "brier_multiclass": 0.37066012214588884,
+            "n_binary": 33,
+            "brier_binary": 0.19022284932109088,
+            "ece": 0.16397508333333335,
+            "reliability": [
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "n": 1,
+                "mean_confidence": 0.359314,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 2,
+                "mean_confidence": 0.453129,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 9,
+                "mean_confidence": 0.5491278888888889,
+                "accuracy": 0.3333333333333333
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 6,
+                "mean_confidence": 0.6397408333333334,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 7,
+                "mean_confidence": 0.7556601428571428,
+                "accuracy": 0.7142857142857143
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 6,
+                "mean_confidence": 0.8394075,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 5,
+                "mean_confidence": 0.9730193999999999,
+                "accuracy": 1.0
+              }
+            ]
+          },
+          "rule_application": {
+            "n_items": 38,
+            "n_missing": 0,
+            "n_predicted": 38,
+            "n_scored": 38,
+            "accuracy": 0.6052631578947368,
+            "balanced_accuracy": 0.7071428571428571,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "2",
+              "Employee 乙",
+              "L3",
+              "can single-source directly",
+              "conventional track",
+              "expired",
+              "non-compliant",
+              "not supported",
+              "split into multiple invoices and register",
+              "still locked",
+              "supported",
+              "within warranty"
+            ],
+            "per_class_recall": {
+              "0": 0.5,
+              "1": 0.0,
+              "2": 0.8,
+              "Employee 乙": 0.0,
+              "L3": 1.0,
+              "can single-source directly": 1.0,
+              "conventional track": 1.0,
+              "expired": 0.0,
+              "non-compliant": 1.0,
+              "not supported": 0.6,
+              "split into multiple invoices and register": 1.0,
+              "still locked": 1.0,
+              "supported": 1.0,
+              "within warranty": 1.0
+            },
+            "nll": 0.8616076637122966,
+            "brier_multiclass": 0.5371043814321578,
+            "n_binary": 21,
+            "brier_binary": 0.16262508086338093,
+            "ece": 0.19441247368421052,
+            "reliability": [
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "n": 1,
+                "mean_confidence": 0.378031,
+                "accuracy": 1.0
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 7,
+                "mean_confidence": 0.44386571428571425,
+                "accuracy": 0.2857142857142857
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 11,
+                "mean_confidence": 0.5496524545454545,
+                "accuracy": 0.7272727272727273
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 3,
+                "mean_confidence": 0.631397,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 4,
+                "mean_confidence": 0.753912,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 9,
+                "mean_confidence": 0.8430662222222223,
+                "accuracy": 0.7777777777777778
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 3,
+                "mean_confidence": 0.9308710000000001,
+                "accuracy": 1.0
+              }
+            ]
+          }
+        }
+      }
+    },
+    "by_category": {
+      "candidate_selection": {
+        "n_items": 38,
+        "n_missing": 0,
+        "n_predicted": 38,
+        "n_scored": 38,
+        "accuracy": 0.9210526315789473,
+        "balanced_accuracy": 0.9717948717948719,
+        "classes_in_gold": [
+          "Agency 丙",
+          "B",
+          "Brand 丙",
+          "Candidate building 1",
+          "Candidate 丙",
+          "Candidate 乙",
+          "Candidate 甲",
+          "Carrier 乙",
+          "Channel 乙",
+          "Classroom 甲",
+          "Cloud 甲",
+          "Company 乙",
+          "Company 甲",
+          "Factory 甲",
+          "Firm 乙",
+          "Instructor 乙",
+          "Option 一",
+          "Option 二",
+          "Option 甲",
+          "Party 乙",
+          "Party 甲",
+          "Person 丙",
+          "Supplier 丙",
+          "Venue 丙",
+          "false",
+          "true"
+        ],
+        "per_class_recall": {
+          "Agency 丙": 1.0,
+          "B": 1.0,
+          "Brand 丙": 1.0,
+          "Candidate building 1": 1.0,
+          "Candidate 丙": 1.0,
+          "Candidate 乙": 1.0,
+          "Candidate 甲": 0.6,
+          "Carrier 乙": 1.0,
+          "Channel 乙": 1.0,
+          "Classroom 甲": 1.0,
+          "Cloud 甲": 1.0,
+          "Company 乙": 1.0,
+          "Company 甲": 1.0,
+          "Factory 甲": 1.0,
+          "Firm 乙": 1.0,
+          "Instructor 乙": 1.0,
+          "Option 一": 1.0,
+          "Option 二": 1.0,
+          "Option 甲": 1.0,
+          "Party 乙": 1.0,
+          "Party 甲": 1.0,
+          "Person 丙": 1.0,
+          "Supplier 丙": 1.0,
+          "Venue 丙": 1.0,
+          "false": 1.0,
+          "true": 0.6666666666666666
+        },
+        "nll": 0.3251982861512038,
+        "brier_multiclass": 0.16933831069742106,
+        "n_binary": 38,
+        "brier_binary": 0.09193686684460527,
+        "ece": 0.15401036842105262,
+        "reliability": [
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 1,
+            "mean_confidence": 0.481535,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 3,
+            "mean_confidence": 0.5642976666666667,
+            "accuracy": 0.6666666666666666
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 7,
+            "mean_confidence": 0.6476681428571428,
+            "accuracy": 0.7142857142857143
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 11,
+            "mean_confidence": 0.751107090909091,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 8,
+            "mean_confidence": 0.84262725,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 8,
+            "mean_confidence": 0.929538125,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "evidence_judgment": {
+        "n_items": 38,
+        "n_missing": 0,
+        "n_predicted": 38,
+        "n_scored": 38,
+        "accuracy": 0.7105263157894737,
+        "balanced_accuracy": 0.7401041666666667,
+        "classes_in_gold": [
+          "Candidate A",
+          "Option 乙",
+          "has the right",
+          "no",
+          "not supported",
+          "sufficient to support",
+          "supported",
+          "yes"
+        ],
+        "per_class_recall": {
+          "Candidate A": 1.0,
+          "Option 乙": 1.0,
+          "has the right": 1.0,
+          "no": 1.0,
+          "not supported": 0.6875,
+          "sufficient to support": 0.0,
+          "supported": 0.7333333333333333,
+          "yes": 0.5
+        },
+        "nll": 0.5556324528506545,
+        "brier_multiclass": 0.37221750776721046,
+        "n_binary": 38,
+        "brier_binary": 0.18610875388360523,
+        "ece": 0.12827428947368422,
+        "reliability": [
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 5,
+            "mean_confidence": 0.5380822000000001,
+            "accuracy": 0.2
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 2,
+            "mean_confidence": 0.6410225,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 12,
+            "mean_confidence": 0.7345534166666666,
+            "accuracy": 0.75
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 7,
+            "mean_confidence": 0.834736142857143,
+            "accuracy": 0.7142857142857143
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 12,
+            "mean_confidence": 0.95312875,
+            "accuracy": 0.8333333333333334
+          }
+        ]
+      },
+      "missing_evidence": {
+        "n_items": 36,
+        "n_missing": 0,
+        "n_predicted": 36,
+        "n_scored": 36,
+        "accuracy": 0.6944444444444444,
+        "balanced_accuracy": 0.8365800865800868,
+        "classes_in_gold": [
+          "0",
+          "1",
+          "P95 latency",
+          "approver's risk review record",
+          "change order review conclusion",
+          "dispute resolution method",
+          "expiration date",
+          "false",
+          "itemized scoring reasons",
+          "test report of the old replaced part",
+          "true"
+        ],
+        "per_class_recall": {
+          "0": 1.0,
+          "1": 1.0,
+          "P95 latency": 1.0,
+          "approver's risk review record": 0.0,
+          "change order review conclusion": 1.0,
+          "dispute resolution method": 1.0,
+          "expiration date": 1.0,
+          "false": 0.4166666666666667,
+          "itemized scoring reasons": 1.0,
+          "test report of the old replaced part": 1.0,
+          "true": 0.7857142857142857
+        },
+        "nll": 0.5518751217991793,
+        "brier_multiclass": 0.37066012214588884,
+        "n_binary": 33,
+        "brier_binary": 0.19022284932109088,
+        "ece": 0.16397508333333335,
+        "reliability": [
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "n": 1,
+            "mean_confidence": 0.359314,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 2,
+            "mean_confidence": 0.453129,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 9,
+            "mean_confidence": 0.5491278888888889,
+            "accuracy": 0.3333333333333333
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 6,
+            "mean_confidence": 0.6397408333333334,
+            "accuracy": 0.5
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 7,
+            "mean_confidence": 0.7556601428571428,
+            "accuracy": 0.7142857142857143
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 6,
+            "mean_confidence": 0.8394075,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 5,
+            "mean_confidence": 0.9730193999999999,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "rule_application": {
+        "n_items": 38,
+        "n_missing": 0,
+        "n_predicted": 38,
+        "n_scored": 38,
+        "accuracy": 0.6052631578947368,
+        "balanced_accuracy": 0.7071428571428571,
+        "classes_in_gold": [
+          "0",
+          "1",
+          "2",
+          "Employee 乙",
+          "L3",
+          "can single-source directly",
+          "conventional track",
+          "expired",
+          "non-compliant",
+          "not supported",
+          "split into multiple invoices and register",
+          "still locked",
+          "supported",
+          "within warranty"
+        ],
+        "per_class_recall": {
+          "0": 0.5,
+          "1": 0.0,
+          "2": 0.8,
+          "Employee 乙": 0.0,
+          "L3": 1.0,
+          "can single-source directly": 1.0,
+          "conventional track": 1.0,
+          "expired": 0.0,
+          "non-compliant": 1.0,
+          "not supported": 0.6,
+          "split into multiple invoices and register": 1.0,
+          "still locked": 1.0,
+          "supported": 1.0,
+          "within warranty": 1.0
+        },
+        "nll": 0.8616076637122966,
+        "brier_multiclass": 0.5371043814321578,
+        "n_binary": 21,
+        "brier_binary": 0.16262508086338093,
+        "ece": 0.19441247368421052,
+        "reliability": [
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "n": 1,
+            "mean_confidence": 0.378031,
+            "accuracy": 1.0
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 7,
+            "mean_confidence": 0.44386571428571425,
+            "accuracy": 0.2857142857142857
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 11,
+            "mean_confidence": 0.5496524545454545,
+            "accuracy": 0.7272727272727273
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 3,
+            "mean_confidence": 0.631397,
+            "accuracy": 0.0
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 4,
+            "mean_confidence": 0.753912,
+            "accuracy": 0.5
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 9,
+            "mean_confidence": 0.8430662222222223,
+            "accuracy": 0.7777777777777778
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 3,
+            "mean_confidence": 0.9308710000000001,
+            "accuracy": 1.0
+          }
+        ]
+      }
+    }
+  }
+}

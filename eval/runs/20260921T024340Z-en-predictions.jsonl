@@ -1,0 +1,150 @@
+{"id":"en-ev-0001","probabilities":{"not supported":0.578312,"supported":0.421688}}
+{"id":"en-ev-0002","probabilities":{"not supported":0.99125,"supported":0.00875}}
+{"id":"en-ev-0003","probabilities":{"does not have the right":0.25855,"has the right":0.74145}}
+{"id":"en-ev-0004","probabilities":{"no":0.295922,"yes":0.704078}}
+{"id":"en-ev-0005","probabilities":{"not sufficient to support":0.838201,"sufficient to support":0.161799}}
+{"id":"en-ev-0006","probabilities":{"not supported":0.914266,"supported":0.085734}}
+{"id":"en-ev-0007","probabilities":{"Option 乙":0.807653,"Option 甲":0.192347}}
+{"id":"en-ev-0008","probabilities":{"not supported":0.167686,"supported":0.832314}}
+{"id":"en-ev-0009","probabilities":{"no":0.846788,"yes":0.153212}}
+{"id":"en-ev-0010","probabilities":{"Candidate A":0.97142,"Candidate B":0.02858}}
+{"id":"en-ev-0011","probabilities":{"no":0.518646,"yes":0.481354}}
+{"id":"en-ev-0012","probabilities":{"compliant":0.12938,"non-compliant":0.87062}}
+{"id":"en-ev-0013","probabilities":{"Employee 乙":0.250949,"Employee 甲":0.749051}}
+{"id":"en-ev-0014","probabilities":{"conventional track":0.843979,"fast track":0.156021}}
+{"id":"en-ev-0015","probabilities":{"not within warranty":0.134135,"within warranty":0.865865}}
+{"id":"en-ev-0016","probabilities":{"L2":0.482684,"L3":0.517316}}
+{"id":"en-ev-0017","probabilities":{"active":0.725041,"expired":0.274959}}
+{"id":"en-ev-0018","probabilities":{"still locked":0.919181,"unlocked":0.080819}}
+{"id":"en-ev-0019","probabilities":{"issue a single invoice":0.034707,"split into multiple invoices and register":0.965293}}
+{"id":"en-ev-0020","probabilities":{"can single-source directly":0.908139,"need to compare first":0.091861}}
+{"id":"en-ev-0021","probabilities":{"compliant":0.47585,"non-compliant":0.52415}}
+{"id":"en-ev-0022","probabilities":{"0":0.556261,"1":0.142726,"2":0.301013}}
+{"id":"en-ev-0023","probabilities":{"Option 丙":0.122589,"Option 乙":0.038476,"Option 甲":0.838935}}
+{"id":"en-ev-0024","probabilities":{"A":0.030348,"B":0.960838,"C":0.008814}}
+{"id":"en-ev-0025","probabilities":{"A":0.045649,"B":0.929011,"C":0.02534}}
+{"id":"en-ev-0026","probabilities":{"Candidate 丙":0.188578,"Candidate 乙":0.018667,"Candidate 甲":0.792755}}
+{"id":"en-ev-0027","probabilities":{"Candidate 丙":0.6410369999999999,"Candidate 乙":0.034823,"Candidate 甲":0.32414}}
+{"id":"en-ev-0028","probabilities":{"A":0.131414,"B":0.7516339999999999,"C":0.116952}}
+{"id":"en-ev-0029","probabilities":{"A":0.070358,"B":0.915719,"C":0.013923}}
+{"id":"en-ev-0030","probabilities":{"Candidate 丙":0.59836,"Candidate 乙":0.026348,"Candidate 甲":0.375292}}
+{"id":"en-ev-0031","probabilities":{"Candidate 丙":0.040649,"Candidate 乙":0.922568,"Candidate 甲":0.036783}}
+{"id":"en-ev-0032","probabilities":{"Candidate 丙":0.8783230000000001,"Candidate 乙":0.017037,"Candidate 甲":0.10464}}
+{"id":"en-ev-0033","probabilities":{"false":0.26924400000000004,"true":0.730756}}
+{"id":"en-ev-0034","probabilities":{"false":0.824515,"true":0.175485}}
+{"id":"en-ev-0035","probabilities":{"false":0.11174399999999995,"true":0.888256}}
+{"id":"en-ev-0036","probabilities":{"dispute resolution method":0.991578,"liability for breach":0.008422}}
+{"id":"en-ev-0037","probabilities":{"false":0.564289,"true":0.435711}}
+{"id":"en-ev-0038","probabilities":{"false":0.8491,"true":0.1509}}
+{"id":"en-ev-0039","probabilities":{"expiration date":0.959265,"quote amount":0.040735}}
+{"id":"en-ev-0040","probabilities":{"0":0.060853,"1":0.777443,"2":0.161704}}
+{"id":"en-ev-0041","probabilities":{"false":0.6574420000000001,"true":0.342558}}
+{"id":"en-ev-0042","probabilities":{"P95 latency":0.997167,"feature list":0.002833}}
+{"id":"en-ev-0043","probabilities":{"false":0.777299,"true":0.222701}}
+{"id":"en-ev-0044","probabilities":{"false":0.749071,"true":0.250929}}
+{"id":"en-ev-0045","probabilities":{"Candidate 丙":0.19217,"Candidate 乙":0.03283,"Candidate 甲":0.775}}
+{"id":"en-ev-0046","probabilities":{"not supported":0.427008,"supported":0.572992}}
+{"id":"en-ev-0047","probabilities":{"not supported":0.811966,"supported":0.188034}}
+{"id":"en-ev-0048","probabilities":{"not supported":0.992563,"supported":0.007437}}
+{"id":"en-ev-0049","probabilities":{"not supported":0.263576,"supported":0.736424}}
+{"id":"en-ev-0050","probabilities":{"not supported":0.224522,"supported":0.775478}}
+{"id":"en-ev-0051","probabilities":{"not supported":0.992786,"supported":0.007214}}
+{"id":"en-ev-0052","probabilities":{"not supported":0.346059,"supported":0.653941}}
+{"id":"en-ev-0053","probabilities":{"not supported":0.993677,"supported":0.006323}}
+{"id":"en-ev-0054","probabilities":{"not supported":0.287359,"supported":0.712641}}
+{"id":"en-ev-0055","probabilities":{"not supported":0.97026,"supported":0.02974}}
+{"id":"en-ev-0056","probabilities":{"not supported":0.501506,"supported":0.498494}}
+{"id":"en-ev-0057","probabilities":{"not supported":0.914648,"supported":0.085352}}
+{"id":"en-ev-0058","probabilities":{"not supported":0.964864,"supported":0.035136}}
+{"id":"en-ev-0059","probabilities":{"not supported":0.278387,"supported":0.721613}}
+{"id":"en-ev-0060","probabilities":{"not supported":0.911149,"supported":0.088851}}
+{"id":"en-ev-0061","probabilities":{"not supported":0.089804,"supported":0.910196}}
+{"id":"en-ev-0062","probabilities":{"not supported":0.29066,"supported":0.70934}}
+{"id":"en-ev-0063","probabilities":{"not supported":0.136086,"supported":0.863914}}
+{"id":"en-ev-0064","probabilities":{"not supported":0.089534,"supported":0.910466}}
+{"id":"en-ev-0065","probabilities":{"not supported":0.371896,"supported":0.628104}}
+{"id":"en-ev-0066","probabilities":{"not supported":0.157683,"supported":0.842317}}
+{"id":"en-ev-0067","probabilities":{"not supported":0.259845,"supported":0.740155}}
+{"id":"en-ev-0068","probabilities":{"not supported":0.767266,"supported":0.232734}}
+{"id":"en-ev-0069","probabilities":{"not supported":0.719719,"supported":0.280281}}
+{"id":"en-ev-0070","probabilities":{"not supported":0.481045,"supported":0.518955}}
+{"id":"en-ev-0071","probabilities":{"not supported":0.277996,"supported":0.722004}}
+{"id":"en-ev-0072","probabilities":{"not supported":0.764473,"supported":0.235527}}
+{"id":"en-ev-0073","probabilities":{"0":0.402953,"1":0.279729,"2":0.317318}}
+{"id":"en-ev-0074","probabilities":{"0":0.29585,"1":0.209255,"2":0.494895}}
+{"id":"en-ev-0075","probabilities":{"not supported":0.185558,"supported":0.814442}}
+{"id":"en-ev-0076","probabilities":{"0":0.622824,"1":0.155528,"2":0.221648}}
+{"id":"en-ev-0077","probabilities":{"not supported":0.204873,"supported":0.795127}}
+{"id":"en-ev-0078","probabilities":{"0":0.485432,"1":0.243755,"2":0.270813}}
+{"id":"en-ev-0079","probabilities":{"not supported":0.388923,"supported":0.611077}}
+{"id":"en-ev-0080","probabilities":{"0":0.280608,"1":0.217648,"2":0.5017439999999999}}
+{"id":"en-ev-0081","probabilities":{"0":0.174939,"1":0.093037,"2":0.512051,"3":0.219973}}
+{"id":"en-ev-0082","probabilities":{"0":0.331578,"1":0.243785,"2":0.424637}}
+{"id":"en-ev-0083","probabilities":{"not supported":0.195853,"supported":0.804147}}
+{"id":"en-ev-0084","probabilities":{"0":0.420939,"1":0.265,"2":0.314061}}
+{"id":"en-ev-0085","probabilities":{"not supported":0.746429,"supported":0.253571}}
+{"id":"en-ev-0086","probabilities":{"0":0.567359,"1":0.115451,"2":0.31719}}
+{"id":"en-ev-0087","probabilities":{"0":0.5572610000000001,"1":0.143426,"2":0.299313}}
+{"id":"en-ev-0088","probabilities":{"0":0.290168,"1":0.138677,"2":0.571155}}
+{"id":"en-ev-0089","probabilities":{"not supported":0.590748,"supported":0.409252}}
+{"id":"en-ev-0090","probabilities":{"0":0.378031,"1":0.369665,"2":0.252304}}
+{"id":"en-ev-0091","probabilities":{"not supported":0.163882,"supported":0.836118}}
+{"id":"en-ev-0092","probabilities":{"0":0.024892,"1":0.090653,"2":0.884455}}
+{"id":"en-ev-0093","probabilities":{"not supported":0.572825,"supported":0.427175}}
+{"id":"en-ev-0094","probabilities":{"0":0.325736,"1":0.22587,"2":0.448394}}
+{"id":"en-ev-0095","probabilities":{"not supported":0.169859,"supported":0.830141}}
+{"id":"en-ev-0096","probabilities":{"0":0.242293,"1":0.42981,"2":0.327897}}
+{"id":"en-ev-0097","probabilities":{"not supported":0.424693,"supported":0.575307}}
+{"id":"en-ev-0098","probabilities":{"0":0.194972,"1":0.144738,"2":0.66029}}
+{"id":"en-ev-0099","probabilities":{"not supported":0.162171,"supported":0.837829}}
+{"id":"en-ev-0100","probabilities":{"Company 丙":0.180069,"Company 乙":0.048493,"Company 甲":0.771438}}
+{"id":"en-ev-0101","probabilities":{"Carrier 丙":0.069959,"Carrier 乙":0.920183,"Carrier 甲":0.009858}}
+{"id":"en-ev-0102","probabilities":{"Option 一":0.810219,"Option 三":0.120287,"Option 二":0.069494}}
+{"id":"en-ev-0103","probabilities":{"Candidate building 1":0.760551,"Candidate building 2":0.036456,"Candidate building 3":0.202993}}
+{"id":"en-ev-0104","probabilities":{"Instructor 丙":0.10317,"Instructor 乙":0.856979,"Instructor 甲":0.039851}}
+{"id":"en-ev-0105","probabilities":{"Person 丙":0.762194,"Person 乙":0.026895,"Person 甲":0.210911}}
+{"id":"en-ev-0106","probabilities":{"Factory 丙":0.253484,"Factory 乙":0.068412,"Factory 甲":0.678104}}
+{"id":"en-ev-0107","probabilities":{"Firm 丙":0.068508,"Firm 乙":0.773101,"Firm 甲":0.158391}}
+{"id":"en-ev-0108","probabilities":{"Agency 丙":0.8576710000000001,"Agency 乙":0.018695,"Agency 甲":0.123634}}
+{"id":"en-ev-0109","probabilities":{"Party 丙":0.169452,"Party 乙":0.022162,"Party 甲":0.808386}}
+{"id":"en-ev-0110","probabilities":{"Company 丙":0.067038,"Company 乙":0.8512149999999999,"Company 甲":0.081747}}
+{"id":"en-ev-0111","probabilities":{"Venue 丙":0.673223,"Venue 乙":0.008249,"Venue 甲":0.318528}}
+{"id":"en-ev-0112","probabilities":{"Cloud 丙":0.135212,"Cloud 乙":0.227498,"Cloud 甲":0.63729}}
+{"id":"en-ev-0113","probabilities":{"Party 丙":0.039685,"Party 乙":0.921213,"Party 甲":0.039102}}
+{"id":"en-ev-0114","probabilities":{"Supplier 丙":0.609178,"Supplier 乙":0.035075,"Supplier 甲":0.355747}}
+{"id":"en-ev-0115","probabilities":{"Candidate 丙":0.154896,"Candidate 乙":0.005814,"Candidate 甲":0.83929}}
+{"id":"en-ev-0116","probabilities":{"Channel 丙":0.043932,"Channel 乙":0.93072,"Channel 甲":0.025348}}
+{"id":"en-ev-0117","probabilities":{"Option 一":0.121842,"Option 三":0.396623,"Option 二":0.481535}}
+{"id":"en-ev-0118","probabilities":{"Classroom 丙":0.376253,"Classroom 乙":0.074066,"Classroom 甲":0.549681}}
+{"id":"en-ev-0119","probabilities":{"Carrier 丙":0.052498,"Carrier 乙":0.936053,"Carrier 甲":0.011449}}
+{"id":"en-ev-0120","probabilities":{"Brand 丙":0.723018,"Brand 乙":0.005743,"Brand 甲":0.271239}}
+{"id":"en-ev-0121","probabilities":{"false":0.64596,"true":0.35404}}
+{"id":"en-ev-0122","probabilities":{"false":0.706604,"true":0.293396}}
+{"id":"en-ev-0123","probabilities":{"false":0.455148,"true":0.544852}}
+{"id":"en-ev-0124","probabilities":{"false":0.6488849999999999,"true":0.351115}}
+{"id":"en-ev-0125","probabilities":{"false":0.27146000000000003,"true":0.72854}}
+{"id":"en-ev-0126","probabilities":{"false":0.7173430000000001,"true":0.282657}}
+{"id":"en-ev-0127","probabilities":{"false":0.18779,"true":0.81221}}
+{"id":"en-ev-0128","probabilities":{"false":0.317766,"true":0.682234}}
+{"id":"en-ev-0129","probabilities":{"false":0.22267000000000003,"true":0.77733}}
+{"id":"en-ev-0130","probabilities":{"false":0.42721,"true":0.57279}}
+{"id":"en-ev-0131","probabilities":{"false":0.267861,"true":0.732139}}
+{"id":"en-ev-0132","probabilities":{"false":0.254417,"true":0.745583}}
+{"id":"en-ev-0133","probabilities":{"false":0.348406,"true":0.651594}}
+{"id":"en-ev-0134","probabilities":{"false":0.443113,"true":0.556887}}
+{"id":"en-ev-0135","probabilities":{"false":0.384467,"true":0.615533}}
+{"id":"en-ev-0136","probabilities":{"false":0.45085299999999995,"true":0.549147}}
+{"id":"en-ev-0137","probabilities":{"false":0.18990700000000005,"true":0.810093}}
+{"id":"en-ev-0138","probabilities":{"false":0.532759,"true":0.467241}}
+{"id":"en-ev-0139","probabilities":{"false":0.392555,"true":0.607445}}
+{"id":"en-ev-0140","probabilities":{"false":0.469093,"true":0.530907}}
+{"id":"en-ev-0141","probabilities":{"false":0.42378400000000005,"true":0.576216}}
+{"id":"en-ev-0142","probabilities":{"false":0.5108969999999999,"true":0.489103}}
+{"id":"en-ev-0143","probabilities":{"false":0.147729,"true":0.852271}}
+{"id":"en-ev-0144","probabilities":{"false":0.45174099999999995,"true":0.548259}}
+{"id":"en-ev-0145","probabilities":{"customer receipt sign-off form":0.049277,"repair request time record":0.008722,"test report of the old replaced part":0.942001}}
+{"id":"en-ev-0146","probabilities":{"change order review conclusion":0.441496,"original version of the milestone plan":0.36981,"weekly report submission time":0.188694}}
+{"id":"en-ev-0147","probabilities":{"itemized scoring reasons":0.975086,"record of the bid opening":0.004979,"tender document scoring method":0.019935}}
+{"id":"en-ev-0148","probabilities":{"approver's risk review record":0.217849,"credit report":0.624197,"proof of income":0.157954}}
+{"id":"en-ev-0149","probabilities":{"0":0.359314,"1":0.350773,"2":0.289913}}
+{"id":"en-ev-0150","probabilities":{"0":0.257799,"1":0.464762,"2":0.277439}}

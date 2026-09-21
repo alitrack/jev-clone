@@ -1,0 +1,1065 @@
+{
+  "schema": "jev-eval-report/1",
+  "items_file": "eval/items/en-evidence-v3.jsonl",
+  "items_sha256": "3c24d86101c509f5ae3d397087ad0d084b1d37e552b5e792efc025efafe4fa20",
+  "prompt_set_sha256": "91c904e11dc601c0eaf99e73023a13aeebad81cad08d33c43c9bb01684e73828",
+  "predictions_file": "eval/runs/20260921T1110Z-local-m4-seq-en-predictions.jsonl",
+  "predictions_sha256": "4b62d1ddd5fc00909365e327482a9790bd88d7295cd861490633ab2245fe13e6",
+  "confidence_bins": 10,
+  "nll_probability_floor": 1e-12,
+  "verify_tolerance": 1e-12,
+  "stratification_note": "Stratified by source and by category. Every metric is reported per stratum; there is deliberately no merged total (AGENTS.md 铁律 7 / specs/M1.md §6). accuracy / balanced_accuracy / nll / brier_* / ece are separate fields and are not collapsed into one score.",
+  "strata": {
+    "by_source": {
+      "authored-en-v2-mt": {
+        "n_items": 134,
+        "categories": [
+          "candidate_selection",
+          "evidence_judgment",
+          "missing_evidence",
+          "rule_application"
+        ],
+        "overall": {
+          "n_items": 134,
+          "n_missing": 0,
+          "n_predicted": 134,
+          "n_scored": 134,
+          "accuracy": 0.6194029850746269,
+          "balanced_accuracy": 0.7611506648016503,
+          "classes_in_gold": [
+            "0",
+            "1",
+            "2",
+            "Can be used directly with a single 一 source",
+            "Candidate A",
+            "Candidate 一 Building",
+            "Candidate 甲",
+            "Conventional channels",
+            "Dispute Settlement Methods",
+            "Employee 乙",
+            "L3",
+            "No support",
+            "Non-compliance",
+            "Not supported",
+            "Overdue",
+            "Programme 一",
+            "Programme 乙",
+            "Programme 二",
+            "Programme 甲",
+            "Reasons for sub-score",
+            "Split into multiple sheets and file",
+            "Still locked",
+            "Sufficient to support",
+            "Support",
+            "Yeah, yeah.",
+            "false",
+            "true",
+            "丙",
+            "丙 Suppliers",
+            "丙 Translation Agency",
+            "丙 brand",
+            "丙 site",
+            "乙",
+            "乙 carriers",
+            "乙 channel",
+            "乙 side",
+            "甲",
+            "甲 Classroom",
+            "甲 cloud",
+            "甲 party",
+            "甲 plant"
+          ],
+          "per_class_recall": {
+            "0": 0.25,
+            "1": 0.2222222222222222,
+            "2": 0.5,
+            "Can be used directly with a single 一 source": 1.0,
+            "Candidate A": 1.0,
+            "Candidate 一 Building": 1.0,
+            "Candidate 甲": 1.0,
+            "Conventional channels": 1.0,
+            "Dispute Settlement Methods": 1.0,
+            "Employee 乙": 0.0,
+            "L3": 0.0,
+            "No support": 0.47368421052631576,
+            "Non-compliance": 1.0,
+            "Not supported": 1.0,
+            "Overdue": 0.0,
+            "Programme 一": 1.0,
+            "Programme 乙": 1.0,
+            "Programme 二": 0.0,
+            "Programme 甲": 1.0,
+            "Reasons for sub-score": 1.0,
+            "Split into multiple sheets and file": 1.0,
+            "Still locked": 1.0,
+            "Sufficient to support": 0.0,
+            "Support": 0.631578947368421,
+            "Yeah, yeah.": 1.0,
+            "false": 0.4666666666666667,
+            "true": 0.7058823529411765,
+            "丙": 0.5,
+            "丙 Suppliers": 1.0,
+            "丙 Translation Agency": 1.0,
+            "丙 brand": 1.0,
+            "丙 site": 1.0,
+            "乙": 0.8571428571428571,
+            "乙 carriers": 1.0,
+            "乙 channel": 1.0,
+            "乙 side": 1.0,
+            "甲": 0.6,
+            "甲 Classroom": 1.0,
+            "甲 cloud": 1.0,
+            "甲 party": 1.0,
+            "甲 plant": 1.0
+          },
+          "nll": 0.7137988772105567,
+          "brier_multiclass": 0.46943139403347756,
+          "n_binary": 117,
+          "brier_binary": 0.22301499556386323,
+          "ece": 0.09388752985074623,
+          "reliability": [
+            {
+              "lower": 0.3,
+              "upper": 0.4,
+              "n": 4,
+              "mean_confidence": 0.37800225,
+              "accuracy": 0.0
+            },
+            {
+              "lower": 0.4,
+              "upper": 0.5,
+              "n": 9,
+              "mean_confidence": 0.4506738888888888,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6,
+              "n": 32,
+              "mean_confidence": 0.5412775624999999,
+              "accuracy": 0.53125
+            },
+            {
+              "lower": 0.6,
+              "upper": 0.7,
+              "n": 27,
+              "mean_confidence": 0.6387781111111112,
+              "accuracy": 0.48148148148148145
+            },
+            {
+              "lower": 0.7,
+              "upper": 0.8,
+              "n": 27,
+              "mean_confidence": 0.7479872592592591,
+              "accuracy": 0.6296296296296297
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "n": 21,
+              "mean_confidence": 0.8480479999999999,
+              "accuracy": 0.8095238095238095
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "n": 14,
+              "mean_confidence": 0.9680307142857145,
+              "accuracy": 0.9285714285714286
+            }
+          ]
+        },
+        "by_category": {
+          "candidate_selection": {
+            "n_items": 37,
+            "n_missing": 0,
+            "n_predicted": 37,
+            "n_scored": 37,
+            "accuracy": 0.8378378378378378,
+            "balanced_accuracy": 0.8868480725623584,
+            "classes_in_gold": [
+              "Candidate 一 Building",
+              "Candidate 甲",
+              "Programme 一",
+              "Programme 二",
+              "Programme 甲",
+              "false",
+              "true",
+              "丙",
+              "丙 Suppliers",
+              "丙 Translation Agency",
+              "丙 brand",
+              "丙 site",
+              "乙",
+              "乙 carriers",
+              "乙 channel",
+              "乙 side",
+              "甲",
+              "甲 Classroom",
+              "甲 cloud",
+              "甲 party",
+              "甲 plant"
+            ],
+            "per_class_recall": {
+              "Candidate 一 Building": 1.0,
+              "Candidate 甲": 1.0,
+              "Programme 一": 1.0,
+              "Programme 二": 0.0,
+              "Programme 甲": 1.0,
+              "false": 1.0,
+              "true": 0.6666666666666666,
+              "丙": 0.5,
+              "丙 Suppliers": 1.0,
+              "丙 Translation Agency": 1.0,
+              "丙 brand": 1.0,
+              "丙 site": 1.0,
+              "乙": 0.8571428571428571,
+              "乙 carriers": 1.0,
+              "乙 channel": 1.0,
+              "乙 side": 1.0,
+              "甲": 0.6,
+              "甲 Classroom": 1.0,
+              "甲 cloud": 1.0,
+              "甲 party": 1.0,
+              "甲 plant": 1.0
+            },
+            "nll": 0.5844523907112493,
+            "brier_multiclass": 0.3451512686394055,
+            "n_binary": 37,
+            "brier_binary": 0.19686508857851345,
+            "ece": 0.1752432702702703,
+            "reliability": [
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 5,
+                "mean_confidence": 0.46558020000000006,
+                "accuracy": 0.8
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 8,
+                "mean_confidence": 0.54635225,
+                "accuracy": 0.75
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 7,
+                "mean_confidence": 0.6387729999999999,
+                "accuracy": 0.8571428571428571
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 10,
+                "mean_confidence": 0.7506468999999999,
+                "accuracy": 0.9
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 7,
+                "mean_confidence": 0.8341999999999999,
+                "accuracy": 0.8571428571428571
+              }
+            ]
+          },
+          "evidence_judgment": {
+            "n_items": 33,
+            "n_missing": 0,
+            "n_predicted": 33,
+            "n_scored": 33,
+            "accuracy": 0.6363636363636364,
+            "balanced_accuracy": 0.7448979591836735,
+            "classes_in_gold": [
+              "Candidate A",
+              "No support",
+              "Not supported",
+              "Programme 乙",
+              "Sufficient to support",
+              "Support",
+              "Yeah, yeah."
+            ],
+            "per_class_recall": {
+              "Candidate A": 1.0,
+              "No support": 0.6428571428571429,
+              "Not supported": 1.0,
+              "Programme 乙": 1.0,
+              "Sufficient to support": 0.0,
+              "Support": 0.5714285714285714,
+              "Yeah, yeah.": 1.0
+            },
+            "nll": 0.6428116849120247,
+            "brier_multiclass": 0.4283878801189696,
+            "n_binary": 33,
+            "brier_binary": 0.2141939400594848,
+            "ece": 0.13894069696969702,
+            "reliability": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 10,
+                "mean_confidence": 0.5272802,
+                "accuracy": 0.6
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 6,
+                "mean_confidence": 0.6308735000000001,
+                "accuracy": 0.16666666666666666
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 3,
+                "mean_confidence": 0.713199,
+                "accuracy": 0.6666666666666666
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 5,
+                "mean_confidence": 0.8522612,
+                "accuracy": 0.8
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 9,
+                "mean_confidence": 0.9635223333333334,
+                "accuracy": 0.8888888888888888
+              }
+            ]
+          },
+          "missing_evidence": {
+            "n_items": 31,
+            "n_missing": 0,
+            "n_predicted": 31,
+            "n_scored": 31,
+            "accuracy": 0.5806451612903226,
+            "balanced_accuracy": 0.6746031746031745,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "Dispute Settlement Methods",
+              "Reasons for sub-score",
+              "false",
+              "true"
+            ],
+            "per_class_recall": {
+              "0": 0.0,
+              "1": 1.0,
+              "Dispute Settlement Methods": 1.0,
+              "Reasons for sub-score": 1.0,
+              "false": 0.3333333333333333,
+              "true": 0.7142857142857143
+            },
+            "nll": 0.6780878267865723,
+            "brier_multiclass": 0.48745048897890314,
+            "n_binary": 28,
+            "brier_binary": 0.2453070848928571,
+            "ece": 0.15884574193548384,
+            "reliability": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 6,
+                "mean_confidence": 0.5539233333333332,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 6,
+                "mean_confidence": 0.6417593333333335,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 10,
+                "mean_confidence": 0.7574955999999999,
+                "accuracy": 0.4
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 6,
+                "mean_confidence": 0.84967,
+                "accuracy": 0.8333333333333334
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 3,
+                "mean_confidence": 0.9742846666666667,
+                "accuracy": 1.0
+              }
+            ]
+          },
+          "rule_application": {
+            "n_items": 33,
+            "n_missing": 0,
+            "n_predicted": 33,
+            "n_scored": 33,
+            "accuracy": 0.3939393939393939,
+            "balanced_accuracy": 0.5102564102564102,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "2",
+              "Can be used directly with a single 一 source",
+              "Conventional channels",
+              "Employee 乙",
+              "L3",
+              "No support",
+              "Non-compliance",
+              "Overdue",
+              "Split into multiple sheets and file",
+              "Still locked",
+              "Support"
+            ],
+            "per_class_recall": {
+              "0": 0.3333333333333333,
+              "1": 0.0,
+              "2": 0.5,
+              "Can be used directly with a single 一 source": 1.0,
+              "Conventional channels": 1.0,
+              "Employee 乙": 0.0,
+              "L3": 0.0,
+              "No support": 0.0,
+              "Non-compliance": 1.0,
+              "Overdue": 0.0,
+              "Split into multiple sheets and file": 1.0,
+              "Still locked": 1.0,
+              "Support": 0.8
+            },
+            "nll": 0.963357662345995,
+            "brier_multiclass": 0.6328922623804847,
+            "n_binary": 19,
+            "brier_binary": 0.2564077791896842,
+            "ece": 0.23952754545454547,
+            "reliability": [
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "n": 4,
+                "mean_confidence": 0.37800225,
+                "accuracy": 0.0
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 4,
+                "mean_confidence": 0.432041,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 8,
+                "mean_confidence": 0.5442152499999999,
+                "accuracy": 0.25
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 8,
+                "mean_confidence": 0.642475125,
+                "accuracy": 0.375
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 4,
+                "mean_confidence": 0.7436585,
+                "accuracy": 0.5
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 3,
+                "mean_confidence": 0.8700939999999999,
+                "accuracy": 0.6666666666666666
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 2,
+                "mean_confidence": 0.9789375,
+                "accuracy": 1.0
+              }
+            ]
+          }
+        }
+      },
+      "authored-en-v3-mt": {
+        "n_items": 33,
+        "categories": [
+          "rule_application"
+        ],
+        "overall": {
+          "n_items": 33,
+          "n_missing": 0,
+          "n_predicted": 33,
+          "n_scored": 33,
+          "accuracy": 0.5757575757575758,
+          "balanced_accuracy": 0.6873015873015873,
+          "classes_in_gold": [
+            "0",
+            "1",
+            "2",
+            "Can be used directly with a single 一 source",
+            "Colleague 甲",
+            "Fast track",
+            "Insufficient to support",
+            "Non-compliance",
+            "Split into multiple sheets and file",
+            "Still locked",
+            "乙 Customers",
+            "乙 Suppliers",
+            "乙 employees",
+            "乙 item",
+            "甲 Store",
+            "甲 equipment",
+            "甲 single",
+            "甲 tenant"
+          ],
+          "per_class_recall": {
+            "0": 0.5714285714285714,
+            "1": 0.4,
+            "2": 0.4,
+            "Can be used directly with a single 一 source": 0.0,
+            "Colleague 甲": 0.0,
+            "Fast track": 1.0,
+            "Insufficient to support": 1.0,
+            "Non-compliance": 1.0,
+            "Split into multiple sheets and file": 1.0,
+            "Still locked": 1.0,
+            "乙 Customers": 1.0,
+            "乙 Suppliers": 1.0,
+            "乙 employees": 1.0,
+            "乙 item": 1.0,
+            "甲 Store": 1.0,
+            "甲 equipment": 1.0,
+            "甲 single": 0.0,
+            "甲 tenant": 0.0
+          },
+          "nll": 0.7961075836803098,
+          "brier_multiclass": 0.5068108579784242,
+          "n_binary": 16,
+          "brier_binary": 0.205695604701375,
+          "ece": 0.10995366666666669,
+          "reliability": [
+            {
+              "lower": 0.3,
+              "upper": 0.4,
+              "n": 6,
+              "mean_confidence": 0.3701206666666667,
+              "accuracy": 0.3333333333333333
+            },
+            {
+              "lower": 0.4,
+              "upper": 0.5,
+              "n": 9,
+              "mean_confidence": 0.455771,
+              "accuracy": 0.5555555555555556
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6,
+              "n": 5,
+              "mean_confidence": 0.5623262,
+              "accuracy": 0.4
+            },
+            {
+              "lower": 0.6,
+              "upper": 0.7,
+              "n": 5,
+              "mean_confidence": 0.6468192,
+              "accuracy": 0.8
+            },
+            {
+              "lower": 0.7,
+              "upper": 0.8,
+              "n": 3,
+              "mean_confidence": 0.7607050000000001,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "n": 3,
+              "mean_confidence": 0.8269293333333333,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "n": 2,
+              "mean_confidence": 0.915376,
+              "accuracy": 1.0
+            }
+          ]
+        },
+        "by_category": {
+          "rule_application": {
+            "n_items": 33,
+            "n_missing": 0,
+            "n_predicted": 33,
+            "n_scored": 33,
+            "accuracy": 0.5757575757575758,
+            "balanced_accuracy": 0.6873015873015873,
+            "classes_in_gold": [
+              "0",
+              "1",
+              "2",
+              "Can be used directly with a single 一 source",
+              "Colleague 甲",
+              "Fast track",
+              "Insufficient to support",
+              "Non-compliance",
+              "Split into multiple sheets and file",
+              "Still locked",
+              "乙 Customers",
+              "乙 Suppliers",
+              "乙 employees",
+              "乙 item",
+              "甲 Store",
+              "甲 equipment",
+              "甲 single",
+              "甲 tenant"
+            ],
+            "per_class_recall": {
+              "0": 0.5714285714285714,
+              "1": 0.4,
+              "2": 0.4,
+              "Can be used directly with a single 一 source": 0.0,
+              "Colleague 甲": 0.0,
+              "Fast track": 1.0,
+              "Insufficient to support": 1.0,
+              "Non-compliance": 1.0,
+              "Split into multiple sheets and file": 1.0,
+              "Still locked": 1.0,
+              "乙 Customers": 1.0,
+              "乙 Suppliers": 1.0,
+              "乙 employees": 1.0,
+              "乙 item": 1.0,
+              "甲 Store": 1.0,
+              "甲 equipment": 1.0,
+              "甲 single": 0.0,
+              "甲 tenant": 0.0
+            },
+            "nll": 0.7961075836803098,
+            "brier_multiclass": 0.5068108579784242,
+            "n_binary": 16,
+            "brier_binary": 0.205695604701375,
+            "ece": 0.10995366666666669,
+            "reliability": [
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "n": 6,
+                "mean_confidence": 0.3701206666666667,
+                "accuracy": 0.3333333333333333
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "n": 9,
+                "mean_confidence": 0.455771,
+                "accuracy": 0.5555555555555556
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "n": 5,
+                "mean_confidence": 0.5623262,
+                "accuracy": 0.4
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "n": 5,
+                "mean_confidence": 0.6468192,
+                "accuracy": 0.8
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "n": 3,
+                "mean_confidence": 0.7607050000000001,
+                "accuracy": 0.6666666666666666
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "n": 3,
+                "mean_confidence": 0.8269293333333333,
+                "accuracy": 0.6666666666666666
+              },
+              {
+                "lower": 0.9,
+                "upper": 1.0,
+                "n": 2,
+                "mean_confidence": 0.915376,
+                "accuracy": 1.0
+              }
+            ]
+          }
+        }
+      }
+    },
+    "by_category": {
+      "candidate_selection": {
+        "n_items": 37,
+        "n_missing": 0,
+        "n_predicted": 37,
+        "n_scored": 37,
+        "accuracy": 0.8378378378378378,
+        "balanced_accuracy": 0.8868480725623584,
+        "classes_in_gold": [
+          "Candidate 一 Building",
+          "Candidate 甲",
+          "Programme 一",
+          "Programme 二",
+          "Programme 甲",
+          "false",
+          "true",
+          "丙",
+          "丙 Suppliers",
+          "丙 Translation Agency",
+          "丙 brand",
+          "丙 site",
+          "乙",
+          "乙 carriers",
+          "乙 channel",
+          "乙 side",
+          "甲",
+          "甲 Classroom",
+          "甲 cloud",
+          "甲 party",
+          "甲 plant"
+        ],
+        "per_class_recall": {
+          "Candidate 一 Building": 1.0,
+          "Candidate 甲": 1.0,
+          "Programme 一": 1.0,
+          "Programme 二": 0.0,
+          "Programme 甲": 1.0,
+          "false": 1.0,
+          "true": 0.6666666666666666,
+          "丙": 0.5,
+          "丙 Suppliers": 1.0,
+          "丙 Translation Agency": 1.0,
+          "丙 brand": 1.0,
+          "丙 site": 1.0,
+          "乙": 0.8571428571428571,
+          "乙 carriers": 1.0,
+          "乙 channel": 1.0,
+          "乙 side": 1.0,
+          "甲": 0.6,
+          "甲 Classroom": 1.0,
+          "甲 cloud": 1.0,
+          "甲 party": 1.0,
+          "甲 plant": 1.0
+        },
+        "nll": 0.5844523907112493,
+        "brier_multiclass": 0.3451512686394055,
+        "n_binary": 37,
+        "brier_binary": 0.19686508857851345,
+        "ece": 0.1752432702702703,
+        "reliability": [
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 5,
+            "mean_confidence": 0.46558020000000006,
+            "accuracy": 0.8
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 8,
+            "mean_confidence": 0.54635225,
+            "accuracy": 0.75
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 7,
+            "mean_confidence": 0.6387729999999999,
+            "accuracy": 0.8571428571428571
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 10,
+            "mean_confidence": 0.7506468999999999,
+            "accuracy": 0.9
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 7,
+            "mean_confidence": 0.8341999999999999,
+            "accuracy": 0.8571428571428571
+          }
+        ]
+      },
+      "evidence_judgment": {
+        "n_items": 33,
+        "n_missing": 0,
+        "n_predicted": 33,
+        "n_scored": 33,
+        "accuracy": 0.6363636363636364,
+        "balanced_accuracy": 0.7448979591836735,
+        "classes_in_gold": [
+          "Candidate A",
+          "No support",
+          "Not supported",
+          "Programme 乙",
+          "Sufficient to support",
+          "Support",
+          "Yeah, yeah."
+        ],
+        "per_class_recall": {
+          "Candidate A": 1.0,
+          "No support": 0.6428571428571429,
+          "Not supported": 1.0,
+          "Programme 乙": 1.0,
+          "Sufficient to support": 0.0,
+          "Support": 0.5714285714285714,
+          "Yeah, yeah.": 1.0
+        },
+        "nll": 0.6428116849120247,
+        "brier_multiclass": 0.4283878801189696,
+        "n_binary": 33,
+        "brier_binary": 0.2141939400594848,
+        "ece": 0.13894069696969702,
+        "reliability": [
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 10,
+            "mean_confidence": 0.5272802,
+            "accuracy": 0.6
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 6,
+            "mean_confidence": 0.6308735000000001,
+            "accuracy": 0.16666666666666666
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 3,
+            "mean_confidence": 0.713199,
+            "accuracy": 0.6666666666666666
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 5,
+            "mean_confidence": 0.8522612,
+            "accuracy": 0.8
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 9,
+            "mean_confidence": 0.9635223333333334,
+            "accuracy": 0.8888888888888888
+          }
+        ]
+      },
+      "missing_evidence": {
+        "n_items": 31,
+        "n_missing": 0,
+        "n_predicted": 31,
+        "n_scored": 31,
+        "accuracy": 0.5806451612903226,
+        "balanced_accuracy": 0.6746031746031745,
+        "classes_in_gold": [
+          "0",
+          "1",
+          "Dispute Settlement Methods",
+          "Reasons for sub-score",
+          "false",
+          "true"
+        ],
+        "per_class_recall": {
+          "0": 0.0,
+          "1": 1.0,
+          "Dispute Settlement Methods": 1.0,
+          "Reasons for sub-score": 1.0,
+          "false": 0.3333333333333333,
+          "true": 0.7142857142857143
+        },
+        "nll": 0.6780878267865723,
+        "brier_multiclass": 0.48745048897890314,
+        "n_binary": 28,
+        "brier_binary": 0.2453070848928571,
+        "ece": 0.15884574193548384,
+        "reliability": [
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 6,
+            "mean_confidence": 0.5539233333333332,
+            "accuracy": 0.5
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 6,
+            "mean_confidence": 0.6417593333333335,
+            "accuracy": 0.5
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 10,
+            "mean_confidence": 0.7574955999999999,
+            "accuracy": 0.4
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 6,
+            "mean_confidence": 0.84967,
+            "accuracy": 0.8333333333333334
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 3,
+            "mean_confidence": 0.9742846666666667,
+            "accuracy": 1.0
+          }
+        ]
+      },
+      "rule_application": {
+        "n_items": 66,
+        "n_missing": 0,
+        "n_predicted": 66,
+        "n_scored": 66,
+        "accuracy": 0.48484848484848486,
+        "balanced_accuracy": 0.600462962962963,
+        "classes_in_gold": [
+          "0",
+          "1",
+          "2",
+          "Can be used directly with a single 一 source",
+          "Colleague 甲",
+          "Conventional channels",
+          "Employee 乙",
+          "Fast track",
+          "Insufficient to support",
+          "L3",
+          "No support",
+          "Non-compliance",
+          "Overdue",
+          "Split into multiple sheets and file",
+          "Still locked",
+          "Support",
+          "乙 Customers",
+          "乙 Suppliers",
+          "乙 employees",
+          "乙 item",
+          "甲 Store",
+          "甲 equipment",
+          "甲 single",
+          "甲 tenant"
+        ],
+        "per_class_recall": {
+          "0": 0.5,
+          "1": 0.16666666666666666,
+          "2": 0.4444444444444444,
+          "Can be used directly with a single 一 source": 0.5,
+          "Colleague 甲": 0.0,
+          "Conventional channels": 1.0,
+          "Employee 乙": 0.0,
+          "Fast track": 1.0,
+          "Insufficient to support": 1.0,
+          "L3": 0.0,
+          "No support": 0.0,
+          "Non-compliance": 1.0,
+          "Overdue": 0.0,
+          "Split into multiple sheets and file": 1.0,
+          "Still locked": 1.0,
+          "Support": 0.8,
+          "乙 Customers": 1.0,
+          "乙 Suppliers": 1.0,
+          "乙 employees": 1.0,
+          "乙 item": 1.0,
+          "甲 Store": 1.0,
+          "甲 equipment": 1.0,
+          "甲 single": 0.0,
+          "甲 tenant": 0.0
+        },
+        "nll": 0.8797326230131522,
+        "brier_multiclass": 0.5698515601794544,
+        "n_binary": 35,
+        "brier_binary": 0.23322507085217145,
+        "ece": 0.15153139393939397,
+        "reliability": [
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "n": 10,
+            "mean_confidence": 0.3732733,
+            "accuracy": 0.2
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "n": 13,
+            "mean_confidence": 0.4484694615384615,
+            "accuracy": 0.5384615384615384
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "n": 13,
+            "mean_confidence": 0.5511809999999999,
+            "accuracy": 0.3076923076923077
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "n": 13,
+            "mean_confidence": 0.6441459230769231,
+            "accuracy": 0.5384615384615384
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "n": 7,
+            "mean_confidence": 0.7509641428571429,
+            "accuracy": 0.5714285714285714
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "n": 6,
+            "mean_confidence": 0.8485116666666667,
+            "accuracy": 0.6666666666666666
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "n": 4,
+            "mean_confidence": 0.94715675,
+            "accuracy": 1.0
+          }
+        ]
+      }
+    }
+  }
+}

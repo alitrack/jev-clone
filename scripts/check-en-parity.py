@@ -12,12 +12,26 @@ scored by the same harness.  Two things can silently destroy that:
 2. **Answer drift.**  Every `gold` must remain the correct option under translation;
    `score` golds and `noul` booleans must be *identical*, and `choice` golds must
    point at the same slot as the Chinese item.
+3. **Fact drift.**  The translation must not change a number or an identifier.
+   A control set that says `181 至 260 立方米` on one side and "161 to 260 cubic
+   meters" on the other is not the same question twice, it is two different
+   questions in two languages.  Measured on the M4-1 MT run: the tiered water-price
+   items came back with `181`→"161" and `260`→"250".  The predicate lives in
+   `scripts/qc_common.py` and is shared with the translator, so both agree what
+   counts as a lost fact (numbers are compared as *quantities*, so `1,400`≡`1400`
+   and `180 万`≡"1.8 million" are not false alarms).
 
 It also prints the same balance report `validate-items.py` prints, so the two sets
 can be compared stratum by stratum (a set whose degenerate-strategy ceiling differs
 wildly from its counterpart is not a control set).
 
 Usage: check-en-parity.py <zh.jsonl> <en.jsonl>
+       check-en-parity.py <zh.jsonl> <en.jsonl> --allow-missing <translate-mt.py 的 --report json>
+
+M4 的 v2 集是**专用 MT 重译**的（`en-evidence-v2.jsonl`），specs/M4.md §S3 规定：译文不合用的
+题**只允许整条剔除**（不许人工改译文），剔除要计入 `n_missing` 并逐条列名。所以 v2 是 zh 集的
+**子集**。`--allow-missing` 把「英文集缺 id」拆成两类：报告里**申报过的剔除**（记 n_missing，放行）
+与**没申报的缺失**（仍是硬错——它意味着译文悄悄少了几条）。两边必须逐条对齐，多报少报都算问题。
 Exit code is non-zero on any pairing/slot/answer problem, so it can gate a commit.
 """
 
@@ -25,6 +39,7 @@ import collections
 import hashlib
 import json
 import pathlib
+import re
 import sys
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -88,11 +103,39 @@ def print_balance(tag: str, items: list[dict]) -> None:
     print(f"        noul={b['noul']}  score={b['score']}")
 
 
+def dropped_ids_from_report(path: pathlib.Path) -> set[str]:
+    """从 `translate-mt.py --report` 的 JSON 里取出「整条剔除」的 id（M4 §S3）。
+
+    条目形如 `zh-ev-0003(evidence_judgment): 槽位漂移：…`；取不出 id 直接报错，
+    免得闸门拿到一份对不上的清单还以为核对过了。
+    """
+    report = json.loads(path.read_text(encoding="utf-8"))
+    ids: set[str] = set()
+    for entry in report.get("dropped", []):
+        m = re.search(r"(?:zh|en)-ev-(\d+)", str(entry))
+        if m is None:
+            raise SystemExit(f"报告 {path} 的 dropped 条目没带 id，无法核对：{entry!r}")
+        ids.add(m.group(1))
+    n_report = report.get("n_dropped")
+    if n_report is not None and n_report != len(ids):
+        raise SystemExit(f"报告 {path} 自相矛盾：n_dropped={n_report} 但 dropped 有 {len(ids)} 条")
+    return ids
+
+
 def main(argv: list[str]) -> int:
-    if len(argv) != 3:
+    rest = argv[1:]
+    allowed_missing: set[str] | None = None
+    if "--allow-missing" in rest:
+        i = rest.index("--allow-missing")
+        if i + 1 >= len(rest):
+            print("--allow-missing 需要 <translate-mt.py 的 --report json>")
+            return 2
+        allowed_missing = dropped_ids_from_report(pathlib.Path(rest[i + 1]))
+        del rest[i : i + 2]
+    if len(rest) != 2:
         print(__doc__)
         return 2
-    zh_path, en_path = pathlib.Path(argv[1]), pathlib.Path(argv[2])
+    zh_path, en_path = pathlib.Path(rest[0]), pathlib.Path(rest[1])
     zh, en = read_items(zh_path), read_items(en_path)
     problems: list[str] = []
     notes: list[str] = []
@@ -107,12 +150,27 @@ def main(argv: list[str]) -> int:
 
     missing = sorted(set(zh_by) - set(en_by))
     extra = sorted(set(en_by) - set(zh_by))
-    if missing:
-        problems.append(f"英文集缺 {len(missing)} 条：{missing[:12]}")
+    if allowed_missing is None:
+        if missing:
+            problems.append(f"英文集缺 {len(missing)} 条：{missing[:12]}")
+    else:
+        # M4 §S3：允许「整条剔除」，但**剔了哪些必须与报告逐条对齐**（多报少报都是错）。
+        undeclared = [k for k in missing if k not in allowed_missing]
+        stale = sorted(k for k in allowed_missing if k not in set(missing))
+        if undeclared:
+            problems.append(f"英文集缺 {len(undeclared)} 条，但报告未申报剔除：{undeclared[:12]}")
+        if stale:
+            problems.append(f"报告申报剔除、英文集里却仍在：{stale[:12]}")
+        if not undeclared and not stale:
+            notes.append(f"按 §S3 整条剔除 {len(missing)} 条（与报告 dropped 逐条对齐）：{missing[:12]}")
     if extra:
         problems.append(f"英文集多 {len(extra)} 条：{extra[:12]}")
 
-    slot_drift, answer_drift = [], []
+    # 事实核对 / 退化检测的谓词来自 scripts/qc_common.py（与 translate-mt.py 共用同一实现；
+    # 单实现是刻意的：这两处判据必须一致，两套代码迟早分叉）。
+    from qc_common import degenerate_reason, discount_lost, facts_lost
+
+    slot_drift, answer_drift, fact_drift, broken, prov_drift = [], [], [], [], []
     for key in sorted(set(zh_by) & set(en_by)):
         z, e = zh_by[key], en_by[key]
         if z["category"] != e["category"]:
@@ -163,14 +221,43 @@ def main(argv: list[str]) -> int:
         elif t == "noul":
             if bool(z["gold"]) != bool(e["gold"]):
                 answer_drift.append((key, z["gold"], e["gold"]))
+        # 事实核对——**只查模型能看到的字段**（state / instructions / criteria 标签）：这些漂了就是
+        # 「同一道题的两个版本」不成立（specs/M4.md §S3：不合用只允许整条剔除）。
+        lost = [f"state:{x}" for x in facts_lost(z["state"], e["state"])]
+        lost += [f"instr:{x}" for x in facts_lost(z["question"].get("instructions") or "",
+                                                  e["question"].get("instructions") or "")]
+        if t == "choice":
+            en_crit = json.dumps(e["question"]["criteria"], ensure_ascii=False)
+            lost += [f"crit:{k}" for k in z["question"]["criteria"] if facts_lost(k, en_crit)]
+        if lost:
+            fact_drift.append((key, lost))
+        # provenance 是出题人写的理由，**不进模型输入**（只在报告里给人看）。它译错不影响这一对的
+        # 对照语义，故记 note 并单独计数（M4-4 里如实披露），不判死。实测：0090 的中文「不足 30 件」
+        # 在英文 provenance 里成了 "the 35"——真错，但错在解释文字，不在题面。
+        prov_lost = facts_lost(z.get("provenance") or "", e.get("provenance") or "")
+        if prov_lost:
+            prov_drift.append((key, prov_lost))
+        deg = degenerate_reason(z["state"], e["state"])
+        if deg:
+            broken.append((key, deg))
         # A translated `state` that still contains CJK is suspicious, not fatal.
         if any("\u4e00" <= c <= "\u9fff" for c in e["state"]):
             notes.append(f"{key}: 英文 state 里仍有中文字符")
+        # 软判据：「N 折」没被译出折扣字样（写法约定问题，不进致命清单）。
+        if discount_lost(z["state"], e["state"]):
+            notes.append(f"{key}: 中文写「N 折」，英文里没有折扣字样")
 
     if slot_drift:
         problems.append(f"⛔ 槽位漂移 {len(slot_drift)} 条（中英 gold 落点不同的字母槽）")
     if answer_drift:
         problems.append(f"⛔ 答案漂移 {len(answer_drift)} 条（score/noul gold 被改动）")
+    if fact_drift:
+        problems.append(f"⛔ 事实漂移 {len(fact_drift)} 条（译文改了数字/编号，须整条剔除）")
+    if broken:
+        problems.append(f"⛔ 译文损坏 {len(broken)} 条（复读机 / 长度爆炸）")
+    if prov_drift:
+        notes.append(f"provenance 事实漂移 {len(prov_drift)} 条（不进模型输入，非致命，单列披露）："
+                     f"{[k for k, _ in prov_drift][:12]}")
 
     print_balance("zh", zh)
     print_balance("en", en)
@@ -186,6 +273,23 @@ def main(argv: list[str]) -> int:
         for key, zg, eg in answer_drift:
             print(f"  {key}: zh {zg!r} -> en {eg!r}")
         print()
+    if fact_drift:
+        print(f"### 事实漂移明细（{len(fact_drift)} 条）—— 这些配对的英文侧事实与中文不同，"
+              f"按 §S3 整条剔除（不许手工改译文）")
+        for key, lost in fact_drift:
+            print(f"  {key}: 丢失 {lost}")
+        print()
+    if broken:
+        print(f"### 译文损坏明细（{len(broken)} 条）")
+        for key, why in broken:
+            print(f"  {key}: {why}")
+        print()
+    if prov_drift:
+        print(f"### provenance 事实漂移（{len(prov_drift)} 条，非致命）——理由文字里的数字漂了，"
+              f"题面不受影响，但 M4-4 要如实披露")
+        for key, lost in prov_drift:
+            print(f"  {key}: {lost}")
+        print()
     if notes:
         print(f"### 备注（{len(notes)} 条，人工看）")
         for n in notes[:15]:
@@ -194,7 +298,8 @@ def main(argv: list[str]) -> int:
 
     sha = hashlib.sha256(en_path.read_bytes()).hexdigest()
     print(f"en sha256: {sha}")
-    print(f"配对: {len(set(zh_by) & set(en_by))}/{len(zh)}")
+    tail = f"（n_missing={len(missing)}，逐条见报告 dropped）" if allowed_missing is not None else ""
+    print(f"配对: {len(set(zh_by) & set(en_by))}/{len(zh)}{tail}")
 
     if problems:
         print(f"\n❌ {len(problems)} 个问题：")

@@ -1,0 +1,1357 @@
+{
+ "model": "qwen35-4b",
+ "answers": {
+  "en-ev-0001": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.578312,
+    "supported": 0.421688
+   },
+   "confidence": 0.017768
+  },
+  "en-ev-0002": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.99125,
+    "supported": 0.00875
+   },
+   "confidence": 0.927612
+  },
+  "en-ev-0003": {
+   "type": "choice",
+   "choice": "has the right",
+   "probabilities": {
+    "does not have the right": 0.25855,
+    "has the right": 0.74145
+   },
+   "confidence": 0.17545
+  },
+  "en-ev-0004": {
+   "type": "choice",
+   "choice": "yes",
+   "probabilities": {
+    "no": 0.295922,
+    "yes": 0.704078
+   },
+   "confidence": 0.123751
+  },
+  "en-ev-0005": {
+   "type": "choice",
+   "choice": "not sufficient to support",
+   "probabilities": {
+    "not sufficient to support": 0.838201,
+    "sufficient to support": 0.161799
+   },
+   "confidence": 0.361404
+  },
+  "en-ev-0006": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.914266,
+    "supported": 0.085734
+   },
+   "confidence": 0.577932
+  },
+  "en-ev-0007": {
+   "type": "choice",
+   "choice": "Option 乙",
+   "probabilities": {
+    "Option 乙": 0.807653,
+    "Option 甲": 0.192347
+   },
+   "confidence": 0.293645
+  },
+  "en-ev-0008": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.167686,
+    "supported": 0.832314
+   },
+   "confidence": 0.347616
+  },
+  "en-ev-0009": {
+   "type": "choice",
+   "choice": "no",
+   "probabilities": {
+    "no": 0.846788,
+    "yes": 0.153212
+   },
+   "confidence": 0.38218
+  },
+  "en-ev-0010": {
+   "type": "choice",
+   "choice": "Candidate A",
+   "probabilities": {
+    "Candidate A": 0.97142,
+    "Candidate B": 0.02858
+   },
+   "confidence": 0.81278
+  },
+  "en-ev-0011": {
+   "type": "choice",
+   "choice": "no",
+   "probabilities": {
+    "no": 0.518646,
+    "yes": 0.481354
+   },
+   "confidence": 0.001003
+  },
+  "en-ev-0012": {
+   "type": "choice",
+   "choice": "non-compliant",
+   "probabilities": {
+    "compliant": 0.12938,
+    "non-compliant": 0.87062
+   },
+   "confidence": 0.444265
+  },
+  "en-ev-0013": {
+   "type": "choice",
+   "choice": "Employee 甲",
+   "probabilities": {
+    "Employee 乙": 0.250949,
+    "Employee 甲": 0.749051
+   },
+   "confidence": 0.187221
+  },
+  "en-ev-0014": {
+   "type": "choice",
+   "choice": "conventional track",
+   "probabilities": {
+    "conventional track": 0.843979,
+    "fast track": 0.156021
+   },
+   "confidence": 0.375295
+  },
+  "en-ev-0015": {
+   "type": "choice",
+   "choice": "within warranty",
+   "probabilities": {
+    "not within warranty": 0.134135,
+    "within warranty": 0.865865
+   },
+   "confidence": 0.43133
+  },
+  "en-ev-0016": {
+   "type": "choice",
+   "choice": "L3",
+   "probabilities": {
+    "L2": 0.482684,
+    "L3": 0.517316
+   },
+   "confidence": 0.000865
+  },
+  "en-ev-0017": {
+   "type": "choice",
+   "choice": "active",
+   "probabilities": {
+    "active": 0.725041,
+    "expired": 0.274959
+   },
+   "confidence": 0.151509
+  },
+  "en-ev-0018": {
+   "type": "choice",
+   "choice": "still locked",
+   "probabilities": {
+    "still locked": 0.919181,
+    "unlocked": 0.080819
+   },
+   "confidence": 0.594942
+  },
+  "en-ev-0019": {
+   "type": "choice",
+   "choice": "split into multiple invoices and register",
+   "probabilities": {
+    "issue a single invoice": 0.034707,
+    "split into multiple invoices and register": 0.965293
+   },
+   "confidence": 0.782526
+  },
+  "en-ev-0020": {
+   "type": "choice",
+   "choice": "can single-source directly",
+   "probabilities": {
+    "can single-source directly": 0.908139,
+    "need to compare first": 0.091861
+   },
+   "confidence": 0.557349
+  },
+  "en-ev-0021": {
+   "type": "choice",
+   "choice": "non-compliant",
+   "probabilities": {
+    "compliant": 0.47585,
+    "non-compliant": 0.52415
+   },
+   "confidence": 0.001683
+  },
+  "en-ev-0022": {
+   "type": "score",
+   "score": 0.744752,
+   "legend": {
+    "0": "below 1000 points",
+    "1": "1000 to 2000 points (inclusive)",
+    "2": "above 2000 points"
+   },
+   "probabilities": {
+    "0": 0.556261,
+    "1": 0.142726,
+    "2": 0.301013
+   },
+   "confidence": 0.121149
+  },
+  "en-ev-0023": {
+   "type": "choice",
+   "choice": "Option 甲",
+   "probabilities": {
+    "Option 丙": 0.122589,
+    "Option 乙": 0.038476,
+    "Option 甲": 0.838935
+   },
+   "confidence": 0.517588
+  },
+  "en-ev-0024": {
+   "type": "choice",
+   "choice": "B",
+   "probabilities": {
+    "A": 0.030348,
+    "B": 0.960838,
+    "C": 0.008814
+   },
+   "confidence": 0.830555
+  },
+  "en-ev-0025": {
+   "type": "choice",
+   "choice": "B",
+   "probabilities": {
+    "A": 0.045649,
+    "B": 0.929011,
+    "C": 0.02534
+   },
+   "confidence": 0.724699
+  },
+  "en-ev-0026": {
+   "type": "choice",
+   "choice": "Candidate 甲",
+   "probabilities": {
+    "Candidate 丙": 0.188578,
+    "Candidate 乙": 0.018667,
+    "Candidate 甲": 0.792755
+   },
+   "confidence": 0.478417
+  },
+  "en-ev-0027": {
+   "type": "choice",
+   "choice": "Candidate 丙",
+   "probabilities": {
+    "Candidate 丙": 0.6410369999999999,
+    "Candidate 乙": 0.034823,
+    "Candidate 甲": 0.32414
+   },
+   "confidence": 0.301723
+  },
+  "en-ev-0028": {
+   "type": "choice",
+   "choice": "B",
+   "probabilities": {
+    "A": 0.131414,
+    "B": 0.7516339999999999,
+    "C": 0.116952
+   },
+   "confidence": 0.333463
+  },
+  "en-ev-0029": {
+   "type": "choice",
+   "choice": "B",
+   "probabilities": {
+    "A": 0.070358,
+    "B": 0.915719,
+    "C": 0.013923
+   },
+   "confidence": 0.702464
+  },
+  "en-ev-0030": {
+   "type": "choice",
+   "choice": "Candidate 丙",
+   "probabilities": {
+    "Candidate 丙": 0.59836,
+    "Candidate 乙": 0.026348,
+    "Candidate 甲": 0.375292
+   },
+   "confidence": 0.298286
+  },
+  "en-ev-0031": {
+   "type": "choice",
+   "choice": "Candidate 乙",
+   "probabilities": {
+    "Candidate 丙": 0.040649,
+    "Candidate 乙": 0.922568,
+    "Candidate 甲": 0.036783
+   },
+   "confidence": 0.703237
+  },
+  "en-ev-0032": {
+   "type": "choice",
+   "choice": "Candidate 丙",
+   "probabilities": {
+    "Candidate 丙": 0.8783230000000001,
+    "Candidate 乙": 0.017037,
+    "Candidate 甲": 0.10464
+   },
+   "confidence": 0.618126
+  },
+  "en-ev-0033": {
+   "type": "noul",
+   "noul": 0.730756
+  },
+  "en-ev-0034": {
+   "type": "noul",
+   "noul": 0.175485
+  },
+  "en-ev-0035": {
+   "type": "noul",
+   "noul": 0.888256
+  },
+  "en-ev-0036": {
+   "type": "choice",
+   "choice": "dispute resolution method",
+   "probabilities": {
+    "dispute resolution method": 0.991578,
+    "liability for breach": 0.008422
+   },
+   "confidence": 0.92986
+  },
+  "en-ev-0037": {
+   "type": "noul",
+   "noul": 0.435711
+  },
+  "en-ev-0038": {
+   "type": "noul",
+   "noul": 0.1509
+  },
+  "en-ev-0039": {
+   "type": "choice",
+   "choice": "expiration date",
+   "probabilities": {
+    "expiration date": 0.959265,
+    "quote amount": 0.040735
+   },
+   "confidence": 0.754348
+  },
+  "en-ev-0040": {
+   "type": "score",
+   "score": 1.100851,
+   "legend": {
+    "0": "basically complete",
+    "1": "missing key comparison",
+    "2": "almost unassessable"
+   },
+   "probabilities": {
+    "0": 0.060853,
+    "1": 0.777443,
+    "2": 0.161704
+   },
+   "confidence": 0.398618
+  },
+  "en-ev-0041": {
+   "type": "noul",
+   "noul": 0.342558
+  },
+  "en-ev-0042": {
+   "type": "choice",
+   "choice": "P95 latency",
+   "probabilities": {
+    "P95 latency": 0.997167,
+    "feature list": 0.002833
+   },
+   "confidence": 0.971942
+  },
+  "en-ev-0043": {
+   "type": "noul",
+   "noul": 0.222701
+  },
+  "en-ev-0044": {
+   "type": "noul",
+   "noul": 0.250929
+  },
+  "en-ev-0045": {
+   "type": "choice",
+   "choice": "Candidate 甲",
+   "probabilities": {
+    "Candidate 丙": 0.19217,
+    "Candidate 乙": 0.03283,
+    "Candidate 甲": 0.775
+   },
+   "confidence": 0.429587
+  },
+  "en-ev-0046": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.427008,
+    "supported": 0.572992
+   },
+   "confidence": 0.015428
+  },
+  "en-ev-0047": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.811966,
+    "supported": 0.188034
+   },
+   "confidence": 0.302659
+  },
+  "en-ev-0048": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.992563,
+    "supported": 0.007437
+   },
+   "confidence": 0.936723
+  },
+  "en-ev-0049": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.263576,
+    "supported": 0.736424
+   },
+   "confidence": 0.167905
+  },
+  "en-ev-0050": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.224522,
+    "supported": 0.775478
+   },
+   "confidence": 0.231661
+  },
+  "en-ev-0051": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.992786,
+    "supported": 0.007214
+   },
+   "confidence": 0.938303
+  },
+  "en-ev-0052": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.346059,
+    "supported": 0.653941
+   },
+   "confidence": 0.069501
+  },
+  "en-ev-0053": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.993677,
+    "supported": 0.006323
+   },
+   "confidence": 0.944716
+  },
+  "en-ev-0054": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.287359,
+    "supported": 0.712641
+   },
+   "confidence": 0.134715
+  },
+  "en-ev-0055": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.97026,
+    "supported": 0.02974
+   },
+   "confidence": 0.806914
+  },
+  "en-ev-0056": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.501506,
+    "supported": 0.498494
+   },
+   "confidence": 7e-06
+  },
+  "en-ev-0057": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.914648,
+    "supported": 0.085352
+   },
+   "confidence": 0.579238
+  },
+  "en-ev-0058": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.964864,
+    "supported": 0.035136
+   },
+   "confidence": 0.780472
+  },
+  "en-ev-0059": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.278387,
+    "supported": 0.721613
+   },
+   "confidence": 0.146756
+  },
+  "en-ev-0060": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.911149,
+    "supported": 0.088851
+   },
+   "confidence": 0.567377
+  },
+  "en-ev-0061": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.089804,
+    "supported": 0.910196
+   },
+   "confidence": 0.564185
+  },
+  "en-ev-0062": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.29066,
+    "supported": 0.70934
+   },
+   "confidence": 0.130428
+  },
+  "en-ev-0063": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.136086,
+    "supported": 0.863914
+   },
+   "confidence": 0.426104
+  },
+  "en-ev-0064": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.089534,
+    "supported": 0.910466
+   },
+   "confidence": 0.565088
+  },
+  "en-ev-0065": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.371896,
+    "supported": 0.628104
+   },
+   "confidence": 0.047883
+  },
+  "en-ev-0066": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.157683,
+    "supported": 0.842317
+   },
+   "confidence": 0.371262
+  },
+  "en-ev-0067": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.259845,
+    "supported": 0.740155
+   },
+   "confidence": 0.173488
+  },
+  "en-ev-0068": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.767266,
+    "supported": 0.232734
+   },
+   "confidence": 0.217253
+  },
+  "en-ev-0069": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.719719,
+    "supported": 0.280281
+   },
+   "confidence": 0.144167
+  },
+  "en-ev-0070": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.481045,
+    "supported": 0.518955
+   },
+   "confidence": 0.001037
+  },
+  "en-ev-0071": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.277996,
+    "supported": 0.722004
+   },
+   "confidence": 0.147294
+  },
+  "en-ev-0072": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.764473,
+    "supported": 0.235527
+   },
+   "confidence": 0.212478
+  },
+  "en-ev-0073": {
+   "type": "score",
+   "score": 0.914365,
+   "legend": {
+    "0": "less than 150000 yuan",
+    "1": "150000 yuan to 250000 yuan (inclusive)",
+    "2": "over 250000 yuan"
+   },
+   "probabilities": {
+    "0": 0.402953,
+    "1": 0.279729,
+    "2": 0.317318
+   },
+   "confidence": 0.010708
+  },
+  "en-ev-0074": {
+   "type": "score",
+   "score": 1.199045,
+   "legend": {
+    "0": "less than 5%",
+    "1": "5% to 10% (inclusive)",
+    "2": "over 10%"
+   },
+   "probabilities": {
+    "0": 0.29585,
+    "1": 0.209255,
+    "2": 0.494895
+   },
+   "confidence": 0.057222
+  },
+  "en-ev-0075": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.185558,
+    "supported": 0.814442
+   },
+   "confidence": 0.307914
+  },
+  "en-ev-0076": {
+   "type": "score",
+   "score": 0.598824,
+   "legend": {
+    "0": "less than 3000 points",
+    "1": "3000 to 4000 points (inclusive)",
+    "2": "over 4000 points"
+   },
+   "probabilities": {
+    "0": 0.622824,
+    "1": 0.155528,
+    "2": 0.221648
+   },
+   "confidence": 0.164148
+  },
+  "en-ev-0077": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.204873,
+    "supported": 0.795127
+   },
+   "confidence": 0.268432
+  },
+  "en-ev-0078": {
+   "type": "score",
+   "score": 0.785381,
+   "legend": {
+    "0": "less than 20 hours",
+    "1": "20 to 28 hours (inclusive)",
+    "2": "over 28 hours"
+   },
+   "probabilities": {
+    "0": 0.485432,
+    "1": 0.243755,
+    "2": 0.270813
+   },
+   "confidence": 0.045448
+  },
+  "en-ev-0079": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.388923,
+    "supported": 0.611077
+   },
+   "confidence": 0.035899
+  },
+  "en-ev-0080": {
+   "type": "score",
+   "score": 1.221136,
+   "legend": {
+    "0": "less than 900 yuan",
+    "1": "900 yuan to 1200 yuan (inclusive)",
+    "2": "over 1200 yuan"
+   },
+   "probabilities": {
+    "0": 0.280608,
+    "1": 0.217648,
+    "2": 0.5017439999999999
+   },
+   "confidence": 0.058342
+  },
+  "en-ev-0081": {
+   "type": "score",
+   "score": 1.777058,
+   "legend": {
+    "0": "less than 3.0 yuan",
+    "1": "3.0 yuan to 3.6 yuan (inclusive)",
+    "2": "3.6 yuan to 4.2 yuan (inclusive)",
+    "3": "over 4.2 yuan"
+   },
+   "probabilities": {
+    "0": 0.174939,
+    "1": 0.093037,
+    "2": 0.512051,
+    "3": 0.219973
+   },
+   "confidence": 0.133127
+  },
+  "en-ev-0082": {
+   "type": "score",
+   "score": 1.093059,
+   "legend": {
+    "0": "less than 600 yuan",
+    "1": "600 yuan to 1000 yuan (inclusive)",
+    "2": "over 1000 yuan"
+   },
+   "probabilities": {
+    "0": 0.331578,
+    "1": 0.243785,
+    "2": 0.424637
+   },
+   "confidence": 0.022556
+  },
+  "en-ev-0083": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.195853,
+    "supported": 0.804147
+   },
+   "confidence": 0.286444
+  },
+  "en-ev-0084": {
+   "type": "score",
+   "score": 0.893122,
+   "legend": {
+    "0": "less than 20 yuan",
+    "1": "20 yuan to 40 yuan (inclusive)",
+    "2": "over 40 yuan"
+   },
+   "probabilities": {
+    "0": 0.420939,
+    "1": 0.265,
+    "2": 0.314061
+   },
+   "confidence": 0.017045
+  },
+  "en-ev-0085": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.746429,
+    "supported": 0.253571
+   },
+   "confidence": 0.183111
+  },
+  "en-ev-0086": {
+   "type": "score",
+   "score": 0.749831,
+   "legend": {
+    "0": "less than 350 yuan",
+    "1": "350 yuan to 420 yuan (inclusive)",
+    "2": "over 420 yuan"
+   },
+   "probabilities": {
+    "0": 0.567359,
+    "1": 0.115451,
+    "2": 0.31719
+   },
+   "confidence": 0.148907
+  },
+  "en-ev-0087": {
+   "type": "score",
+   "score": 0.742052,
+   "legend": {
+    "0": "less than 240 yuan",
+    "1": "240 yuan to 300 yuan (inclusive)",
+    "2": "over 300 yuan"
+   },
+   "probabilities": {
+    "0": 0.5572610000000001,
+    "1": 0.143426,
+    "2": 0.299313
+   },
+   "confidence": 0.121239
+  },
+  "en-ev-0088": {
+   "type": "score",
+   "score": 1.280987,
+   "legend": {
+    "0": "less than 8000 yuan",
+    "1": "8000 yuan to 12000 yuan (inclusive)",
+    "2": "over 12000 yuan"
+   },
+   "probabilities": {
+    "0": 0.290168,
+    "1": 0.138677,
+    "2": 0.571155
+   },
+   "confidence": 0.132637
+  },
+  "en-ev-0089": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.590748,
+    "supported": 0.409252
+   },
+   "confidence": 0.023894
+  },
+  "en-ev-0090": {
+   "type": "score",
+   "score": 0.874273,
+   "legend": {
+    "0": "less than 30 units",
+    "1": "30 to 60 units (inclusive)",
+    "2": "over 60 units"
+   },
+   "probabilities": {
+    "0": 0.378031,
+    "1": 0.369665,
+    "2": 0.252304
+   },
+   "confidence": 0.014148
+  },
+  "en-ev-0091": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.163882,
+    "supported": 0.836118
+   },
+   "confidence": 0.356484
+  },
+  "en-ev-0092": {
+   "type": "score",
+   "score": 1.859563,
+   "legend": {
+    "0": "0 pieces",
+    "1": "1 piece",
+    "2": "2 pieces or more"
+   },
+   "probabilities": {
+    "0": 0.024892,
+    "1": 0.090653,
+    "2": 0.884455
+   },
+   "confidence": 0.619374
+  },
+  "en-ev-0093": {
+   "type": "choice",
+   "choice": "not supported",
+   "probabilities": {
+    "not supported": 0.572825,
+    "supported": 0.427175
+   },
+   "confidence": 0.015357
+  },
+  "en-ev-0094": {
+   "type": "score",
+   "score": 1.122658,
+   "legend": {
+    "0": "below 1.5 wan yuan",
+    "1": "1.5 wan yuan to 2.2 wan yuan (inclusive)",
+    "2": "above 2.2 wan yuan"
+   },
+   "probabilities": {
+    "0": 0.325736,
+    "1": 0.22587,
+    "2": 0.448394
+   },
+   "confidence": 0.034177
+  },
+  "en-ev-0095": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.169859,
+    "supported": 0.830141
+   },
+   "confidence": 0.342618
+  },
+  "en-ev-0096": {
+   "type": "score",
+   "score": 1.085604,
+   "legend": {
+    "0": "fewer than 2 days",
+    "1": "2 to 4 days (inclusive)",
+    "2": "more than 4 days"
+   },
+   "probabilities": {
+    "0": 0.242293,
+    "1": 0.42981,
+    "2": 0.327897
+   },
+   "confidence": 0.02419
+  },
+  "en-ev-0097": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.424693,
+    "supported": 0.575307
+   },
+   "confidence": 0.016426
+  },
+  "en-ev-0098": {
+   "type": "score",
+   "score": 1.465318,
+   "legend": {
+    "0": "less than 50 yuan",
+    "1": "50 to 100 yuan (inclusive)",
+    "2": "more than 100 yuan"
+   },
+   "probabilities": {
+    "0": 0.194972,
+    "1": 0.144738,
+    "2": 0.66029
+   },
+   "confidence": 0.20574
+  },
+  "en-ev-0099": {
+   "type": "choice",
+   "choice": "supported",
+   "probabilities": {
+    "not supported": 0.162171,
+    "supported": 0.837829
+   },
+   "confidence": 0.360522
+  },
+  "en-ev-0100": {
+   "type": "choice",
+   "choice": "Company 甲",
+   "probabilities": {
+    "Company 丙": 0.180069,
+    "Company 乙": 0.048493,
+    "Company 甲": 0.771438
+   },
+   "confidence": 0.403196
+  },
+  "en-ev-0101": {
+   "type": "choice",
+   "choice": "Carrier 乙",
+   "probabilities": {
+    "Carrier 丙": 0.069959,
+    "Carrier 乙": 0.920183,
+    "Carrier 甲": 0.009858
+   },
+   "confidence": 0.719499
+  },
+  "en-ev-0102": {
+   "type": "choice",
+   "choice": "Option 一",
+   "probabilities": {
+    "Option 一": 0.810219,
+    "Option 三": 0.120287,
+    "Option 二": 0.069494
+   },
+   "confidence": 0.444235
+  },
+  "en-ev-0103": {
+   "type": "choice",
+   "choice": "Candidate building 1",
+   "probabilities": {
+    "Candidate building 1": 0.760551,
+    "Candidate building 2": 0.036456,
+    "Candidate building 3": 0.202993
+   },
+   "confidence": 0.405986
+  },
+  "en-ev-0104": {
+   "type": "choice",
+   "choice": "Instructor 乙",
+   "probabilities": {
+    "Instructor 丙": 0.10317,
+    "Instructor 乙": 0.856979,
+    "Instructor 甲": 0.039851
+   },
+   "confidence": 0.549404
+  },
+  "en-ev-0105": {
+   "type": "choice",
+   "choice": "Person 丙",
+   "probabilities": {
+    "Person 丙": 0.762194,
+    "Person 乙": 0.026895,
+    "Person 甲": 0.210911
+   },
+   "confidence": 0.424302
+  },
+  "en-ev-0106": {
+   "type": "choice",
+   "choice": "Factory 甲",
+   "probabilities": {
+    "Factory 丙": 0.253484,
+    "Factory 乙": 0.068412,
+    "Factory 甲": 0.678104
+   },
+   "confidence": 0.276539
+  },
+  "en-ev-0107": {
+   "type": "choice",
+   "choice": "Firm 乙",
+   "probabilities": {
+    "Firm 丙": 0.068508,
+    "Firm 乙": 0.773101,
+    "Firm 甲": 0.158391
+   },
+   "confidence": 0.386065
+  },
+  "en-ev-0108": {
+   "type": "choice",
+   "choice": "Agency 丙",
+   "probabilities": {
+    "Agency 丙": 0.8576710000000001,
+    "Agency 乙": 0.018695,
+    "Agency 甲": 0.123634
+   },
+   "confidence": 0.577169
+  },
+  "en-ev-0109": {
+   "type": "choice",
+   "choice": "Party 甲",
+   "probabilities": {
+    "Party 丙": 0.169452,
+    "Party 乙": 0.022162,
+    "Party 甲": 0.808386
+   },
+   "confidence": 0.492825
+  },
+  "en-ev-0110": {
+   "type": "choice",
+   "choice": "Company 乙",
+   "probabilities": {
+    "Company 丙": 0.067038,
+    "Company 乙": 0.8512149999999999,
+    "Company 甲": 0.081747
+   },
+   "confidence": 0.523947
+  },
+  "en-ev-0111": {
+   "type": "choice",
+   "choice": "Venue 丙",
+   "probabilities": {
+    "Venue 丙": 0.673223,
+    "Venue 乙": 0.008249,
+    "Venue 甲": 0.318528
+   },
+   "confidence": 0.389806
+  },
+  "en-ev-0112": {
+   "type": "choice",
+   "choice": "Cloud 甲",
+   "probabilities": {
+    "Cloud 丙": 0.135212,
+    "Cloud 乙": 0.227498,
+    "Cloud 甲": 0.63729
+   },
+   "confidence": 0.185789
+  },
+  "en-ev-0113": {
+   "type": "choice",
+   "choice": "Party 乙",
+   "probabilities": {
+    "Party 丙": 0.039685,
+    "Party 乙": 0.9212130000000001,
+    "Party 甲": 0.039102
+   },
+   "confidence": 0.699252
+  },
+  "en-ev-0114": {
+   "type": "choice",
+   "choice": "Supplier 丙",
+   "probabilities": {
+    "Supplier 丙": 0.609178,
+    "Supplier 乙": 0.035075,
+    "Supplier 甲": 0.355747
+   },
+   "confidence": 0.283529
+  },
+  "en-ev-0115": {
+   "type": "choice",
+   "choice": "Candidate 甲",
+   "probabilities": {
+    "Candidate 丙": 0.154896,
+    "Candidate 乙": 0.005814,
+    "Candidate 甲": 0.83929
+   },
+   "confidence": 0.575964
+  },
+  "en-ev-0116": {
+   "type": "choice",
+   "choice": "Channel 乙",
+   "probabilities": {
+    "Channel 丙": 0.043932,
+    "Channel 乙": 0.93072,
+    "Channel 甲": 0.025348
+   },
+   "confidence": 0.729413
+  },
+  "en-ev-0117": {
+   "type": "choice",
+   "choice": "Option 二",
+   "probabilities": {
+    "Option 一": 0.121842,
+    "Option 三": 0.396623,
+    "Option 二": 0.481535
+   },
+   "confidence": 0.112371
+  },
+  "en-ev-0118": {
+   "type": "choice",
+   "choice": "Classroom 甲",
+   "probabilities": {
+    "Classroom 丙": 0.376253,
+    "Classroom 乙": 0.074066,
+    "Classroom 甲": 0.549681
+   },
+   "confidence": 0.19034
+  },
+  "en-ev-0119": {
+   "type": "choice",
+   "choice": "Carrier 乙",
+   "probabilities": {
+    "Carrier 丙": 0.052498,
+    "Carrier 乙": 0.9360529999999999,
+    "Carrier 甲": 0.011449
+   },
+   "confidence": 0.75629
+  },
+  "en-ev-0120": {
+   "type": "choice",
+   "choice": "Brand 丙",
+   "probabilities": {
+    "Brand 丙": 0.723018,
+    "Brand 乙": 0.005743,
+    "Brand 甲": 0.271239
+   },
+   "confidence": 0.437451
+  },
+  "en-ev-0121": {
+   "type": "noul",
+   "noul": 0.35404
+  },
+  "en-ev-0122": {
+   "type": "noul",
+   "noul": 0.293396
+  },
+  "en-ev-0123": {
+   "type": "noul",
+   "noul": 0.544852
+  },
+  "en-ev-0124": {
+   "type": "noul",
+   "noul": 0.351115
+  },
+  "en-ev-0125": {
+   "type": "noul",
+   "noul": 0.72854
+  },
+  "en-ev-0126": {
+   "type": "noul",
+   "noul": 0.282657
+  },
+  "en-ev-0127": {
+   "type": "noul",
+   "noul": 0.81221
+  },
+  "en-ev-0128": {
+   "type": "noul",
+   "noul": 0.682234
+  },
+  "en-ev-0129": {
+   "type": "noul",
+   "noul": 0.77733
+  },
+  "en-ev-0130": {
+   "type": "noul",
+   "noul": 0.57279
+  },
+  "en-ev-0131": {
+   "type": "noul",
+   "noul": 0.732139
+  },
+  "en-ev-0132": {
+   "type": "noul",
+   "noul": 0.745583
+  },
+  "en-ev-0133": {
+   "type": "noul",
+   "noul": 0.651594
+  },
+  "en-ev-0134": {
+   "type": "noul",
+   "noul": 0.556887
+  },
+  "en-ev-0135": {
+   "type": "noul",
+   "noul": 0.615533
+  },
+  "en-ev-0136": {
+   "type": "noul",
+   "noul": 0.549147
+  },
+  "en-ev-0137": {
+   "type": "noul",
+   "noul": 0.810093
+  },
+  "en-ev-0138": {
+   "type": "noul",
+   "noul": 0.467241
+  },
+  "en-ev-0139": {
+   "type": "noul",
+   "noul": 0.607445
+  },
+  "en-ev-0140": {
+   "type": "noul",
+   "noul": 0.530907
+  },
+  "en-ev-0141": {
+   "type": "noul",
+   "noul": 0.576216
+  },
+  "en-ev-0142": {
+   "type": "noul",
+   "noul": 0.489103
+  },
+  "en-ev-0143": {
+   "type": "noul",
+   "noul": 0.852271
+  },
+  "en-ev-0144": {
+   "type": "noul",
+   "noul": 0.548259
+  },
+  "en-ev-0145": {
+   "type": "choice",
+   "choice": "test report of the old replaced part",
+   "probabilities": {
+    "customer receipt sign-off form": 0.049277,
+    "repair request time record": 0.008722,
+    "test report of the old replaced part": 0.942001
+   },
+   "confidence": 0.776099
+  },
+  "en-ev-0146": {
+   "type": "choice",
+   "choice": "change order review conclusion",
+   "probabilities": {
+    "change order review conclusion": 0.441496,
+    "original version of the milestone plan": 0.36981,
+    "weekly report submission time": 0.188694
+   },
+   "confidence": 0.050159
+  },
+  "en-ev-0147": {
+   "type": "choice",
+   "choice": "itemized scoring reasons",
+   "probabilities": {
+    "itemized scoring reasons": 0.975086,
+    "record of the bid opening": 0.004979,
+    "tender document scoring method": 0.019935
+   },
+   "confidence": 0.882531
+  },
+  "en-ev-0148": {
+   "type": "choice",
+   "choice": "credit report",
+   "probabilities": {
+    "approver's risk review record": 0.217849,
+    "credit report": 0.624197,
+    "proof of income": 0.157954
+   },
+   "confidence": 0.164705
+  },
+  "en-ev-0149": {
+   "type": "score",
+   "score": 0.930599,
+   "legend": {
+    "0": "less than 60%",
+    "1": "60% to 90% (inclusive)",
+    "2": "above 90%"
+   },
+   "probabilities": {
+    "0": 0.359314,
+    "1": 0.350773,
+    "2": 0.289913
+   },
+   "confidence": 0.004001
+  },
+  "en-ev-0150": {
+   "type": "score",
+   "score": 1.01964,
+   "legend": {
+    "0": "less than 60%",
+    "1": "60% to 90% (inclusive)",
+    "2": "above 90%"
+   },
+   "probabilities": {
+    "0": 0.257799,
+    "1": 0.464762,
+    "2": 0.277439
+   },
+   "confidence": 0.033963
+  }
+ },
+ "usage": {
+  "input_tokens": 17586,
+  "output_tokens": 150
+ }
+}

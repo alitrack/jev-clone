@@ -22,7 +22,15 @@ mkdir -p "$RUN_DIR" "$WORK"
 
 echo "== 0/7 先过闸门：题集冻结哈希 + 中英配对/槽位一致 =="
 python3 scripts/validate-items.py "$EN"
-python3 scripts/check-en-parity.py "$ZH" "$EN"
+# M4 起英文集是 MT 重译的，specs/M4.md §S3 允许「整条剔除」⇒ 英文集可能是中文集的**子集**。
+# 传 JEV_ALLOW_MISSING=<translate-mt.py 的 report.json> 时，闸门改判「缺的 id 必须与报告
+# 申报的剔除清单逐条对齐」（多报少报都算错）；不传则与 M3 一样，缺一条即失败。
+PARITY_ARGS=()
+if [ -n "${JEV_ALLOW_MISSING:-}" ]; then
+  PARITY_ARGS=(--allow-missing "$JEV_ALLOW_MISSING")
+  echo "   JEV_ALLOW_MISSING=$JEV_ALLOW_MISSING —— 英文集允许按 §S3 剔除，缺 id 须与报告对齐"
+fi
+python3 scripts/check-en-parity.py "$ZH" "$EN" ${PARITY_ARGS[@]+"${PARITY_ARGS[@]}"}
 
 echo "== 1/7 启动 jev-server on :$PORT (backend ${JEV_BASE_URL:-http://10.10.10.115:8014/v1}) =="
 JEV_BASE_URL="${JEV_BASE_URL:-http://10.10.10.115:8014/v1}" \
