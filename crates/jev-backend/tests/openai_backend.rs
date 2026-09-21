@@ -7,7 +7,10 @@
 
 mod common;
 
-use common::{spawn_completions_stub, CompletionsStub};
+use common::{
+    spawn_array_rejecting_completions_stub, spawn_completions_stub, ArrayRejectingCompletionsStub,
+    CompletionsStub,
+};
 use jev_backend::{BackendError, DecisionBackend, OpenAiCompatBackend, OpenAiCompatConfig};
 use serde_json::json;
 
@@ -468,6 +471,203 @@ async fn batched_invalid_json_is_a_decode_error() {
         .await
         .unwrap_err();
     assert!(matches!(err, BackendError::Decode(_)), "got {err:?}");
+}
+
+// ---------------------------------------------------------------------------
+// llama.cpp's wire dialect (probed 2026-09-21, M3 Ultra + llama.cpp server)
+//
+// Two things differ from the reference endpoint, and neither is cosmetic:
+//   1. the distribution is `logprobs.content[0].top_logprobs` — an *array* of
+//      token objects, with the legacy `logprobs.top_logprobs[0]` map absent;
+//   2. an array `prompt` is refused outright (400 "type must be string, but is an
+//      array"), so the M1 batched readout cannot run there as specified.
+// ---------------------------------------------------------------------------
+
+/// A `/completions` response in llama.cpp's shape.
+fn llama_cpp_body() -> String {
+    json!({
+        "choices": [{
+            "text": "A",
+            "index": 0,
+            "logprobs": {
+                "content": [{
+                    "token": "A",
+                    "logprob": -0.229,
+                    "bytes": [65],
+                    "top_logprobs": [
+                        {"token": "A", "logprob": -0.229, "bytes": [65]},
+                        {"token": " A", "logprob": -1.234, "bytes": [32, 65]},
+                        {"token": "B", "logprob": -1.854, "bytes": [66]}
+                    ]
+                }]
+            }
+        }],
+        "usage": { "prompt_tokens": 42, "completion_tokens": 1, "total_tokens": 43 }
+    })
+    .to_string()
+}
+
+#[tokio::test]
+async fn parses_llama_cpp_content_logprobs() {
+    let base = spawn_completions_stub(CompletionsStub::new(200, llama_cpp_body())).await;
+
+    let readout = backend(&base)
+        .token_logprobs(PROMPT, 20)
+        .await
+        .expect("llama.cpp's `logprobs.content[]` shape parses");
+
+    assert_eq!(readout.top.len(), 3);
+    assert_eq!(readout.top.get("A").copied(), Some(-0.229));
+    assert_eq!(readout.top.get(" A").copied(), Some(-1.234));
+    assert_eq!(readout.prompt_tokens, 42);
+    // Not merely parseable: the slot readout has to work on it, and both surface
+    // spellings of the slot are summed in log space by `slot_logprob`:
+    // ln(e^-0.229 + e^-1.234) = 0.0829.
+    let slot = readout.slot_logprob("A").expect("the A slot is present");
+    assert!(
+        (slot - 0.0829).abs() < 0.0005,
+        "both spellings of A must be summed, got {slot}"
+    );
+}
+
+#[tokio::test]
+async fn the_legacy_map_wins_when_both_shapes_are_present() {
+    // A server that emits both must still be read the way M0 froze: as the map.
+    let mut both: serde_json::Value = serde_json::from_str(&llama_cpp_body()).unwrap();
+    both["choices"][0]["logprobs"]["top_logprobs"] = json!([{ "B": -9.0 }]);
+    let base = spawn_completions_stub(CompletionsStub::new(200, both.to_string())).await;
+
+    let readout = backend(&base).token_logprobs(PROMPT, 20).await.unwrap();
+
+    assert_eq!(readout.top.get("B").copied(), Some(-9.0));
+    assert_eq!(readout.top.len(), 1, "the legacy map is the one that counts");
+}
+
+#[tokio::test]
+async fn a_content_entry_without_a_token_is_a_decode_error() {
+    let body = json!({
+        "choices": [{ "logprobs": { "content": [{ "top_logprobs": [{ "logprob": -1.0 }] }] } }],
+        "usage": { "prompt_tokens": 1 }
+    })
+    .to_string();
+    let base = spawn_completions_stub(CompletionsStub::new(200, body)).await;
+
+    let err = backend(&base).token_logprobs(PROMPT, 20).await.unwrap_err();
+
+    assert!(matches!(err, BackendError::Decode(_)), "got {err:?}");
+}
+
+#[tokio::test]
+async fn an_empty_content_distribution_is_no_logprobs() {
+    let body = json!({
+        "choices": [{ "logprobs": { "content": [
+            { "token": "A", "logprob": -1.0, "top_logprobs": [] }
+        ] } }],
+        "usage": { "prompt_tokens": 1 }
+    })
+    .to_string();
+    let base = spawn_completions_stub(CompletionsStub::new(200, body)).await;
+
+    let err = backend(&base).token_logprobs(PROMPT, 20).await.unwrap_err();
+
+    assert!(matches!(err, BackendError::NoLogprobs), "got {err:?}");
+}
+
+#[tokio::test]
+async fn a_400_on_the_array_prompt_falls_back_to_sequential_requests() {
+    let stub = ArrayRejectingCompletionsStub::new(7);
+    let base = spawn_array_rejecting_completions_stub(stub.clone()).await;
+    let b = backend(&base);
+
+    let readouts = b
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .expect("the sequential fallback answers where the batch was refused");
+
+    assert_eq!(readouts.len(), 3, "one readout per prompt, all-or-nothing");
+    let sent = stub.requests();
+    assert_eq!(
+        sent.len(),
+        prompts().len() + 1,
+        "one rejected array request, then one request per prompt: {sent:?}"
+    );
+    assert!(
+        sent[0]["prompt"].is_array(),
+        "the batched shape must be attempted first, not skipped"
+    );
+    for (i, body) in sent[1..].iter().enumerate() {
+        assert_eq!(
+            body["prompt"].as_str(),
+            Some(prompts()[i].as_str()),
+            "the fallback must ask the prompts in order, one by one"
+        );
+        assert!(
+            body["prompt"].is_string(),
+            "the fallback sends a string prompt (that is the whole point)"
+        );
+        assert_eq!(
+            readouts[i].top.get("A").copied(),
+            Some(-0.1 * (i as f64 + 1.0)),
+            "readout {i} must carry its own answer, not a neighbour's"
+        );
+        assert_eq!(
+            readouts[i].prompt_tokens, 7,
+            "in the fallback each readout carries its own `usage`, one request each"
+        );
+    }
+    assert_eq!(
+        b.batch_fallbacks(),
+        1,
+        "the fallback must be counted so no report can present it as a shared prefill"
+    );
+}
+
+#[tokio::test]
+async fn only_a_shape_rejection_triggers_the_fallback() {
+    // A rate limit, an auth failure or a server fault is about the *call*, not the
+    // request shape. Falling back there would launder a throttled endpoint into a
+    // "successful" benchmark run — and, worse, into readouts the run would treat as
+    // measurements (found in review, 2026-09-21: an array 429 was answered by three
+    // sequential requests and reported as readouts).
+    for status in [401, 403, 429, 500, 503] {
+        let stub = CompletionsStub::new(status, "nope");
+        let base = spawn_completions_stub(stub.clone()).await;
+        let b = backend(&base);
+
+        let err = b.token_logprobs_batch(&prompts(), 100).await.unwrap_err();
+
+        assert!(
+            expect_http(err).contains(&status.to_string()),
+            "{status}: the endpoint's status must survive"
+        );
+        assert_eq!(
+            stub.requests().len(),
+            1,
+            "{status} must not be retried sequentially"
+        );
+        assert_eq!(b.batch_fallbacks(), 0, "{status} is not a capability gap");
+    }
+}
+
+#[tokio::test]
+async fn the_sequential_fallback_does_not_swallow_a_failing_single_request() {
+    // Every request 400s: the array attempt triggers the fallback, and the
+    // fallback's own failures must surface as an error — never as readouts.
+    let stub = CompletionsStub::new(400, "nope");
+    let base = spawn_completions_stub(stub.clone()).await;
+
+    let err = backend(&base)
+        .token_logprobs_batch(&prompts(), 100)
+        .await
+        .unwrap_err();
+
+    assert!(expect_http(err).contains("400"), "the endpoint's status must survive");
+    assert_eq!(
+        stub.requests().len(),
+        2,
+        "the array attempt, then the first sequential retry — which fails, so the rest are \
+         not sent (no half-batch: the call returns an error instead of partial readouts)"
+    );
 }
 
 #[tokio::test]

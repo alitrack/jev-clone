@@ -110,6 +110,33 @@ probabilities with published ECE/Brier/reliability curves, (2) Chinese-first eva
   benchmarks and must not be reused as ours.
 - Evaluation sets are declared with content hashes. Sources are never pooled into one score.
 
+### Endpoint dialect (measured 2026-09-21, llama.cpp on an M3 Ultra)
+
+The OpenAI-compatible endpoint we were developed against is not the only one, and one of the
+differences was a **silently wrong answer**, not a loud failure. All three are now negotiated in
+`jev-backend`, so no proxy/shim is needed in front of the server:
+
+| Difference | Reference endpoint | llama.cpp | How it is handled |
+|---|---|---|---|
+| `/tokenize` field | `prompt`; anything else → 400 | `content`; `prompt` → **`200 {"tokens": []}`** | both fields × both URL spellings are tried; a non-empty text that tokenizes to nothing is treated as "field not recognised", never cached as an empty prompt, and the working `(url, field)` pair is remembered |
+| array `prompt` (batched readout) | accepted | **400** on build b9590; accepted on b11065 | only a **4xx** falls back to sequential single prompts (5xx still propagates), and the fallback is **counted** — the bench report states that the shared-prefix number is then not one shared prefill |
+| `logprobs` shape | `logprobs.top_logprobs[0]` — a token→logprob map | `logprobs.content[0].top_logprobs[]` — an array of `{token, logprob}` | the legacy map is read first (frozen behaviour), then the array; an empty distribution is `NoLogprobs`, a missing `token`/`logprob` is `Decode` |
+
+The startup slot self-check is configurable with `JEV_SLOT_CHECK`:
+
+- `strict` (default) — asserts the probed ids of the reference tokenizer
+  (`"Answer:\n"` = `[15666, 25, 198]`, and `A` = `[32]`).
+- `letters` — asserts only what the readout actually depends on, for **any** vocabulary: every slot
+  letter is a single token and appending it does not re-tokenize the prompt tail. Needed because the
+  strict check pins a whole tokenization the readout never uses (Qwen3-4B: `"Answer:\n"` =
+  `[16141, 510, 32]`, and the old check refused to start a server that reads probabilities fine).
+
+Prefix reuse on llama.cpp is a property of the **model architecture as much as of the build**:
+on build b11065 the server reports `cache_reuse is not supported by this context, it will be
+disabled` for a hybrid (Gated DeltaNet) model such as Qwen3.5-4B, and the batched arm then measures
+1.05× (154 ms/decision) — the same order as the dense Qwen3-4B's 1.74×/1.85× on the older build,
+against 2.5–5.5× on the tuned direct probe. None of these three numbers is a ≥3× claim.
+
 ## License
 
 TBD (private repository). Third-party reference implementations were read for design study only;

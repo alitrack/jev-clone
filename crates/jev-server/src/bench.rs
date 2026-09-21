@@ -15,10 +15,15 @@
 //!
 //! ## Why the win has to be measured in wall clock
 //!
-//! The endpoint reports `usage.prompt_tokens` as `N x prefix` — the radix cache
-//! does **not** discount the count (probed, specs/M1.md §1). Token accounting is
-//! therefore identical on both paths; only wall time separates them. Reporting a
-//! token-based speedup would be reporting a number that does not exist.
+//! `usage.prompt_tokens` is the *endpoint's own* count, and endpoints disagree
+//! about what a batched request should report: the reference endpoint counts
+//! `N x prefix` for it (the radix cache does not discount — probed,
+//! specs/M1.md §1), while llama.cpp build b11065 reported the shared prefix
+//! **once** (909 for the batched arm vs 18933 for the same 63 sequential
+//! decisions, measured 2026-09-21). Since the two paths can therefore report
+//! wildly different token counts for identical work, wall clock is the only
+//! valid measure of the win. Reporting a token-based speedup would be reporting
+//! a number that does not exist.
 //!
 //! ## What the number does and does not isolate
 //!
@@ -560,9 +565,12 @@ pub async fn run(args: &BenchArgs) -> anyhow::Result<BenchReport> {
     let now = SystemTime::now();
     let host = hostname();
     let mut notes = vec![
-        "Wall clock is the only valid measure of the prefix-reuse win: the endpoint reports \
-         usage.prompt_tokens as N x prefix (no cache discount), so token counts are ~equal on \
-         both paths (specs/M1.md §1)."
+        "Wall clock is the only valid measure of the prefix-reuse win. `usage.prompt_tokens` is the \
+         endpoint's own count, and backends differ on what a batched request reports: the reference \
+         endpoint reported N x prefix for it, llama.cpp b11065 reported the shared prefix once \
+         (909 batched vs 18933 for the same 63 sequential decisions, 2026-09-21). Read the two \
+         token numbers below as the endpoint's accounting, never as the speed measure \
+         (specs/M1.md §1)."
             .to_string(),
         "Baseline = one independent /completions request per question, sent sequentially to the \
          same server; optimised = one request with `prompt` as an array. The server's radix cache \
@@ -588,6 +596,18 @@ pub async fn run(args: &BenchArgs) -> anyhow::Result<BenchReport> {
         ),
         "The M3 Ultra / local-backend table is not part of this run (specs/M1.md §4).".to_string(),
     ];
+    // A backend that refuses array `prompt` gets its batches served sequentially
+    // (`OpenAiCompatBackend::token_logprobs_batch`); the number then stops being a
+    // measurement of the M1 optimisation, so the report must say which it is.
+    let batch_fallbacks = backend.batch_fallbacks();
+    if batch_fallbacks > 0 {
+        notes.push(format!(
+            "This endpoint rejected the batched (array `prompt`) request {batch_fallbacks} time(s), so every \
+             shared-prefix block above was served as sequential single-prompt requests. The speedup is then \
+             the server's own per-request cache effect, NOT one shared prefill — specs/M1.md §1's \
+             optimisation did not run on this backend."
+        ));
+    }
     if let Some(forced) = args.top_k {
         // Never let a hand-picked top_k masquerade as the server rule.
         notes.push(format!(

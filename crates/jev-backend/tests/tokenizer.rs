@@ -9,8 +9,8 @@ mod common;
 
 use common::{spawn_tokenize_stub, TokenizeStub};
 use jev_backend::tokenizer::{
-    check_probed_slot_assumption, PROBED_PROMPT, PROBED_PROMPT_IDS, PROBED_SLOT_ID,
-    PROBED_SLOT_LETTER,
+    check_probed_slot_assumption, check_slot_letters, slot_letters, SlotCheck, PROBED_PROMPT,
+    PROBED_PROMPT_IDS, PROBED_SLOT_ID, PROBED_SLOT_LETTER,
 };
 use jev_backend::{HttpTokenizer, Prefetch};
 use jev_core::SlotVerifier;
@@ -277,4 +277,222 @@ async fn decode_token_returns_the_letter_it_observed() {
     assert_eq!(tk.decode_token(65), "A", "id 65 was cached as the single token `A`");
     // Nothing was observed for id 7: diagnostics must say so, not invent text.
     assert_eq!(tk.decode_token(7), "<unk>");
+}
+
+// ---------------------------------------------------------------------------
+// The field-name negotiation (llama.cpp's dialect, probed 2026-09-21)
+//
+// llama.cpp's `/tokenize` takes `content`, not `prompt` — and unlike SGLang it
+// does not reject the field it does not know: it answers `200 {"tokens": []}`.
+// A client that accepts that as a tokenization caches an empty prompt and reads
+// its logprobs from the wrong position without a single error anywhere.
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn the_reference_field_is_tried_first_and_accepted() {
+    let stub = TokenizeStub::new();
+    let base = spawn_tokenize_stub(stub.clone()).await;
+
+    let ids = tokenizer(&base).try_encode("Answer:\n").await.unwrap();
+
+    assert_eq!(ids, ids_of("Answer:\n"));
+    assert_eq!(
+        stub.request_count(),
+        1,
+        "the reference endpoint must cost exactly one request (no negotiation)"
+    );
+    assert_eq!(stub.fields(), vec!["prompt".to_string()]);
+}
+
+#[tokio::test]
+async fn a_llama_cpp_endpoint_is_reached_through_its_own_field() {
+    let stub = TokenizeStub::new().llama_cpp_dialect();
+    let base = spawn_tokenize_stub(stub.clone()).await;
+
+    let ids = tokenizer(&base)
+        .try_encode("Answer:\n")
+        .await
+        .expect("the `content` field is tried once `prompt` comes back empty");
+
+    assert_eq!(ids, ids_of("Answer:\n"), "the real tokenization, not the empty one");
+    let fields = stub.fields();
+    assert_eq!(
+        fields.first().map(String::as_str),
+        Some("prompt"),
+        "the reference field must be tried first: {fields:?}"
+    );
+    assert_eq!(
+        fields.last().map(String::as_str),
+        Some("content"),
+        "the endpoint's own field must be the one that finally answers: {fields:?}"
+    );
+}
+
+#[tokio::test]
+async fn an_empty_tokenization_is_never_cached_as_a_prompt() {
+    // The silent shape must not poison the cache: a later read of the same text
+    // has to return the ids the endpoint gave for its own field.
+    let stub = TokenizeStub::new().llama_cpp_dialect();
+    let base = spawn_tokenize_stub(stub).await;
+    let tk = tokenizer(&base);
+
+    let first = tk.try_encode("Answer:\n").await.unwrap();
+    let second = tk.try_encode("Answer:\n").await.unwrap();
+
+    assert!(!first.is_empty() && !second.is_empty());
+    assert_eq!(first, second, "the cache must hold the good encoding");
+    assert_eq!(tk.encode("Answer:\n"), ids_of("Answer:\n"));
+}
+
+#[tokio::test]
+async fn the_tokenization_combination_is_remembered_for_later_texts() {
+    // Startup probes tens of texts (`letters` mode: 41). Re-walking the whole
+    // ladder for each of them would be 123 requests where 41 suffice.
+    let stub = TokenizeStub::new().llama_cpp_dialect();
+    let base = spawn_tokenize_stub(stub.clone()).await;
+    let tk = tokenizer(&base);
+
+    tk.try_encode("Answer:\n").await.unwrap();
+    let after_first = stub.request_count();
+    tk.try_encode("B").await.unwrap();
+
+    assert_eq!(
+        stub.request_count(),
+        after_first + 1,
+        "the negotiated combination must be tried first for the next text"
+    );
+    assert_eq!(stub.fields().last().map(String::as_str), Some("content"));
+}
+
+#[tokio::test]
+async fn every_url_and_field_combination_is_named_when_all_of_them_fail() {
+    let stub = TokenizeStub::new().failing_primary().failing_fallback();
+    let base = spawn_tokenize_stub(stub).await;
+
+    let msg = tokenizer(&base).try_encode("Answer:\n").await.unwrap_err().to_string();
+
+    for needle in ["/tokenize", "/v1/tokenize", "[prompt]", "[content]"] {
+        assert!(msg.contains(needle), "{needle} missing from: {msg}");
+    }
+}
+
+// ---------------------------------------------------------------------------
+// SlotCheck modes (`JEV_SLOT_CHECK`)
+// ---------------------------------------------------------------------------
+
+/// A vocabulary whose prompt tail tokenizes differently from the reference:
+/// `"Answer:\n"` = `[16141, 510, 32]`, as probed on Qwen3-4B-Instruct-2507
+/// (2026-09-21), with single-token slot letters and a stable boundary. It covers
+/// the renderer's full letter range (`A`..`Z`), not just the first 20: a check
+/// that stopped at `T` would miss a broken `Z`.
+fn foreign_vocabulary() -> HashMap<String, Vec<u32>> {
+    let prompt = vec![16141u32, 510, 32];
+    let mut map = HashMap::new();
+    map.insert(PROBED_PROMPT.to_string(), prompt.clone());
+    for (i, letter) in "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().enumerate() {
+        let id = 300 + i as u32;
+        map.insert(letter.to_string(), vec![id]);
+        let combined: Vec<u32> = prompt.iter().copied().chain(std::iter::once(id)).collect();
+        map.insert(format!("{PROBED_PROMPT}{letter}"), combined);
+    }
+    map
+}
+
+#[test]
+fn slot_letters_follow_the_renderers_limit() {
+    // Tied to `render.rs::letter_at` so the self-check cannot fall behind the
+    // renderer: a stale hand-written list is how `Z` went unchecked (review).
+    let letters = slot_letters();
+    assert_eq!(letters.len(), jev_core::render::MAX_LETTER_SLOTS);
+    assert_eq!(letters.first().map(String::as_str), Some("A"));
+    assert_eq!(letters.last().map(String::as_str), Some("Z"));
+}
+
+#[test]
+fn letters_mode_accepts_a_vocabulary_that_strict_rejects() {
+    let v = FakeVerifier::new(foreign_vocabulary());
+
+    let strict_err = check_probed_slot_assumption(&v).unwrap_err().to_string();
+    assert!(
+        strict_err.contains("15666"),
+        "strict mode pins the reference ids and must say so: {strict_err}"
+    );
+
+    check_slot_letters(&v).expect("the slot property itself holds, so the readout is sound");
+    SlotCheck::Letters
+        .run(&v)
+        .expect("the mode must dispatch to the tokenizer-independent check");
+}
+
+#[test]
+fn letters_mode_still_rejects_a_multi_token_letter() {
+    // `Z` on purpose: the check has to reach the *last* letter the renderer can
+    // name, not stop at the twentieth.
+    let mut map = foreign_vocabulary();
+    map.insert("Z".to_string(), vec![325, 326]);
+    let err = check_slot_letters(&FakeVerifier::new(map)).unwrap_err().to_string();
+    assert!(err.contains("not a single token"), "{err}");
+    assert!(err.contains('Z'), "the failing letter must be named: {err}");
+}
+
+#[tokio::test]
+async fn an_empty_text_does_not_poison_the_dialect_memory() {
+    // Empty text tokenizes to nothing on *every* field, so it is no evidence of a
+    // dialect. Taking it as evidence sends the next real text down the ladder from
+    // the wrong spelling and costs an extra round trip (review, 2026-09-21:
+    // measured 5 requests instead of 3 after one empty encode).
+    let stub = TokenizeStub::new().llama_cpp_dialect();
+    let base = spawn_tokenize_stub(stub.clone()).await;
+    let tk = tokenizer(&base);
+
+    assert!(tk.try_encode("").await.unwrap().is_empty(), "empty in, empty out");
+    let before = stub.request_count();
+    tk.try_encode("Answer:\n").await.unwrap();
+
+    assert_eq!(
+        stub.request_count() - before,
+        3,
+        "the real text must walk the documented ladder (the field on both URL spellings, then the \
+         other field) rather than start from a spelling remembered from the empty text"
+    );
+    assert_eq!(stub.fields().last().map(String::as_str), Some("content"));
+}
+
+#[test]
+fn letters_mode_still_rejects_a_re_tokenized_tail() {
+    let mut map = foreign_vocabulary();
+    map.insert(format!("{PROBED_PROMPT}C"), vec![16141, 511, 32, 302]);
+    let err = check_slot_letters(&FakeVerifier::new(map)).unwrap_err().to_string();
+    assert!(err.contains("re-tokenized"), "{err}");
+}
+
+#[test]
+fn the_mode_mapping_is_explicit_and_never_guesses() {
+    assert_eq!(SlotCheck::parse(None).unwrap(), SlotCheck::Strict, "unset = strict");
+    assert_eq!(SlotCheck::parse(Some("")).unwrap(), SlotCheck::Strict);
+    assert_eq!(SlotCheck::parse(Some("  Strict  ")).unwrap(), SlotCheck::Strict);
+    assert_eq!(SlotCheck::parse(Some("letters")).unwrap(), SlotCheck::Letters);
+    let err = SlotCheck::parse(Some("letterz")).unwrap_err().to_string();
+    assert!(
+        err.contains("not a known mode"),
+        "a typo must not silently fall back to the default: {err}"
+    );
+    assert!(err.contains(SlotCheck::ENV), "the variable must be named: {err}");
+}
+
+#[tokio::test]
+async fn letters_mode_runs_against_a_stub_endpoint() {
+    // The byte-per-token stub satisfies the tokenizer-independent property for
+    // A..T, while failing the strict probe — exactly the situation `letters`
+    // exists for (a foreign vocabulary whose answer slot is still readable).
+    let base = spawn_tokenize_stub(TokenizeStub::new()).await;
+    let tk = tokenizer(&base);
+
+    tk.verify_slot_check(SlotCheck::Letters)
+        .await
+        .expect("every slot letter is one token and does not re-tokenize the tail");
+    assert!(
+        tk.verify_slot_check(SlotCheck::Strict).await.is_err(),
+        "the same stub must still fail the strict probe (it is not the reference tokenizer)"
+    );
 }

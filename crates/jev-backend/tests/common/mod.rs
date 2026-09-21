@@ -83,6 +83,25 @@ pub async fn spawn_completions_stub(stub: CompletionsStub) -> String {
 }
 
 // ---------------------------------------------------------------------------
+// Which dialect the tokenize stub speaks
+// ---------------------------------------------------------------------------
+
+/// The two live endpoints disagree on the request field name, and the failure
+/// mode differs in kind: the reference endpoint *rejects* the wrong field
+/// loudly (400), while llama.cpp ignores it and answers an empty tokenization
+/// with a 200. The stub has to be able to reproduce both, or the client's
+/// detection of the silent one cannot be tested at all.
+#[derive(Clone, Copy, Default, PartialEq, Eq)]
+pub enum Dialect {
+    /// The reference endpoint (SGLang): `prompt` only, 400 for anything else.
+    #[default]
+    Reference,
+    /// llama.cpp: the field is `content`; a `prompt`-only body gets
+    /// `200 {"tokens": []}` — the silently-empty shape.
+    LlamaCpp,
+}
+
+// ---------------------------------------------------------------------------
 // POST /tokenize (+ /v1/tokenize) stub
 // ---------------------------------------------------------------------------
 
@@ -103,13 +122,18 @@ pub async fn spawn_completions_stub(stub: CompletionsStub) -> String {
 /// showed up against the real endpoint.
 ///
 /// Per-text `overrides` let a test script specific encodings (e.g. the probed
-/// `"Answer:\n" -> [15666, 25, 198]`).
+/// `"Answer:\n" -> [15666, 25, 198]`). Which request fields this endpoint accepts
+/// is [`Dialect`]; the default is the reference dialect.
 #[derive(Clone, Default)]
 pub struct TokenizeStub {
     overrides: HashMap<String, Vec<u32>>,
     fail_primary: bool,
     fail_fallback: bool,
+    /// Which request field this endpoint accepts (see [`Dialect`]).
+    dialect: Dialect,
     seen: Arc<Mutex<Vec<(String, String)>>>,
+    /// The body field each request used, in order (`prompt` / `content`).
+    fields: Arc<Mutex<Vec<String>>>,
 }
 
 impl TokenizeStub {
@@ -120,6 +144,13 @@ impl TokenizeStub {
     /// Force a specific encoding for `text`.
     pub fn with_override(mut self, text: impl Into<String>, ids: Vec<u32>) -> Self {
         self.overrides.insert(text.into(), ids);
+        self
+    }
+
+    /// Speak llama.cpp's dialect: `content` is the field, `prompt` is ignored
+    /// with a 200 and an empty `tokens` array.
+    pub fn llama_cpp_dialect(mut self) -> Self {
+        self.dialect = Dialect::LlamaCpp;
         self
     }
 
@@ -140,6 +171,11 @@ impl TokenizeStub {
         self.seen.lock().unwrap().clone()
     }
 
+    /// The body field each request used, in order.
+    pub fn fields(&self) -> Vec<String> {
+        self.fields.lock().unwrap().clone()
+    }
+
     pub fn request_count(&self) -> usize {
         self.seen.lock().unwrap().len()
     }
@@ -149,11 +185,54 @@ fn fake_ids(text: &str) -> Vec<u32> {
     text.bytes().map(u32::from).collect()
 }
 
+/// What the stub made of one request body.
+enum FieldRead {
+    /// Understood: the field name it used and the text it carries.
+    Text(&'static str, String),
+    /// Present, but this dialect ignores it — answer 200 with an *empty*
+    /// `tokens` array, which is exactly what llama.cpp answers for `prompt`.
+    Ignored(&'static str),
+    /// Nothing usable — answer 400, as the reference endpoint does.
+    Rejected,
+}
+
+fn read_field(body: &Value, dialect: Dialect) -> FieldRead {
+    match dialect {
+        Dialect::Reference => match body.get("prompt").and_then(|t| t.as_str()) {
+            Some(text) => FieldRead::Text("prompt", text.to_string()),
+            None => FieldRead::Rejected,
+        },
+        Dialect::LlamaCpp => {
+            if let Some(text) = body.get("content").and_then(|t| t.as_str()) {
+                FieldRead::Text("content", text.to_string())
+            } else if body.get("prompt").is_some() {
+                FieldRead::Ignored("prompt")
+            } else {
+                FieldRead::Rejected
+            }
+        }
+    }
+}
+
 async fn tokenize_one(stub: &TokenizeStub, path: &str, body: Value, fail: bool) -> Response {
-    // Faithful to the live endpoint: `prompt` is the only accepted field.
-    let text = match body.get("prompt").and_then(|t| t.as_str()) {
-        Some(text) => text.to_string(),
-        None => {
+    let (field, text) = match read_field(&body, stub.dialect) {
+        FieldRead::Text(field, text) => (field, text),
+        FieldRead::Ignored(field) => {
+            stub.seen
+                .lock()
+                .unwrap()
+                .push((path.to_string(), format!("<ignored field {field}>")));
+            stub.fields.lock().unwrap().push(field.to_string());
+            // A 200 with nothing in it, not an error: the client has to notice by
+            // itself that a non-empty text produced no tokens.
+            return Json(json!({
+                "tokens": [],
+                "count": 0,
+                "max_model_len": 262_144,
+            }))
+            .into_response();
+        }
+        FieldRead::Rejected => {
             stub.seen
                 .lock()
                 .unwrap()
@@ -177,6 +256,7 @@ async fn tokenize_one(stub: &TokenizeStub, path: &str, body: Value, fail: bool) 
         .lock()
         .unwrap()
         .push((path.to_string(), text.clone()));
+    stub.fields.lock().unwrap().push(field.to_string());
     if fail {
         return (
             StatusCode::INTERNAL_SERVER_ERROR,
@@ -223,4 +303,103 @@ pub async fn spawn_tokenize_stub(stub: TokenizeStub) -> String {
         axum::serve(listener, app).await.unwrap();
     });
     format!("http://{addr}")
+}
+
+// ---------------------------------------------------------------------------
+// POST /v1/completions stub that rejects an array `prompt` (llama.cpp's dialect)
+// ---------------------------------------------------------------------------
+
+/// Answers `POST /v1/completions` the way llama.cpp's server does: a single
+/// string `prompt` is answered normally, an **array** `prompt` is rejected with
+/// `400 {"error":{"message":"type must be string, but is an array"}}`.
+///
+/// Records every request body, so a test can assert the shape of a fallback: one
+/// rejected array request, then one single-prompt request per prompt, in order.
+#[derive(Clone)]
+pub struct ArrayRejectingCompletionsStub {
+    /// `usage.prompt_tokens` reported for each single-prompt answer.
+    prompt_tokens: u64,
+    seed: Arc<Mutex<u64>>,
+    seen: Arc<Mutex<Vec<Value>>>,
+}
+
+impl ArrayRejectingCompletionsStub {
+    pub fn new(prompt_tokens: u64) -> Self {
+        Self {
+            prompt_tokens,
+            seed: Arc::new(Mutex::new(0)),
+            seen: Arc::new(Mutex::new(Vec::new())),
+        }
+    }
+
+    /// Every request body the stub received, in order.
+    pub fn requests(&self) -> Vec<Value> {
+        self.seen.lock().unwrap().clone()
+    }
+}
+
+async fn array_rejecting_completions(
+    State(stub): State<ArrayRejectingCompletionsStub>,
+    Json(body): Json<Value>,
+) -> Response {
+    stub.seen.lock().unwrap().push(body.clone());
+    match body.get("prompt") {
+        Some(Value::String(_)) => {
+            // Distinct per-call logprob so a test can prove the readouts stayed in
+            // prompt order instead of collapsing to one value.
+            let lp = {
+                let mut seed = stub.seed.lock().unwrap();
+                let lp = -0.1 * (*seed as f64 + 1.0);
+                *seed += 1;
+                lp
+            };
+            let prompt_tokens = stub.prompt_tokens;
+            Json(json!({
+                "choices": [{
+                    "text": "A",
+                    "index": 0,
+                    "logprobs": { "top_logprobs": [ { "A": lp, "B": -2.0 } ] }
+                }],
+                "usage": {
+                    "prompt_tokens": prompt_tokens,
+                    "completion_tokens": 1,
+                    "total_tokens": prompt_tokens + 1
+                }
+            }))
+            .into_response()
+        }
+        Some(Value::Array(_)) => (
+            StatusCode::BAD_REQUEST,
+            [(header::CONTENT_TYPE, "application/json")],
+            json!({
+                "error": {
+                    "message": "type must be string, but is an array",
+                    "type": "invalid_request_error",
+                    "code": 400
+                }
+            })
+            .to_string(),
+        )
+            .into_response(),
+        _ => (
+            StatusCode::BAD_REQUEST,
+            [(header::CONTENT_TYPE, "text/plain")],
+            "prompt must be a string".to_string(),
+        )
+            .into_response(),
+    }
+}
+
+/// Bind the array-rejecting completions stub on an ephemeral localhost port;
+/// returns the OpenAI-compatible base URL (`http://127.0.0.1:<port>/v1`).
+pub async fn spawn_array_rejecting_completions_stub(stub: ArrayRejectingCompletionsStub) -> String {
+    let app = Router::new()
+        .route("/v1/completions", post(array_rejecting_completions))
+        .with_state(stub);
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move {
+        axum::serve(listener, app).await.unwrap();
+    });
+    format!("http://{addr}/v1")
 }
