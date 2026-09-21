@@ -305,6 +305,33 @@ async fn the_reference_field_is_tried_first_and_accepted() {
 }
 
 #[tokio::test]
+async fn a_failing_endpoint_costs_two_requests_and_names_one_field() {
+    // A failing endpoint never said it ignores the field, so there is no dialect
+    // to negotiate: it keeps M0's semantics — the reference field on both URL
+    // spellings, one error naming only that field. Probing `content` as well
+    // doubled the requests and buried the real cause among four failures
+    // (found in review, 2026-09-21).
+    let stub = TokenizeStub::new().failing_primary().failing_fallback();
+    let base = spawn_tokenize_stub(stub.clone()).await;
+
+    let err = tokenizer(&base)
+        .try_encode("Answer:\n")
+        .await
+        .unwrap_err()
+        .to_string();
+
+    assert_eq!(stub.request_count(), 2, "two URL spellings, not four attempts");
+    assert!(
+        err.contains("\"prompt\""),
+        "the reference field must be named: {err}"
+    );
+    assert!(
+        !err.contains("content"),
+        "the other dialect must not appear when it was never probed: {err}"
+    );
+}
+
+#[tokio::test]
 async fn a_llama_cpp_endpoint_is_reached_through_its_own_field() {
     let stub = TokenizeStub::new().llama_cpp_dialect();
     let base = spawn_tokenize_stub(stub.clone()).await;
@@ -365,15 +392,23 @@ async fn the_tokenization_combination_is_remembered_for_later_texts() {
 }
 
 #[tokio::test]
-async fn every_url_and_field_combination_is_named_when_all_of_them_fail() {
+async fn the_error_names_every_attempt_that_was_actually_made() {
+    // Hard failures on both URL spellings leave no dialect evidence: the endpoint
+    // never said it ignores the field, so only the reference field is probed, and
+    // the message names what was tried. Probing `content` too would double the
+    // requests and list failures that were never asked for (review, 2026-09-21).
     let stub = TokenizeStub::new().failing_primary().failing_fallback();
     let base = spawn_tokenize_stub(stub).await;
 
     let msg = tokenizer(&base).try_encode("Answer:\n").await.unwrap_err().to_string();
 
-    for needle in ["/tokenize", "/v1/tokenize", "[prompt]", "[content]"] {
+    for needle in ["/tokenize", "/v1/tokenize", "[prompt]"] {
         assert!(msg.contains(needle), "{needle} missing from: {msg}");
     }
+    assert!(
+        !msg.contains("[content]"),
+        "a field that was never probed must not be named: {msg}"
+    );
 }
 
 // ---------------------------------------------------------------------------

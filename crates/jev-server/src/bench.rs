@@ -742,9 +742,18 @@ pub fn render_table(r: &BenchReport) -> String {
         r.questions * r.repeat,
         r.speedup
     ));
+    // The endpoint's own counts, and backends disagree about what a batched
+    // request reports (reference: N x prefix; llama.cpp b11065: the shared prefix
+    // once). Print both and claim nothing beyond what they are — the previous
+    // wording asserted "N x prefix; the cache does not discount it", which this
+    // repository's own llama.cpp result already contradicted (18240 vs 894).
     out.push_str(&format!(
-        "token accounting: fresh prompt_tokens {}, shared prompt_tokens {} (endpoint counts N x \
-         prefix; the cache does not discount it)\n",
+        "token accounting: fresh prompt_tokens {}, shared prompt_tokens {} — the endpoint's own \
+         counts for the requests it was sent (one independent request per question vs one batched \
+         request per round). Backends differ on what a batched request reports: the reference \
+         endpoint reported N x prefix, llama.cpp b11065 reported the shared prefix once (909 vs \
+         18933 for the same work, measured 2026-09-21). Read it as accounting, not as the speed \
+         measure.\n",
         r.token_accounting.fresh_prompt_tokens, r.token_accounting.shared_prompt_tokens
     ));
     out.push_str(&format!("results      : {}\n", r.result_file));

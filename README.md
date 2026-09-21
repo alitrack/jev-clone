@@ -119,7 +119,7 @@ differences was a **silently wrong answer**, not a loud failure. All three are n
 | Difference | Reference endpoint | llama.cpp | How it is handled |
 |---|---|---|---|
 | `/tokenize` field | `prompt`; anything else → 400 | `content`; `prompt` → **`200 {"tokens": []}`** | both fields × both URL spellings are tried; a non-empty text that tokenizes to nothing is treated as "field not recognised", never cached as an empty prompt, and the working `(url, field)` pair is remembered |
-| array `prompt` (batched readout) | accepted | **400** on build b9590; accepted on b11065 | only a **4xx** falls back to sequential single prompts (5xx still propagates), and the fallback is **counted** — the bench report states that the shared-prefix number is then not one shared prefill |
+| array `prompt` (batched readout) | accepted | **400** on build b9590; accepted on b11065 | only a **request-shape rejection** (400/404/405/415/422) falls back to sequential single prompts — 429, 401/403 and 5xx still propagate, so a throttled or unauthorised endpoint can never be laundered into a "successful" run — and the fallback is **counted**, so the bench report states that the shared-prefix number is then not one shared prefill |
 | `logprobs` shape | `logprobs.top_logprobs[0]` — a token→logprob map | `logprobs.content[0].top_logprobs[]` — an array of `{token, logprob}` | the legacy map is read first (frozen behaviour), then the array; an empty distribution is `NoLogprobs`, a missing `token`/`logprob` is `Decode` |
 
 The startup slot self-check is configurable with `JEV_SLOT_CHECK`:
@@ -130,6 +130,14 @@ The startup slot self-check is configurable with `JEV_SLOT_CHECK`:
   letter is a single token and appending it does not re-tokenize the prompt tail. Needed because the
   strict check pins a whole tokenization the readout never uses (Qwen3-4B: `"Answer:\n"` =
   `[16141, 510, 32]`, and the old check refused to start a server that reads probabilities fine).
+
+`usage.input_tokens` is always the **endpoint's own** prompt-token count, never a recomputation: for
+a single request it is that request's number, and for a batched request it is whatever the endpoint
+reported for the whole batch (attached to the first readout, the rest reporting 0, so summing the
+vector reproduces the endpoint's number exactly). Backends disagree on what that number should be —
+the reference endpoint counts `N × prefix` on a batch, llama.cpp b11065 counts the shared prefix once
+(909 vs 18933 for the same 63 decisions) — so the bench report prints both counts and claims nothing
+more. Do not use token counts as the speed measure anywhere.
 
 Prefix reuse on llama.cpp is a property of the **model architecture as much as of the build**:
 on build b11065 the server reports `cache_reuse is not supported by this context, it will be

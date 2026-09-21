@@ -363,17 +363,36 @@ impl HttpTokenizer {
 
         // Phase 1 — the reference dialect: its field on both URL spellings. This
         // is M0's behaviour, unchanged, and it wins on the reference endpoint.
+        let mut field_ignored = false;
         for url in [&primary, &fallback] {
             match self.attempt(url, TOKENIZE_FIELDS[0], text).await {
                 Ok(Some(ids)) => return Ok(ids),
-                Ok(None) => attempts.push(empty_tokens_note(url, TOKENIZE_FIELDS[0])),
+                Ok(None) => {
+                    field_ignored = true;
+                    attempts.push(empty_tokens_note(url, TOKENIZE_FIELDS[0]));
+                }
                 Err(e) => attempts.push(format!("{url} [{}] -> {e}", TOKENIZE_FIELDS[0])),
             }
         }
 
+        // An endpoint that failed *every* phase-1 attempt (404, 5xx, unreachable)
+        // never told us it ignores the field, so this is not a dialect difference:
+        // stop here with M0's semantics — two requests, one `Http` error that
+        // mentions only the reference field. Walking on would double the request
+        // count on a failing endpoint and bury the real cause among four
+        // failures (found in review, 2026-09-21: the reference endpoint's failure
+        // path went from 2 requests to 4).
+        if !field_ignored {
+            anyhow::bail!(
+                "tokenize failed on both URL spellings with the reference field {:?}: {}",
+                TOKENIZE_FIELDS[0],
+                attempts.join("; ")
+            );
+        }
+
         // Phase 2 — the other dialect's field (llama.cpp's `content`), same two
-        // spellings. Only reached when phase 1 produced no usable tokenization:
-        // either the silent-ignore shape, or total failure on every URL.
+        // spellings. Reached only when the endpoint answered phase 1 and ignored
+        // the field (the silent-ignore shape, e.g. `200 {"tokens":[]}`).
         for url in [&primary, &fallback] {
             match self.attempt(url, TOKENIZE_FIELDS[1], text).await {
                 Ok(Some(ids)) => {
