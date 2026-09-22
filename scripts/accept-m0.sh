@@ -25,7 +25,7 @@ echo "########## 2/3 start server against the live endpoint"
 # (unrelated) service listens on *:8080 and answers /healthz with 200 text/plain,
 # which a naive readiness check mistakes for this server. Use JEV_PORT to move.
 PORT="${JEV_PORT:-8080}"
-JEV_BASE_URL="${JEV_BASE_URL:-http://10.10.10.115:8014/v1}" \
+JEV_BASE_URL="${JEV_BASE_URL:-http://127.0.0.1:8014/v1}" \
 JEV_MODEL="${JEV_MODEL:-qwen3.8-27b}" \
 JEV_LISTEN="127.0.0.1:$PORT" \
   ./target/debug/jev-server > /mnt/d/wsl2/tmp/jev-m0/server.log 2>&1 &

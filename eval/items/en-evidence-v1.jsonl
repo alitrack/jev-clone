@@ -8,7 +8,7 @@
 #
 # HOW IT WAS PRODUCED (2026-09-20)
 #   * `zh-evidence-v1.jsonl` split into 5 chunks of 30 items (`chunks/chunk1..5.jsonl`);
-#     one worker session per chunk, run SERIALLY (the endpoint 10.10.10.115:8014 is shared —
+#     one worker session per chunk, run SERIALLY (the endpoint lan-gpu-host:8014 is shared —
 #     M2 measured 3-way concurrency breaking it), driven by sigil
 #     (`scripts/run-worker.sh`, orchestrated by `supervisor.sh`).
 #   * Translation rules the worker had to obey, in the task book it was given:

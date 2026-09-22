@@ -1,7 +1,7 @@
 {
   "timestamp_utc": "2026-09-19T14:05:33Z",
   "host": "DESKTOP-QD6AT84",
-  "endpoint": "http://10.10.10.115:8014/v1",
+  "endpoint": "http://lan-gpu-host:8014/v1",
   "model": "qwen3.8-27b",
   "sglang_version": "0.5.19",
   "state_file": "bench/states/long-state.txt",

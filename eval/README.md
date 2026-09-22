@@ -171,7 +171,7 @@ jev-eval verify --items eval/items/zh-evidence-v1.jsonl \
 
 ## 7. 最近一次全量成绩（v1 / 150 条 / 真端点 8014）
 
-题集 `zh-evidence-v1.jsonl`（sha256 `2f0415d9…`），后端 `qwen3.8-27b`（SGLang TP2，10.10.10.115:8014），
+题集 `zh-evidence-v1.jsonl`（sha256 `2f0415d9…`），后端 `qwen3.8-27b`（SGLang TP2，lan-gpu-host:8014），
 逐题一次请求；命令见 `scripts/accept-m1-eval.sh`，原始产物 `eval/runs/20260919T152343Z-*`。
 
 | 分层 | n | acc | bal_acc | nll | brier_mc | brier_bin | ece |

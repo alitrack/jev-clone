@@ -19,8 +19,8 @@ MD="$RUN_DIR/$DATE-report.md"
 WORK="/mnt/d/wsl2/tmp/jev-m0"
 mkdir -p "$RUN_DIR" "$WORK"
 
-echo "== 1/6 starting jev-server on :$PORT (backend $( [ -n "${JEV_BASE_URL:-}" ] && echo "$JEV_BASE_URL" || echo http://10.10.10.115:8014/v1 ))"
-JEV_BASE_URL="${JEV_BASE_URL:-http://10.10.10.115:8014/v1}" \
+echo "== 1/6 starting jev-server on :$PORT (backend $( [ -n "${JEV_BASE_URL:-}" ] && echo "$JEV_BASE_URL" || echo http://127.0.0.1:8014/v1 ))"
+JEV_BASE_URL="${JEV_BASE_URL:-http://127.0.0.1:8014/v1}" \
 JEV_MODEL="${JEV_MODEL:-qwen3.8-27b}" \
 JEV_LISTEN="127.0.0.1:$PORT" \
   setsid ./target/debug/jev-server > "$WORK/eval-server.log" 2>&1 &

@@ -1,7 +1,7 @@
 //! jev-server entrypoint.
 //!
 //! Configuration is environment-only (no config file in M0):
-//! * `JEV_BASE_URL`   — OpenAI-compatible base, e.g. `http://10.10.10.115:8014/v1`
+//! * `JEV_BASE_URL`   — OpenAI-compatible base, e.g. `http://127.0.0.1:8014/v1`
 //! * `JEV_MODEL`      — model id the server knows, e.g. `qwen3.8-27b`
 //! * `JEV_API_KEY`    — optional (default `EMPTY`)
 //! * `JEV_LISTEN`     — optional (default `127.0.0.1:8080`)
@@ -47,7 +47,7 @@ async fn main() -> anyhow::Result<()> {
         .init();
 
     let base_url = std::env::var("JEV_BASE_URL")
-        .unwrap_or_else(|_| "http://10.10.10.115:8014/v1".to_string());
+        .unwrap_or_else(|_| "http://127.0.0.1:8014/v1".to_string());
     let model = std::env::var("JEV_MODEL").unwrap_or_else(|_| "qwen3.8-27b".to_string());
     let api_key = std::env::var("JEV_API_KEY").unwrap_or_else(|_| "EMPTY".to_string());
     let listen = std::env::var("JEV_LISTEN").unwrap_or_else(|_| "127.0.0.1:8080".to_string());

@@ -341,7 +341,7 @@ impl HttpTokenizer {
     /// Both URL spellings are live-verified on the reference endpoint
     /// (specs/M0.md §1). Which one is "the other" depends on the base URL: a
     /// base that already carries the OpenAI-style `/v1` segment (the documented
-    /// default, `http://10.10.10.115:8014/v1`) makes the primary `{base}/tokenize`
+    /// default, `http://127.0.0.1:8014/v1`) makes the primary `{base}/tokenize`
     /// — i.e. `/v1/tokenize` — so the fallback must drop the segment rather than
     /// append a second one. Appending blindly would produce `/v1/v1/tokenize`,
     /// which no server serves.

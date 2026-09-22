@@ -32,8 +32,8 @@ if [ -n "${JEV_ALLOW_MISSING:-}" ]; then
 fi
 python3 scripts/check-en-parity.py "$ZH" "$EN" ${PARITY_ARGS[@]+"${PARITY_ARGS[@]}"}
 
-echo "== 1/7 启动 jev-server on :$PORT (backend ${JEV_BASE_URL:-http://10.10.10.115:8014/v1}) =="
-JEV_BASE_URL="${JEV_BASE_URL:-http://10.10.10.115:8014/v1}" \
+echo "== 1/7 启动 jev-server on :$PORT (backend ${JEV_BASE_URL:-http://127.0.0.1:8014/v1}) =="
+JEV_BASE_URL="${JEV_BASE_URL:-http://127.0.0.1:8014/v1}" \
 JEV_MODEL="${JEV_MODEL:-qwen3.8-27b}" \
 JEV_LISTEN="127.0.0.1:$PORT" \
   setsid ./target/debug/jev-server > "$WORK/paired-server.log" 2>&1 &

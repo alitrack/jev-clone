@@ -16,7 +16,7 @@ are committed at all: a benchmark number without its artifact is a claim.
 
 ## Why four ratios for the same work are not four measurements of the same thing
 
-The endpoint (`10.10.10.115:8014`) is a **shared** GPU. A block-timed run measures
+The endpoint (`lan-gpu-host:8014`) is a **shared** GPU. A block-timed run measures
 the *sequence* "every fresh request, then every batched request", so any other
 tenant's job that happens to land in one block is charged entirely to that arm. The
 four block-timed ratios above span 0.88×–2.23× for identical work, which is the size

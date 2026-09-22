@@ -48,7 +48,7 @@ use std::collections::BTreeMap;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 /// Default endpoint (the verified reference server, specs/M1.md §1).
-pub const DEFAULT_BASE_URL: &str = "http://10.10.10.115:8014/v1";
+pub const DEFAULT_BASE_URL: &str = "http://127.0.0.1:8014/v1";
 /// Default model id as the reference server knows it.
 pub const DEFAULT_MODEL: &str = "qwen3.8-27b";
 /// Default question count (the acceptance gate is stated for 21).

@@ -5,7 +5,7 @@
 //! code carry the outcome (`0` = the run completed and the JSON was written,
 //! `2` = bad arguments, `1` = the run itself failed).
 //!
-//!     jev-bench --base-url http://10.10.10.115:8014/v1 --model qwen3.8-27b \
+//!     jev-bench --base-url http://127.0.0.1:8014/v1 --model qwen3.8-27b \
 //!               --state-file bench/states/long-state.txt --questions 21 --repeat 3
 //!
 //! The command does **not** judge the acceptance gate: it prints the speedup it

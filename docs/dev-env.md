@@ -49,8 +49,8 @@ python3 tools/sysrole-proxy.py          # 监听 127.0.0.1:8090 → 转发 115:8
 
 | 端点 | 引擎 | 能读 logprobs？ | 能当 sigil 后端？ |
 |---|---|---|---|
-| `10.10.10.115:8014` | SGLang（qwen3.8-27b，DFlash2 投机） | ✅ `/v1/completions` + `logprobs`；`/tokenize` 也可用 | ✅（经 §2 的代理） |
-| `10.10.10.115:8017` | NInfer（同模型，MTP，vision） | ❌ 回 `logprobs_not_supported` | ❌ 非平凡 prompt 下 sigil 空手退出 |
+| `lan-gpu-host:8014` | SGLang（qwen3.8-27b，DFlash2 投机） | ✅ `/v1/completions` + `logprobs`；`/tokenize` 也可用 | ✅（经 §2 的代理） |
+| `lan-gpu-host:8017` | NInfer（同模型，MTP，vision） | ❌ 回 `logprobs_not_supported` | ❌ 非平凡 prompt 下 sigil 空手退出 |
 
 另外两条实测结论，直接决定读出头协议：
 

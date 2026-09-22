@@ -4,11 +4,10 @@ A local, **contract-compatible System One decision server**: give it a `state` a
 runtime-defined typed questions (`choice` / `score` / `noul`), get back a probability
 distribution per question — **without generating a single token**.
 
-> **Status: M0 and M1 landed, accepted against a real endpoint** (164 unit tests / clippy clean /
-> contract assertions 24/24 / **150-item Chinese set** driven end to end + `verify` recomputing
-> 572 checks with 0 mismatches, with a rewritten report rejected). **M1's "≥3× prefix reuse" gate
-> measured 0.96× on the shared endpoint and is not met** — the reason and the restatement are in
-> [`specs/M1.md`](specs/M1.md) §4.1; do not quote it as a result.
+> **Status: research artifact, M0–M3 landed.** 164 unit tests / clippy clean / contract
+> assertions 24/24 / frozen **Chinese-first** eval sets (`zh-evidence-v3`, 195 items) + `verify`
+> recomputing 572 checks with 0 mismatches. Not a product; no roadmap commitment. It exists to
+> make one finding reproducible — see **Readout is model-dependent** below.
 > Design: [`docs/design.md`](docs/design.md) (Chinese); source-level study of the three reference
 > implementations: [`docs/blueprints.md`](docs/blueprints.md).
 
@@ -145,8 +144,39 @@ disabled` for a hybrid (Gated DeltaNet) model such as Qwen3.5-4B, and the batche
 1.05× (154 ms/decision) — the same order as the dense Qwen3-4B's 1.74×/1.85× on the older build,
 against 2.5–5.5× on the tuned direct probe. None of these three numbers is a ≥3× claim.
 
+## Readout is model-dependent (measured 2026-09-21)
+
+The readout channel — slot letters, one token, logprobs — assumes the underlying model was
+**trained for single-token slot readout**. A general-purpose instruct model plugged into the same
+contract does not fail loudly; it degrades *silently*. Measured on the same frozen corpus
+(`docjev` real-small/v1, 40 documents), same scorer, same machine:
+
+| Setup | Channel | Classify | Split packets |
+|---|---|---|---|
+| Qwen3.5-4B, generation channel (tool call) | generation | **40/40** | 6–8/8 |
+| Qwen3.5-4B via this server | **readout** | 24/37 | 0/8 |
+| Qwen3.6-35B-A3B (NVFP4, hosted) | **readout** | 40/40 | 0/8 |
+| Qwen3.6-35B-A3B (Q4_K_M, generation channel) | generation | 40/40 | **8/8 ×3** |
+
+Same weights, only the readout channel swapped: classify 24/37 → 40/40; split 0/8 ↔ 8/8
+(cross-server, cross-quantisation — the second pair is supporting, not primary, evidence).
+The failure signature is a *label-prior* collapse: a mid-sequence catch-all option (`other`)
+acquires a probability floor (avg 0.414 even when the verdict is correct), and 13/13 errors are
+"truth vs `other`" pairs. `prob.rs` says so itself — *"an option score, not a calibrated decision
+confidence"* — but nothing surfaces that to the caller. Three fixes are compatible with this
+design: a `readout_trained` capability flag on the model config, a `readout_status:
+"uncalibrated"` field on the response, or an automatic generative fallback for uncalibrated
+models. This repo implements none of them yet; the 422-on-slot-failure principle
+should extend from the request dimension to the model dimension.
+
+A follow-up label-intervention experiment (three arms, deterministic, each arm reproduced
+bit-identically twice) overturned the simple "middle-slot attractor" reading: renaming *all*
+labels with a uniform prefix — which leaves `other` out of the middle — took classify from
+25/38 to **40/40** with nothing else changed. The real variable is the *interaction of slot
+layout and label text*, not position alone. Anyone re-running readout experiments with label
+renames must include a text-change control arm, or the attribution will be confounded.
+
 ## License
 
-Apache-2.0. The repository is currently private; the license is in place for a potential
-future release. Third-party reference implementations were read for design study only;
+Apache-2.0. Third-party reference implementations were read for design study only;
 notably `daseinlabs/open-jev` ships no license and its code was **not** copied.

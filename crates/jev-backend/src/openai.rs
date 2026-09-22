@@ -13,7 +13,7 @@ use std::time::Duration;
 
 #[derive(Debug, Clone)]
 pub struct OpenAiCompatConfig {
-    /// e.g. `http://10.10.10.115:8014/v1`
+    /// e.g. `http://127.0.0.1:8014/v1`
     pub base_url: String,
     /// model id as the server knows it, e.g. `qwen3.8-27b`
     pub model: String,

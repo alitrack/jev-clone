@@ -40,7 +40,7 @@ import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-UP_HOST = os.environ.get("UP_HOST", "10.10.10.115")
+UP_HOST = os.environ.get("UP_HOST", "127.0.0.1")
 UP_PORT = int(os.environ.get("UP_PORT", "8014"))
 LISTEN_HOST, _, LISTEN_PORT = os.environ.get("LISTEN", "127.0.0.1:8090").partition(":")
 LOG_PATH = os.environ.get("PROXY_LOG", "/mnt/d/wsl2/tmp/jev-m0/proxy.log")
